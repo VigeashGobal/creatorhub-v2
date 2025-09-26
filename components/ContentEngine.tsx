@@ -146,75 +146,77 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     fetchAnalysisData()
   }, [fetchAnalysisData])
 
-  // Initialize with dummy data if no real data is available
+  // Initialize with dummy data immediately
   React.useEffect(() => {
-    if (!isInitialized) {
-      setTrendingTopics([
-        {
-          id: 1,
-          title: 'AI Content Creation',
-          category: 'Technology',
-          hashtag: '#AIContent',
-          engagement: 95,
-          posts: 12500,
-          growth: '+45%',
-          trend: 'up',
-          platforms: ['TikTok', 'Instagram', 'YouTube'],
-          description: 'AI-powered content creation tools and techniques are dominating social media',
-          relatedCreators: ['@techguru', '@aiinnovator', '@contentcreator']
-        },
-        {
-          id: 2,
-          title: 'Sustainable Living',
-          category: 'Lifestyle',
-          hashtag: '#SustainableLiving',
-          engagement: 88,
-          posts: 8900,
-          growth: '+32%',
-          trend: 'up',
-          platforms: ['Instagram', 'TikTok', 'YouTube'],
-          description: 'Eco-friendly lifestyle tips and sustainable practices gaining massive traction',
-          relatedCreators: ['@ecowarrior', '@greenliving', '@sustainablelife']
-        }
-      ])
-      
-      setCompetitors([
-        {
-          id: 1,
-          name: '@techguru',
-          platform: 'YouTube',
-          followers: 2.5,
-          engagement: 8.5,
-          avgViews: 125000,
-          contentTypes: ['Tutorials', 'Reviews', 'News'],
-          recentPosts: [
-            { title: 'AI Tools for Content Creators', views: 150000, likes: 8500, comments: 1200 },
-            { title: 'Best Laptops for Creators 2024', views: 98000, likes: 4200, comments: 890 },
-            { title: 'How to Edit Videos Like a Pro', views: 200000, likes: 12000, comments: 2100 }
-          ],
-          strengths: ['High-quality tutorials', 'Consistent posting', 'Strong community'],
-          opportunities: ['More short-form content', 'Live streaming', 'Collaborations']
-        }
-      ])
-      
-      setContentSuggestions([
-        {
-          id: '1',
-          title: 'AI Content Creation Tutorial Series',
-          type: 'Video Series',
-          platform: 'YouTube',
-          estimatedViews: 150000,
-          difficulty: 'Medium',
-          timeToCreate: '2-3 weeks',
-          description: 'Create a comprehensive tutorial series on AI tools for content creation',
-          topics: ['ChatGPT for content ideas', 'AI video editing', 'Automated social media'],
-          tags: ['#AIContent', '#Tutorial', '#TechTips'],
-          inspiration: 'Based on trending topic: AI Content Creation'
-        }
-      ])
-      setIsInitialized(true)
-    }
-  }, [isInitialized])
+    const dummyTrendingTopics = [
+      {
+        id: 1,
+        title: 'AI Content Creation',
+        category: 'Technology',
+        hashtag: '#AIContent',
+        engagement: 95,
+        posts: 12500,
+        growth: '+45%',
+        trend: 'up',
+        platforms: ['TikTok', 'Instagram', 'YouTube'],
+        description: 'AI-powered content creation tools and techniques are dominating social media',
+        relatedCreators: ['@techguru', '@aiinnovator', '@contentcreator']
+      },
+      {
+        id: 2,
+        title: 'Sustainable Living',
+        category: 'Lifestyle',
+        hashtag: '#SustainableLiving',
+        engagement: 88,
+        posts: 8900,
+        growth: '+32%',
+        trend: 'up',
+        platforms: ['Instagram', 'TikTok', 'YouTube'],
+        description: 'Eco-friendly lifestyle tips and sustainable practices gaining massive traction',
+        relatedCreators: ['@ecowarrior', '@greenliving', '@sustainablelife']
+      }
+    ]
+    
+    const dummyCompetitors = [
+      {
+        id: 1,
+        name: '@techguru',
+        platform: 'YouTube',
+        followers: 2.5,
+        engagement: 8.5,
+        avgViews: 125000,
+        contentTypes: ['Tutorials', 'Reviews', 'News'],
+        recentPosts: [
+          { title: 'AI Tools for Content Creators', views: 150000, likes: 8500, comments: 1200 },
+          { title: 'Best Laptops for Creators 2024', views: 98000, likes: 4200, comments: 890 },
+          { title: 'How to Edit Videos Like a Pro', views: 200000, likes: 12000, comments: 2100 }
+        ],
+        strengths: ['High-quality tutorials', 'Consistent posting', 'Strong community'],
+        opportunities: ['More short-form content', 'Live streaming', 'Collaborations']
+      }
+    ]
+    
+    const dummyContentSuggestions = [
+      {
+        id: '1',
+        title: 'AI Content Creation Tutorial Series',
+        type: 'Video Series',
+        platform: 'YouTube',
+        estimatedViews: 150000,
+        difficulty: 'Medium',
+        timeToCreate: '2-3 weeks',
+        description: 'Create a comprehensive tutorial series on AI tools for content creation',
+        topics: ['ChatGPT for content ideas', 'AI video editing', 'Automated social media'],
+        tags: ['#AIContent', '#Tutorial', '#TechTips'],
+        inspiration: 'Based on trending topic: AI Content Creation'
+      }
+    ]
+
+    setTrendingTopics(dummyTrendingTopics)
+    setCompetitors(dummyCompetitors)
+    setContentSuggestions(dummyContentSuggestions)
+    setIsInitialized(true)
+  }, [])
 
   const getTrendIcon = (trend: string) => {
     return trend === 'up' ? 'text-green-500' : 'text-red-500'
