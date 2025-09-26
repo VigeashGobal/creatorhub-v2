@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
+import NextImage from 'next/image'
 import { 
   Users, 
   Calendar, 
@@ -363,7 +363,7 @@ export default function CRMDashboard({ userData, onReset }: CRMDashboardProps) {
               <div key={member.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-center space-x-4 mb-4">
                   <div className="relative">
-                    <Image 
+                    <NextImage 
                       src={member.avatar} 
                       alt={member.name}
                       width={48}
