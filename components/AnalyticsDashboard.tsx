@@ -21,6 +21,9 @@ interface AnalyticsDashboardProps {
 
 export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashboardProps) {
   const [isRefreshing, setIsRefreshing] = useState(false)
+  
+  console.log('AnalyticsDashboard userData:', userData)
+  console.log('AnalyticsDashboard analytics:', userData?.analytics)
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -41,12 +44,19 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
 
       if (response.ok) {
         const newData = await response.json()
+        console.log('Received analytics data:', newData)
+        
         // Update localStorage and trigger re-render
-        localStorage.setItem('creatorhub-user', JSON.stringify({
+        const updatedUserData = {
           ...userData,
           analytics: newData
-        }))
+        }
+        localStorage.setItem('creatorhub-user', JSON.stringify(updatedUserData))
+        
+        // Force component re-render by updating state
         window.location.reload()
+      } else {
+        console.error('Failed to fetch analytics:', response.status)
       }
     } catch (error) {
       console.error('Error refreshing data:', error)
@@ -65,7 +75,9 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
   }
 
   const getPlatformData = (platform: string) => {
-    return userData.analytics?.platforms?.[platform] || null
+    const data = userData.analytics?.platforms?.[platform] || null
+    console.log(`Platform data for ${platform}:`, data)
+    return data
   }
 
   const PlatformCard = ({ 
