@@ -68,7 +68,7 @@ async function fetchTikTokData(handle: string) {
   const inputData = {
     profiles: [handle.replace('@', '')],
     excludePinnedPosts: false,
-    resultsPerPage: 1,
+    resultsPerPage: 10, // Get more posts for better analytics
     shouldDownloadCovers: false,
     shouldDownloadSlideshowImages: false,
     shouldDownloadSubtitles: false,
@@ -122,14 +122,54 @@ async function fetchTikTokData(handle: string) {
   console.log('TikTok profile data keys:', Object.keys(profileData || {}))
   console.log('TikTok profile data:', JSON.stringify(profileData, null, 2))
   
+  // Calculate engagement metrics from posts
+  let totalLikes = 0
+  let totalComments = 0
+  let totalShares = 0
+  let totalViews = 0
+  let topVideoLikes = 0
+  let topVideoViews = 0
+  
+  if (results && results.length > 1) {
+    // Process all posts for engagement metrics
+    results.forEach((post: any) => {
+      if (post.stats) {
+        totalLikes += post.stats.diggCount || 0
+        totalComments += post.stats.commentCount || 0
+        totalShares += post.stats.shareCount || 0
+        totalViews += post.stats.playCount || 0
+        
+        // Track top performing video
+        if (post.stats.diggCount > topVideoLikes) {
+          topVideoLikes = post.stats.diggCount
+          topVideoViews = post.stats.playCount || 0
+        }
+      }
+    })
+  }
+  
+  const followers = profileData?.authorMeta?.fans || 0
+  const engagementRate = followers > 0 ? ((totalLikes + totalComments + totalShares) / followers * 100) : 0
+  const avgViewsPerVideo = results && results.length > 1 ? totalViews / (results.length - 1) : 0
+  
   return {
-    followers: profileData?.authorMeta?.fans || 0,
+    followers: followers,
     following: profileData?.authorMeta?.following || 0,
     likes: profileData?.authorMeta?.heart || 0,
     videos: profileData?.authorMeta?.video || 0,
     verified: profileData?.authorMeta?.verified || false,
     bio: profileData?.authorMeta?.signature || '',
-    avatar: profileData?.authorMeta?.avatar || ''
+    avatar: profileData?.authorMeta?.avatar || '',
+    // Enhanced metrics
+    totalLikes: totalLikes,
+    totalComments: totalComments,
+    totalShares: totalShares,
+    totalViews: totalViews,
+    engagementRate: Math.round(engagementRate * 100) / 100,
+    avgViewsPerVideo: Math.round(avgViewsPerVideo),
+    topVideoLikes: topVideoLikes,
+    topVideoViews: topVideoViews,
+    recentPostsCount: results && results.length > 1 ? results.length - 1 : 0
   }
 }
 
@@ -137,7 +177,7 @@ async function fetchInstagramData(handle: string) {
   console.log('Fetching Instagram data for:', handle)
   const inputData = {
     usernames: [handle.replace('@', '')],
-    resultsLimit: 1
+    resultsLimit: 20 // Get more posts for better analytics
   }
   
   console.log('Instagram API Request:', JSON.stringify(inputData, null, 2))
@@ -185,13 +225,62 @@ async function fetchInstagramData(handle: string) {
   console.log('Instagram profile data keys:', Object.keys(profileData || {}))
   console.log('Instagram profile data:', JSON.stringify(profileData, null, 2))
   
+  // Calculate engagement metrics from posts
+  let totalLikes = 0
+  let totalComments = 0
+  let totalViews = 0
+  let topPostLikes = 0
+  let topPostViews = 0
+  let reelsCount = 0
+  let storiesCount = 0
+  
+  if (results && results.length > 1) {
+    // Process all posts for engagement metrics
+    results.forEach((post: any) => {
+      if (post.likesCount !== undefined) {
+        totalLikes += post.likesCount || 0
+        totalComments += post.commentsCount || 0
+        totalViews += post.videoViewCount || 0
+        
+        // Track top performing post
+        if (post.likesCount > topPostLikes) {
+          topPostLikes = post.likesCount
+          topPostViews = post.videoViewCount || 0
+        }
+        
+        // Count content types
+        if (post.type === 'ReelsVideo') {
+          reelsCount++
+        }
+        if (post.type === 'Story') {
+          storiesCount++
+        }
+      }
+    })
+  }
+  
+  const followers = profileData?.followersCount || 0
+  const engagementRate = followers > 0 ? ((totalLikes + totalComments) / followers * 100) : 0
+  const avgLikesPerPost = results && results.length > 1 ? totalLikes / (results.length - 1) : 0
+  
   return {
-    followers: profileData?.followersCount || 0,
+    followers: followers,
     following: profileData?.followsCount || 0,
     posts: profileData?.postsCount || 0,
     verified: profileData?.isVerified || false,
     bio: profileData?.biography || '',
-    avatar: profileData?.profilePicUrl || ''
+    avatar: profileData?.profilePicUrl || '',
+    // Enhanced metrics
+    totalLikes: totalLikes,
+    totalComments: totalComments,
+    totalViews: totalViews,
+    engagementRate: Math.round(engagementRate * 100) / 100,
+    avgLikesPerPost: Math.round(avgLikesPerPost),
+    topPostLikes: topPostLikes,
+    topPostViews: topPostViews,
+    reelsCount: reelsCount,
+    storiesCount: storiesCount,
+    recentPostsCount: results && results.length > 1 ? results.length - 1 : 0
   }
 }
 
@@ -210,9 +299,9 @@ async function fetchYouTubeData(handle: string) {
   // Use searchQueries as fallback if direct URLs don't work
   const inputData = {
     searchQueries: [cleanHandle],
-    maxResults: 1,
-    maxResultsShorts: 0,
-    maxResultStreams: 0
+    maxResults: 20, // Get more videos for better analytics
+    maxResultsShorts: 10, // Include Shorts for comprehensive data
+    maxResultStreams: 5 // Include live streams
   }
   
   console.log('YouTube API Request:', JSON.stringify(inputData, null, 2))
@@ -266,13 +355,66 @@ async function fetchYouTubeData(handle: string) {
   console.log('YouTube channel data keys:', Object.keys(channelData || {}))
   console.log('YouTube channel data:', JSON.stringify(channelData, null, 2))
   
+  // Calculate engagement metrics from videos
+  let totalLikes = 0
+  let totalComments = 0
+  let totalViews = 0
+  let topVideoLikes = 0
+  let topVideoViews = 0
+  let shortsCount = 0
+  let liveStreamsCount = 0
+  let avgViewsPerVideo = 0
+  
+  if (results && results.length > 1) {
+    // Process all videos for engagement metrics
+    results.forEach((video: any) => {
+      if (video.likeCount !== undefined) {
+        totalLikes += video.likeCount || 0
+        totalComments += video.commentCount || 0
+        totalViews += video.viewCount || 0
+        
+        // Track top performing video
+        if (video.likeCount > topVideoLikes) {
+          topVideoLikes = video.likeCount
+          topVideoViews = video.viewCount || 0
+        }
+        
+        // Count content types
+        if (video.isShort) {
+          shortsCount++
+        }
+        if (video.isLive) {
+          liveStreamsCount++
+        }
+      }
+    })
+    
+    avgViewsPerVideo = totalViews / (results.length - 1)
+  }
+  
+  const subscribers = channelData?.subscriberCount || 0
+  const engagementRate = subscribers > 0 ? ((totalLikes + totalComments) / subscribers * 100) : 0
+  const estimatedRevenue = subscribers > 0 ? (subscribers * 0.5) : 0 // Rough estimate: $0.50 per subscriber per year
+  
   return {
-    subscribers: channelData?.subscriberCount || 0,
+    subscribers: subscribers,
     videos: channelData?.videoCount || 0,
     views: channelData?.viewCount || 0,
     verified: channelData?.verified || false,
     title: channelData?.title || channelData?.name || '',
-    avatar: channelData?.avatar || channelData?.thumbnail || ''
+    avatar: channelData?.avatar || channelData?.thumbnail || '',
+    // Enhanced metrics
+    totalLikes: totalLikes,
+    totalComments: totalComments,
+    totalViews: totalViews,
+    engagementRate: Math.round(engagementRate * 100) / 100,
+    avgViewsPerVideo: Math.round(avgViewsPerVideo),
+    topVideoLikes: topVideoLikes,
+    topVideoViews: topVideoViews,
+    shortsCount: shortsCount,
+    liveStreamsCount: liveStreamsCount,
+    estimatedRevenue: Math.round(estimatedRevenue),
+    recentVideosCount: results && results.length > 1 ? results.length - 1 : 0
   }
 }
 

@@ -11,7 +11,16 @@ import {
   TrendingUp,
   RefreshCw,
   LogOut,
-  BarChart3
+  BarChart3,
+  Edit3,
+  Save,
+  X,
+  DollarSign,
+  Calendar,
+  Target,
+  Zap,
+  Award,
+  Activity
 } from 'lucide-react'
 
 interface AnalyticsDashboardProps {
@@ -21,9 +30,37 @@ interface AnalyticsDashboardProps {
 
 export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashboardProps) {
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isEditingHandles, setIsEditingHandles] = useState(false)
+  const [editedHandles, setEditedHandles] = useState({
+    youtube: userData.youtube || '',
+    instagram: userData.instagram || '',
+    tiktok: userData.tiktok || ''
+  })
   
   console.log('AnalyticsDashboard userData:', userData)
   console.log('AnalyticsDashboard analytics:', userData?.analytics)
+
+  const handleSaveHandles = () => {
+    const updatedUserData = {
+      ...userData,
+      youtube: editedHandles.youtube,
+      instagram: editedHandles.instagram,
+      tiktok: editedHandles.tiktok
+    }
+    localStorage.setItem('creatorhub-user', JSON.stringify(updatedUserData))
+    setIsEditingHandles(false)
+    // Update the userData reference
+    Object.assign(userData, updatedUserData)
+  }
+
+  const handleCancelEdit = () => {
+    setEditedHandles({
+      youtube: userData.youtube || '',
+      instagram: userData.instagram || '',
+      tiktok: userData.tiktok || ''
+    })
+    setIsEditingHandles(false)
+  }
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -135,11 +172,23 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
                 </div>
                 <div className="text-sm text-gray-500">Videos</div>
               </div>
-              <div className="text-center col-span-2">
+              <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">
                   {formatNumber(data.views || 0)}
                 </div>
                 <div className="text-sm text-gray-500">Total Views</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  ${formatNumber(data.estimatedRevenue || 0)}
+                </div>
+                <div className="text-sm text-gray-500">Est. Revenue</div>
+              </div>
+              <div className="text-center col-span-2">
+                <div className="text-lg font-semibold text-blue-600">
+                  {data.engagementRate || 0}%
+                </div>
+                <div className="text-sm text-gray-500">Engagement Rate</div>
               </div>
             </>
           )}
@@ -154,15 +203,27 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">
-                  {formatNumber(data.following || 0)}
-                </div>
-                <div className="text-sm text-gray-500">Following</div>
-              </div>
-              <div className="text-center col-span-2">
-                <div className="text-2xl font-bold text-gray-900">
                   {formatNumber(data.posts || 0)}
                 </div>
                 <div className="text-sm text-gray-500">Posts</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {formatNumber(data.reelsCount || 0)}
+                </div>
+                <div className="text-sm text-gray-500">Reels</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-pink-600">
+                  {formatNumber(data.storiesCount || 0)}
+                </div>
+                <div className="text-sm text-gray-500">Stories</div>
+              </div>
+              <div className="text-center col-span-2">
+                <div className="text-lg font-semibold text-blue-600">
+                  {data.engagementRate || 0}%
+                </div>
+                <div className="text-sm text-gray-500">Engagement Rate</div>
               </div>
             </>
           )}
@@ -177,21 +238,27 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">
-                  {formatNumber(data.following || 0)}
-                </div>
-                <div className="text-sm text-gray-500">Following</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">
-                  {formatNumber(data.likes || 0)}
-                </div>
-                <div className="text-sm text-gray-500">Likes</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">
                   {formatNumber(data.videos || 0)}
                 </div>
                 <div className="text-sm text-gray-500">Videos</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-red-600">
+                  {formatNumber(data.totalLikes || 0)}
+                </div>
+                <div className="text-sm text-gray-500">Total Likes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {formatNumber(data.totalViews || 0)}
+                </div>
+                <div className="text-sm text-gray-500">Total Views</div>
+              </div>
+              <div className="text-center col-span-2">
+                <div className="text-lg font-semibold text-green-600">
+                  {data.engagementRate || 0}%
+                </div>
+                <div className="text-sm text-gray-500">Engagement Rate</div>
               </div>
             </>
           )}
@@ -221,6 +288,13 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
             </div>
             <div className="flex items-center space-x-4">
               <button
+                onClick={() => setIsEditingHandles(true)}
+                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <Edit3 className="h-4 w-4 mr-2" />
+                Edit Handles
+              </button>
+              <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
                 className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
@@ -239,6 +313,80 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
           </div>
         </div>
       </div>
+
+      {/* Edit Handles Modal */}
+      {isEditingHandles && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Edit Social Media Handles</h3>
+              <button
+                onClick={handleCancelEdit}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  YouTube Handle
+                </label>
+                <input
+                  type="text"
+                  value={editedHandles.youtube}
+                  onChange={(e) => setEditedHandles({...editedHandles, youtube: e.target.value})}
+                  placeholder="@yourchannel or yourchannel"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Instagram Handle
+                </label>
+                <input
+                  type="text"
+                  value={editedHandles.instagram}
+                  onChange={(e) => setEditedHandles({...editedHandles, instagram: e.target.value})}
+                  placeholder="@yourusername or yourusername"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  TikTok Handle
+                </label>
+                <input
+                  type="text"
+                  value={editedHandles.tiktok}
+                  onChange={(e) => setEditedHandles({...editedHandles, tiktok: e.target.value})}
+                  placeholder="@yourusername or yourusername"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={handleCancelEdit}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveHandles}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <Save className="h-4 w-4 mr-2 inline" />
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -269,22 +417,106 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
           />
         </div>
 
-        {/* Summary Stats */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Total Reach</h3>
+        {/* Enhanced BI Metrics */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Performance Overview */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center mb-4">
+              <TrendingUp className="h-5 w-5 text-blue-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">Performance Overview</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {formatNumber(
+                    (getPlatformData('youtube')?.subscribers || 0) +
+                    (getPlatformData('instagram')?.followers || 0) +
+                    (getPlatformData('tiktok')?.followers || 0)
+                  )}
+                </div>
+                <div className="text-sm text-gray-500">Total Followers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {formatNumber(
+                    (getPlatformData('youtube')?.totalViews || 0) +
+                    (getPlatformData('instagram')?.totalViews || 0) +
+                    (getPlatformData('tiktok')?.totalViews || 0)
+                  )}
+                </div>
+                <div className="text-sm text-gray-500">Total Views</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {formatNumber(
+                    (getPlatformData('youtube')?.totalLikes || 0) +
+                    (getPlatformData('instagram')?.totalLikes || 0) +
+                    (getPlatformData('tiktok')?.totalLikes || 0)
+                  )}
+                </div>
+                <div className="text-sm text-gray-500">Total Likes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-orange-600">
+                  {formatNumber(
+                    (getPlatformData('youtube')?.estimatedRevenue || 0)
+                  )}
+                </div>
+                <div className="text-sm text-gray-500">Est. Revenue</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Engagement Analysis */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center mb-4">
+              <Activity className="h-5 w-5 text-green-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">Engagement Analysis</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">YouTube Engagement</span>
+                <span className="text-lg font-semibold text-red-600">
+                  {getPlatformData('youtube')?.engagementRate || 0}%
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Instagram Engagement</span>
+                <span className="text-lg font-semibold text-pink-600">
+                  {getPlatformData('instagram')?.engagementRate || 0}%
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">TikTok Engagement</span>
+                <span className="text-lg font-semibold text-black">
+                  {getPlatformData('tiktok')?.engagementRate || 0}%
+                </span>
+              </div>
+              <div className="pt-2 border-t border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">Average Engagement</span>
+                  <span className="text-lg font-bold text-blue-600">
+                    {Math.round((
+                      (getPlatformData('youtube')?.engagementRate || 0) +
+                      (getPlatformData('instagram')?.engagementRate || 0) +
+                      (getPlatformData('tiktok')?.engagementRate || 0)
+                    ) / 3 * 100) / 100}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Performance */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="flex items-center mb-6">
+            <BarChart3 className="h-5 w-5 text-purple-600 mr-2" />
+            <h3 className="text-lg font-semibold text-gray-900">Content Performance</h3>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">
-                {formatNumber(
-                  (getPlatformData('youtube')?.subscribers || 0) +
-                  (getPlatformData('instagram')?.followers || 0) +
-                  (getPlatformData('tiktok')?.followers || 0)
-                )}
-              </div>
-              <div className="text-sm text-gray-500">Total Followers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-blue-600">
                 {formatNumber(
                   (getPlatformData('youtube')?.videos || 0) +
                   (getPlatformData('instagram')?.posts || 0) +
@@ -294,13 +526,22 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               <div className="text-sm text-gray-500">Total Content</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">
+              <div className="text-2xl font-bold text-purple-600">
                 {formatNumber(
-                  (getPlatformData('youtube')?.views || 0) +
-                  (getPlatformData('tiktok')?.likes || 0)
+                  (getPlatformData('instagram')?.reelsCount || 0) +
+                  (getPlatformData('youtube')?.shortsCount || 0)
                 )}
               </div>
-              <div className="text-sm text-gray-500">Total Engagement</div>
+              <div className="text-sm text-gray-500">Short-form Content</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {formatNumber(
+                  (getPlatformData('youtube')?.liveStreamsCount || 0) +
+                  (getPlatformData('instagram')?.storiesCount || 0)
+                )}
+              </div>
+              <div className="text-sm text-gray-500">Live/Stories</div>
             </div>
           </div>
         </div>
