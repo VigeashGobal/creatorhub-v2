@@ -86,6 +86,11 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   const [isLoading, setIsLoading] = useState(false)
   const [analysisData, setAnalysisData] = useState<any>(null)
   const [userProfile, setUserProfile] = useState<any>(null)
+  
+  // Initialize with empty arrays to prevent undefined errors
+  const [trendingTopics, setTrendingTopics] = useState<TrendingTopic[]>([])
+  const [competitors, setCompetitors] = useState<Competitor[]>([])
+  const [contentSuggestions, setContentSuggestions] = useState<ContentSuggestion[]>([])
 
   // Fetch real competitor analysis data
   const fetchAnalysisData = useCallback(async () => {
@@ -123,6 +128,9 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
       
       setAnalysisData(combinedData)
       setUserProfile(combinedData.userProfile)
+      setTrendingTopics(combinedData.industryTrends || [])
+      setCompetitors(combinedData.competitors || [])
+      setContentSuggestions(combinedData.contentSuggestions || [])
     } catch (error) {
       console.error('Error fetching analysis data:', error)
     } finally {
@@ -135,156 +143,74 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     fetchAnalysisData()
   }, [fetchAnalysisData])
 
-  // Use real data if available, otherwise fall back to dummy data
-  const trendingTopics: TrendingTopic[] = analysisData?.industryTrends || [
-    {
-      id: 1,
-      title: 'AI Content Creation',
-      category: 'Technology',
-      hashtag: '#AIContent',
-      engagement: 95,
-      posts: 12500,
-      growth: '+45%',
-      trend: 'up',
-      platforms: ['TikTok', 'Instagram', 'YouTube'],
-      description: 'AI-powered content creation tools and techniques are dominating social media',
-      relatedCreators: ['@techguru', '@aiinnovator', '@contentcreator']
-    },
-    {
-      id: 2,
-      title: 'Sustainable Living',
-      category: 'Lifestyle',
-      hashtag: '#SustainableLiving',
-      engagement: 88,
-      posts: 8900,
-      growth: '+32%',
-      trend: 'up',
-      platforms: ['Instagram', 'TikTok', 'YouTube'],
-      description: 'Eco-friendly lifestyle tips and sustainable practices gaining massive traction',
-      relatedCreators: ['@ecowarrior', '@greenliving', '@sustainablelife']
-    },
-    {
-      id: 3,
-      title: 'Remote Work Tips',
-      category: 'Business',
-      hashtag: '#RemoteWork',
-      engagement: 92,
-      posts: 15600,
-      growth: '+28%',
-      trend: 'up',
-      platforms: ['LinkedIn', 'YouTube', 'Instagram'],
-      description: 'Productivity hacks and work-from-home strategies for remote professionals',
-      relatedCreators: ['@remoteworker', '@productivityguru', '@workfromhome']
-    },
-    {
-      id: 4,
-      title: 'Mental Health Awareness',
-      category: 'Health',
-      hashtag: '#MentalHealth',
-      engagement: 96,
-      posts: 22000,
-      growth: '+67%',
-      trend: 'up',
-      platforms: ['TikTok', 'Instagram', 'YouTube'],
-      description: 'Mental wellness content and self-care practices resonating with audiences',
-      relatedCreators: ['@mentalhealthadvocate', '@wellnesscoach', '@selfcare']
+  // Initialize with dummy data if no real data is available
+  React.useEffect(() => {
+    if (!analysisData) {
+      setTrendingTopics([
+        {
+          id: 1,
+          title: 'AI Content Creation',
+          category: 'Technology',
+          hashtag: '#AIContent',
+          engagement: 95,
+          posts: 12500,
+          growth: '+45%',
+          trend: 'up',
+          platforms: ['TikTok', 'Instagram', 'YouTube'],
+          description: 'AI-powered content creation tools and techniques are dominating social media',
+          relatedCreators: ['@techguru', '@aiinnovator', '@contentcreator']
+        },
+        {
+          id: 2,
+          title: 'Sustainable Living',
+          category: 'Lifestyle',
+          hashtag: '#SustainableLiving',
+          engagement: 88,
+          posts: 8900,
+          growth: '+32%',
+          trend: 'up',
+          platforms: ['Instagram', 'TikTok', 'YouTube'],
+          description: 'Eco-friendly lifestyle tips and sustainable practices gaining massive traction',
+          relatedCreators: ['@ecowarrior', '@greenliving', '@sustainablelife']
+        }
+      ])
+      
+      setCompetitors([
+        {
+          id: 1,
+          name: '@techguru',
+          platform: 'YouTube',
+          followers: 2.5,
+          engagement: 8.5,
+          avgViews: 125000,
+          contentTypes: ['Tutorials', 'Reviews', 'News'],
+          recentPosts: [
+            { title: 'AI Tools for Content Creators', views: 150000, likes: 8500, comments: 1200 },
+            { title: 'Best Laptops for Creators 2024', views: 98000, likes: 4200, comments: 890 },
+            { title: 'How to Edit Videos Like a Pro', views: 200000, likes: 12000, comments: 2100 }
+          ],
+          strengths: ['High-quality tutorials', 'Consistent posting', 'Strong community'],
+          opportunities: ['More short-form content', 'Live streaming', 'Collaborations']
+        }
+      ])
+      
+      setContentSuggestions([
+        {
+          id: '1',
+          title: 'AI Content Creation Tutorial Series',
+          type: 'Video Series',
+          platform: 'YouTube',
+          estimatedViews: 150000,
+          difficulty: 'Medium',
+          timeToCreate: '2-3 weeks',
+          description: 'Create a comprehensive tutorial series on AI tools for content creation',
+          topics: ['ChatGPT for content ideas', 'AI video editing', 'Automated social media'],
+          tags: ['#AIContent', '#Tutorial', '#TechTips'],
+          inspiration: 'Based on trending topic: AI Content Creation'
+        }
+      ])
     }
-  ]
-
-  // Use real data if available, otherwise fall back to dummy data
-  const competitors: Competitor[] = analysisData?.competitors || [
-    {
-      id: 1,
-      name: '@techguru',
-      platform: 'YouTube',
-      followers: 2.5,
-      engagement: 8.5,
-      avgViews: 125000,
-      contentTypes: ['Tutorials', 'Reviews', 'News'],
-      recentPosts: [
-        { title: 'AI Tools for Content Creators', views: 150000, likes: 8500, comments: 1200 },
-        { title: 'Best Laptops for Creators 2024', views: 98000, likes: 4200, comments: 890 },
-        { title: 'How to Edit Videos Like a Pro', views: 200000, likes: 12000, comments: 2100 }
-      ],
-      strengths: ['High-quality tutorials', 'Consistent posting', 'Strong community'],
-      opportunities: ['More short-form content', 'Live streaming', 'Collaborations']
-    },
-    {
-      id: 2,
-      name: '@ecowarrior',
-      platform: 'Instagram',
-      followers: 1.8,
-      engagement: 12.3,
-      avgViews: 45000,
-      contentTypes: ['Reels', 'Stories', 'Posts'],
-      recentPosts: [
-        { title: 'Zero Waste Kitchen Tips', views: 67000, likes: 9200, comments: 1500 },
-        { title: 'DIY Natural Cleaning Products', views: 54000, likes: 7800, comments: 1200 },
-        { title: 'Sustainable Fashion Haul', views: 89000, likes: 11000, comments: 1800 }
-      ],
-      strengths: ['Authentic content', 'High engagement', 'Visual storytelling'],
-      opportunities: ['YouTube expansion', 'Product collaborations', 'Educational content']
-    },
-    {
-      id: 3,
-      name: '@productivityguru',
-      platform: 'LinkedIn',
-      followers: 0.9,
-      engagement: 15.7,
-      avgViews: 25000,
-      contentTypes: ['Articles', 'Posts', 'Videos'],
-      recentPosts: [
-        { title: '10 Productivity Hacks for Remote Workers', views: 35000, likes: 1200, comments: 300 },
-        { title: 'Time Management Techniques', views: 28000, likes: 950, comments: 250 },
-        { title: 'Building Better Work Habits', views: 42000, likes: 1500, comments: 400 }
-      ],
-      strengths: ['Professional expertise', 'Thought leadership', 'B2B audience'],
-      opportunities: ['Video content', 'Course creation', 'Speaking engagements']
-    }
-  ]
-
-  // Use real data if available, otherwise fall back to dummy data
-  const contentSuggestions: ContentSuggestion[] = analysisData?.contentSuggestions || [
-    {
-      id: 1,
-      title: 'AI Content Creation Tutorial Series',
-      type: 'Video Series',
-      platform: 'YouTube',
-      estimatedViews: 150000,
-      difficulty: 'Medium',
-      timeToCreate: '2-3 weeks',
-      description: 'Create a comprehensive tutorial series on AI tools for content creation',
-      topics: ['ChatGPT for content ideas', 'AI video editing', 'Automated social media'],
-      tags: ['#AIContent', '#Tutorial', '#TechTips'],
-      inspiration: 'Based on trending topic: AI Content Creation'
-    },
-    {
-      id: 2,
-      title: 'Sustainable Living Challenge',
-      type: 'Social Media Campaign',
-      platform: 'Instagram',
-      estimatedViews: 75000,
-      difficulty: 'Easy',
-      timeToCreate: '1 week',
-      description: '30-day sustainable living challenge with daily tips and progress updates',
-      topics: ['Zero waste tips', 'Eco-friendly products', 'Lifestyle changes'],
-      tags: ['#SustainableLiving', '#Challenge', '#EcoFriendly'],
-      inspiration: 'Based on trending topic: Sustainable Living'
-    },
-    {
-      id: 3,
-      title: 'Remote Work Productivity Guide',
-      type: 'Blog Post Series',
-      platform: 'Website',
-      estimatedViews: 25000,
-      difficulty: 'Easy',
-      timeToCreate: '3-5 days',
-      description: 'Comprehensive guide to remote work productivity with actionable tips',
-      topics: ['Home office setup', 'Time management', 'Communication tools'],
-      tags: ['#RemoteWork', '#Productivity', '#WorkFromHome'],
-      inspiration: 'Based on competitor analysis: @productivityguru'
-    }
-  ]
+  }, [analysisData])
 
   const getTrendIcon = (trend: string) => {
     return trend === 'up' ? 'text-green-500' : 'text-red-500'
@@ -369,7 +295,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Trending Topics</p>
-                <p className="text-2xl font-bold text-slate-900">{trendingTopics?.length || 0}</p>
+                <p className="text-2xl font-bold text-slate-900">{trendingTopics.length}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-indigo-600" />
             </div>
@@ -379,7 +305,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Competitors Tracked</p>
-                <p className="text-2xl font-bold text-slate-900">{competitors?.length || 0}</p>
+                <p className="text-2xl font-bold text-slate-900">{competitors.length}</p>
               </div>
               <Users className="h-8 w-8 text-green-600" />
             </div>
@@ -389,7 +315,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Content Ideas</p>
-                <p className="text-2xl font-bold text-slate-900">{contentSuggestions?.length || 0}</p>
+                <p className="text-2xl font-bold text-slate-900">{contentSuggestions.length}</p>
               </div>
               <Lightbulb className="h-8 w-8 text-yellow-600" />
             </div>
@@ -444,7 +370,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Trending Topics Tab */}
         {activeTab === 'trending' && !isLoading && (
           <div className="space-y-6">
-            {trendingTopics && trendingTopics.length > 0 ? trendingTopics.map((topic) => (
+            {trendingTopics.length > 0 ? trendingTopics.map((topic) => (
               <div key={topic.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -515,7 +441,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Competitors Tab */}
         {activeTab === 'competitors' && !isLoading && (
           <div className="space-y-6">
-            {competitors && competitors.length > 0 ? competitors.map((competitor) => (
+            {competitors.length > 0 ? competitors.map((competitor) => (
               <div key={competitor.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center space-x-4">
@@ -589,7 +515,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Content Suggestions Tab */}
         {activeTab === 'suggestions' && !isLoading && (
           <div className="space-y-6">
-            {contentSuggestions && contentSuggestions.length > 0 ? contentSuggestions.map((suggestion) => (
+            {contentSuggestions.length > 0 ? contentSuggestions.map((suggestion) => (
               <div key={suggestion.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
