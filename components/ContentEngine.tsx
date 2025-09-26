@@ -92,6 +92,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   const [competitors, setCompetitors] = useState<Competitor[]>([])
   const [contentSuggestions, setContentSuggestions] = useState<ContentSuggestion[]>([])
   const [isInitialized, setIsInitialized] = useState(false)
+  const [isReady, setIsReady] = useState(false)
 
   // Fetch real competitor analysis data
   const fetchAnalysisData = useCallback(async () => {
@@ -133,9 +134,11 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
       setCompetitors(combinedData.competitors || [])
       setContentSuggestions(combinedData.contentSuggestions || [])
       setIsInitialized(true)
+      setIsReady(true)
     } catch (error) {
       console.error('Error fetching analysis data:', error)
       setIsInitialized(true)
+      setIsReady(true)
     } finally {
       setIsLoading(false)
     }
@@ -216,6 +219,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     setCompetitors(dummyCompetitors)
     setContentSuggestions(dummyContentSuggestions)
     setIsInitialized(true)
+    setIsReady(true)
   }, [])
 
   const getTrendIcon = (trend: string) => {
@@ -231,8 +235,8 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     }
   }
 
-  // Don't render until component is properly initialized
-  if (!isInitialized) {
+  // Don't render until component is completely ready
+  if (!isReady || !isInitialized) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
         <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
@@ -331,7 +335,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Trending Topics</p>
-                <p className="text-2xl font-bold text-slate-900">{trendingTopics.length}</p>
+                <p className="text-2xl font-bold text-slate-900">{trendingTopics?.length || 0}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-indigo-600" />
             </div>
@@ -341,7 +345,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Competitors Tracked</p>
-                <p className="text-2xl font-bold text-slate-900">{competitors.length}</p>
+                <p className="text-2xl font-bold text-slate-900">{competitors?.length || 0}</p>
               </div>
               <Users className="h-8 w-8 text-green-600" />
             </div>
@@ -351,7 +355,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Content Ideas</p>
-                <p className="text-2xl font-bold text-slate-900">{contentSuggestions.length}</p>
+                <p className="text-2xl font-bold text-slate-900">{contentSuggestions?.length || 0}</p>
               </div>
               <Lightbulb className="h-8 w-8 text-yellow-600" />
             </div>
@@ -406,7 +410,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Trending Topics Tab */}
         {activeTab === 'trending' && !isLoading && (
           <div className="space-y-6">
-            {trendingTopics.length > 0 ? trendingTopics.map((topic) => (
+            {trendingTopics && trendingTopics.length > 0 ? trendingTopics.map((topic) => (
               <div key={topic.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -477,7 +481,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Competitors Tab */}
         {activeTab === 'competitors' && !isLoading && (
           <div className="space-y-6">
-            {competitors.length > 0 ? competitors.map((competitor) => (
+            {competitors && competitors.length > 0 ? competitors.map((competitor) => (
               <div key={competitor.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center space-x-4">
@@ -551,7 +555,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Content Suggestions Tab */}
         {activeTab === 'suggestions' && !isLoading && (
           <div className="space-y-6">
-            {contentSuggestions.length > 0 ? contentSuggestions.map((suggestion) => (
+            {contentSuggestions && contentSuggestions.length > 0 ? contentSuggestions.map((suggestion) => (
               <div key={suggestion.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
