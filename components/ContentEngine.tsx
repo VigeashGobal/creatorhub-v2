@@ -369,7 +369,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Trending Topics</p>
-                <p className="text-2xl font-bold text-slate-900">{trendingTopics.length}</p>
+                <p className="text-2xl font-bold text-slate-900">{trendingTopics?.length || 0}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-indigo-600" />
             </div>
@@ -379,7 +379,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Competitors Tracked</p>
-                <p className="text-2xl font-bold text-slate-900">{competitors.length}</p>
+                <p className="text-2xl font-bold text-slate-900">{competitors?.length || 0}</p>
               </div>
               <Users className="h-8 w-8 text-green-600" />
             </div>
@@ -389,7 +389,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Content Ideas</p>
-                <p className="text-2xl font-bold text-slate-900">{contentSuggestions.length}</p>
+                <p className="text-2xl font-bold text-slate-900">{contentSuggestions?.length || 0}</p>
               </div>
               <Lightbulb className="h-8 w-8 text-yellow-600" />
             </div>
@@ -444,7 +444,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         {/* Trending Topics Tab */}
         {activeTab === 'trending' && !isLoading && (
           <div className="space-y-6">
-            {trendingTopics.map((topic) => (
+            {trendingTopics && trendingTopics.length > 0 ? trendingTopics.map((topic) => (
               <div key={topic.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -500,14 +500,22 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-12 text-center">
+                <div className="text-slate-400 mb-4">
+                  <TrendingUp className="h-12 w-12 mx-auto" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">No Trending Topics Found</h3>
+                <p className="text-slate-600">We couldn't find any trending topics in your industry. Try refreshing the analysis.</p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Competitors Tab */}
         {activeTab === 'competitors' && !isLoading && (
           <div className="space-y-6">
-            {competitors.map((competitor) => (
+            {competitors && competitors.length > 0 ? competitors.map((competitor) => (
               <div key={competitor.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center space-x-4">
@@ -566,14 +574,22 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-12 text-center">
+                <div className="text-slate-400 mb-4">
+                  <Users className="h-12 w-12 mx-auto" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">No Competitors Found</h3>
+                <p className="text-slate-600">We couldn't find any competitors in your industry. Try refreshing the analysis.</p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Content Suggestions Tab */}
         {activeTab === 'suggestions' && !isLoading && (
           <div className="space-y-6">
-            {contentSuggestions.map((suggestion) => (
+            {contentSuggestions && contentSuggestions.length > 0 ? contentSuggestions.map((suggestion) => (
               <div key={suggestion.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -650,7 +666,15 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-12 text-center">
+                <div className="text-slate-400 mb-4">
+                  <Lightbulb className="h-12 w-12 mx-auto" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">No Content Suggestions Found</h3>
+                <p className="text-slate-600">We couldn't generate any content suggestions. Try refreshing the analysis.</p>
+              </div>
+            )}
           </div>
         )}
       </div>
