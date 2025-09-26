@@ -83,7 +83,7 @@ interface ContentSuggestion {
 
 export default function ContentEngine({ userData, onReset }: ContentEngineProps) {
   const [activeTab, setActiveTab] = useState('trending')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true) // Start with loading true
   const [analysisData, setAnalysisData] = useState<any>(null)
   const [userProfile, setUserProfile] = useState<any>(null)
   
@@ -91,6 +91,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   const [trendingTopics, setTrendingTopics] = useState<TrendingTopic[]>([])
   const [competitors, setCompetitors] = useState<Competitor[]>([])
   const [contentSuggestions, setContentSuggestions] = useState<ContentSuggestion[]>([])
+  const [isInitialized, setIsInitialized] = useState(false)
 
   // Fetch real competitor analysis data
   const fetchAnalysisData = useCallback(async () => {
@@ -131,8 +132,10 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
       setTrendingTopics(combinedData.industryTrends || [])
       setCompetitors(combinedData.competitors || [])
       setContentSuggestions(combinedData.contentSuggestions || [])
+      setIsInitialized(true)
     } catch (error) {
       console.error('Error fetching analysis data:', error)
+      setIsInitialized(true)
     } finally {
       setIsLoading(false)
     }
@@ -145,7 +148,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
 
   // Initialize with dummy data if no real data is available
   React.useEffect(() => {
-    if (!analysisData) {
+    if (!isInitialized) {
       setTrendingTopics([
         {
           id: 1,
@@ -209,8 +212,9 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
           inspiration: 'Based on trending topic: AI Content Creation'
         }
       ])
+      setIsInitialized(true)
     }
-  }, [analysisData])
+  }, [isInitialized])
 
   const getTrendIcon = (trend: string) => {
     return trend === 'up' ? 'text-green-500' : 'text-red-500'
@@ -223,6 +227,36 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
       case 'Hard': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  // Don't render until component is properly initialized
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-6">
+              <div className="flex items-center">
+                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-2 mr-4">
+                  <Lightbulb className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-slate-900">Content Engine</h1>
+                  <p className="text-sm text-slate-600">Discover trends, analyze competitors, and get content ideas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Initializing Content Engine</h3>
+            <p className="text-slate-600">Setting up your personalized content insights...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
