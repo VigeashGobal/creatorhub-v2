@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { 
   TrendingUp, 
   Search, 
@@ -36,9 +36,60 @@ interface ContentEngineProps {
 
 export default function ContentEngine({ userData, onReset }: ContentEngineProps) {
   const [activeTab, setActiveTab] = useState('trending')
+  const [isLoading, setIsLoading] = useState(false)
+  const [analysisData, setAnalysisData] = useState<any>(null)
+  const [userProfile, setUserProfile] = useState<any>(null)
 
-  // Dummy data for trending topics
-  const trendingTopics = [
+  // Fetch real competitor analysis data
+  const fetchAnalysisData = async () => {
+    if (!userData?.youtube && !userData?.instagram && !userData?.tiktok) {
+      console.log('No social media handles provided')
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      // Analyze each platform the user has
+      const platforms = []
+      if (userData.youtube) platforms.push({ platform: 'youtube', handle: userData.youtube })
+      if (userData.instagram) platforms.push({ platform: 'instagram', handle: userData.instagram })
+      if (userData.tiktok) platforms.push({ platform: 'tiktok', handle: userData.tiktok })
+
+      const analysisPromises = platforms.map(async (platformData) => {
+        const response = await fetch('/api/competitor-analysis', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(platformData)
+        })
+        return response.json()
+      })
+
+      const results = await Promise.all(analysisPromises)
+      
+      // Combine results from all platforms
+      const combinedData = {
+        userProfile: results[0]?.userProfile || null,
+        industryTrends: results.flatMap(r => r.industryTrends || []),
+        competitors: results.flatMap(r => r.competitors || []),
+        contentSuggestions: results.flatMap(r => r.contentSuggestions || [])
+      }
+      
+      setAnalysisData(combinedData)
+      setUserProfile(combinedData.userProfile)
+    } catch (error) {
+      console.error('Error fetching analysis data:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Fetch data when component mounts
+  React.useEffect(() => {
+    fetchAnalysisData()
+  }, [])
+
+  // Use real data if available, otherwise fall back to dummy data
+  const trendingTopics = analysisData?.industryTrends || [
     {
       id: 1,
       title: 'AI Content Creation',
@@ -93,8 +144,8 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     }
   ]
 
-  // Dummy data for competitors
-  const competitors = [
+  // Use real data if available, otherwise fall back to dummy data
+  const competitors = analysisData?.competitors || [
     {
       id: 1,
       name: '@techguru',
@@ -145,8 +196,8 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     }
   ]
 
-  // Dummy data for content suggestions
-  const contentSuggestions = [
+  // Use real data if available, otherwise fall back to dummy data
+  const contentSuggestions = analysisData?.contentSuggestions || [
     {
       id: 1,
       title: 'AI Content Creation Tutorial Series',
@@ -217,9 +268,13 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <button className="flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
-                <Search className="h-4 w-4 mr-2" />
-                Search Trends
+              <button 
+                onClick={fetchAnalysisData}
+                disabled={isLoading}
+                className="flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 disabled:opacity-50"
+              >
+                <Search className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                {isLoading ? 'Analyzing...' : 'Refresh Analysis'}
               </button>
               <button className="flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
                 <Plus className="h-4 w-4 mr-2" />
@@ -232,13 +287,42 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* User Profile Section */}
+        {userProfile && (
+          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-slate-900">Your Profile Analysis</h3>
+              <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
+                {userProfile.industry?.charAt(0).toUpperCase() + userProfile.industry?.slice(1)} Creator
+              </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h4 className="text-sm font-medium text-slate-700 mb-2">Detected Industry</h4>
+                <p className="text-lg font-semibold text-slate-900">{userProfile.industry?.charAt(0).toUpperCase() + userProfile.industry?.slice(1)}</p>
+                <p className="text-sm text-slate-600">Based on your content and handles</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-slate-700 mb-2">Primary Niche</h4>
+                <p className="text-lg font-semibold text-slate-900">{userProfile.niche?.charAt(0).toUpperCase() + userProfile.niche?.slice(1)}</p>
+                <p className="text-sm text-slate-600">Your main content focus</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-slate-700 mb-2">Content Style</h4>
+                <p className="text-lg font-semibold text-slate-900">{userProfile.contentStyle?.charAt(0).toUpperCase() + userProfile.contentStyle?.slice(1)}</p>
+                <p className="text-sm text-slate-600">Your content approach</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Trending Topics</p>
-                <p className="text-2xl font-bold text-slate-900">24</p>
+                <p className="text-2xl font-bold text-slate-900">{trendingTopics.length}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-indigo-600" />
             </div>
@@ -248,7 +332,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Competitors Tracked</p>
-                <p className="text-2xl font-bold text-slate-900">12</p>
+                <p className="text-2xl font-bold text-slate-900">{competitors.length}</p>
               </div>
               <Users className="h-8 w-8 text-green-600" />
             </div>
@@ -258,7 +342,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Content Ideas</p>
-                <p className="text-2xl font-bold text-slate-900">47</p>
+                <p className="text-2xl font-bold text-slate-900">{contentSuggestions.length}</p>
               </div>
               <Lightbulb className="h-8 w-8 text-yellow-600" />
             </div>
@@ -267,8 +351,8 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
           <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-600">Avg. Engagement</p>
-                <p className="text-2xl font-bold text-slate-900">8.5%</p>
+                <p className="text-sm font-medium text-slate-600">Industry Focus</p>
+                <p className="text-2xl font-bold text-slate-900">{userProfile?.industry?.charAt(0).toUpperCase() + userProfile?.industry?.slice(1) || 'General'}</p>
               </div>
               <BarChart3 className="h-8 w-8 text-purple-600" />
             </div>
@@ -301,8 +385,17 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-12 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Analyzing Your Content</h3>
+            <p className="text-slate-600">We're analyzing your social media profiles and finding relevant trends and competitors...</p>
+          </div>
+        )}
+
         {/* Trending Topics Tab */}
-        {activeTab === 'trending' && (
+        {activeTab === 'trending' && !isLoading && (
           <div className="space-y-6">
             {trendingTopics.map((topic) => (
               <div key={topic.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
@@ -365,7 +458,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         )}
 
         {/* Competitors Tab */}
-        {activeTab === 'competitors' && (
+        {activeTab === 'competitors' && !isLoading && (
           <div className="space-y-6">
             {competitors.map((competitor) => (
               <div key={competitor.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
@@ -431,7 +524,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
         )}
 
         {/* Content Suggestions Tab */}
-        {activeTab === 'suggestions' && (
+        {activeTab === 'suggestions' && !isLoading && (
           <div className="space-y-6">
             {contentSuggestions.map((suggestion) => (
               <div key={suggestion.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
