@@ -20,7 +20,9 @@ import {
   Target,
   Zap,
   Award,
-  Activity
+  Activity,
+  CheckCircle,
+  Sparkles
 } from 'lucide-react'
 import { 
   BarChart, 
