@@ -506,7 +506,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   <TrendingUp className="h-12 w-12 mx-auto" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">No Trending Topics Found</h3>
-                <p className="text-slate-600">We couldn't find any trending topics in your industry. Try refreshing the analysis.</p>
+                <p className="text-slate-600">We couldn&apos;t find any trending topics in your industry. Try refreshing the analysis.</p>
               </div>
             )}
           </div>
@@ -580,7 +580,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   <Users className="h-12 w-12 mx-auto" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">No Competitors Found</h3>
-                <p className="text-slate-600">We couldn't find any competitors in your industry. Try refreshing the analysis.</p>
+                <p className="text-slate-600">We couldn&apos;t find any competitors in your industry. Try refreshing the analysis.</p>
               </div>
             )}
           </div>
@@ -672,7 +672,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   <Lightbulb className="h-12 w-12 mx-auto" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">No Content Suggestions Found</h3>
-                <p className="text-slate-600">We couldn't generate any content suggestions. Try refreshing the analysis.</p>
+                <p className="text-slate-600">We couldn&apos;t generate any content suggestions. Try refreshing the analysis.</p>
               </div>
             )}
           </div>
