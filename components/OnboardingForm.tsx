@@ -80,7 +80,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
             value={formData.name}
             onChange={handleChange}
             required
+<<<<<<< HEAD
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+>>>>>>> 81cdd3292bd0ce429b3338e390080cd9e3684dca
             placeholder="Enter your full name"
           />
         </div>
@@ -96,7 +100,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
             value={formData.email}
             onChange={handleChange}
             required
+<<<<<<< HEAD
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+>>>>>>> 81cdd3292bd0ce429b3338e390080cd9e3684dca
             placeholder="Enter your email"
           />
         </div>
@@ -111,7 +119,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
             name="youtube"
             value={formData.youtube}
             onChange={handleChange}
+<<<<<<< HEAD
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+>>>>>>> 81cdd3292bd0ce429b3338e390080cd9e3684dca
             placeholder="@yourhandle or channel name"
           />
         </div>
@@ -126,7 +138,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
             name="instagram"
             value={formData.instagram}
             onChange={handleChange}
+<<<<<<< HEAD
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+>>>>>>> 81cdd3292bd0ce429b3338e390080cd9e3684dca
             placeholder="@yourhandle"
           />
         </div>
@@ -141,7 +157,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
             name="tiktok"
             value={formData.tiktok}
             onChange={handleChange}
+<<<<<<< HEAD
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+>>>>>>> 81cdd3292bd0ce429b3338e390080cd9e3684dca
             placeholder="@yourhandle"
           />
         </div>
