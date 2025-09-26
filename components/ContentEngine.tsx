@@ -34,6 +34,47 @@ interface ContentEngineProps {
   onReset: () => void
 }
 
+interface TrendingTopic {
+  id: number
+  title: string
+  category: string
+  hashtag: string
+  engagement: number
+  posts: number
+  growth: string
+  trend: string
+  platforms: string[]
+  description: string
+  relatedCreators: string[]
+}
+
+interface Competitor {
+  id: number
+  name: string
+  platform: string
+  followers: number
+  engagement: number
+  avgViews: number
+  contentTypes: string[]
+  strengths: string[]
+  opportunities: string[]
+}
+
+interface ContentSuggestion {
+  id: string
+  title: string
+  type: string
+  platform: string
+  estimatedViews: number
+  difficulty: string
+  timeToCreate: string
+  description: string
+  topics: string[]
+  tags: string[]
+  inspiration: string
+  priority?: string
+}
+
 export default function ContentEngine({ userData, onReset }: ContentEngineProps) {
   const [activeTab, setActiveTab] = useState('trending')
   const [isLoading, setIsLoading] = useState(false)
@@ -89,7 +130,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   }, [fetchAnalysisData])
 
   // Use real data if available, otherwise fall back to dummy data
-  const trendingTopics = analysisData?.industryTrends || [
+  const trendingTopics: TrendingTopic[] = analysisData?.industryTrends || [
     {
       id: 1,
       title: 'AI Content Creation',
@@ -145,7 +186,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   ]
 
   // Use real data if available, otherwise fall back to dummy data
-  const competitors = analysisData?.competitors || [
+  const competitors: Competitor[] = analysisData?.competitors || [
     {
       id: 1,
       name: '@techguru',
@@ -197,7 +238,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   ]
 
   // Use real data if available, otherwise fall back to dummy data
-  const contentSuggestions = analysisData?.contentSuggestions || [
+  const contentSuggestions: ContentSuggestion[] = analysisData?.contentSuggestions || [
     {
       id: 1,
       title: 'AI Content Creation Tutorial Series',
