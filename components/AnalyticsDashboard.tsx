@@ -243,15 +243,34 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
     }
 
     return (
-      <div className={`bg-white rounded-lg shadow-md p-6 border-l-4 ${color}`}>
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            {icon}
-            <h3 className="ml-2 text-lg font-semibold text-gray-700 capitalize">{platform}</h3>
+            <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg p-2 mr-3">
+              {icon}
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 capitalize">{platform}</h3>
+              {data.verified && (
+                <div className="flex items-center text-sm text-green-600">
+                  <CheckCircle className="h-4 w-4 mr-1" />
+                  Verified
+                </div>
+              )}
+            </div>
           </div>
-          {data.verified && (
-            <span className="text-blue-500 text-sm font-medium">✓ Verified</span>
-          )}
+          <div className="text-right">
+            <div className="text-2xl font-bold text-slate-900">
+              {platform === 'youtube' && formatNumber(data.subscribers || 0)}
+              {platform === 'instagram' && formatNumber(data.followers || 0)}
+              {platform === 'tiktok' && formatNumber(data.followers || 0)}
+            </div>
+            <div className="text-sm text-slate-600">
+              {platform === 'youtube' && 'Subscribers'}
+              {platform === 'instagram' && 'Followers'}
+              {platform === 'tiktok' && 'Followers'}
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -371,22 +390,24 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <BarChart3 className="h-8 w-8 text-blue-600 mr-3" />
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-2 mr-4">
+                <BarChart3 className="h-6 w-6 text-white" />
+              </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">CreatorHub</h1>
-                <p className="text-sm text-gray-500">Welcome back, {userData.name}</p>
+                <h1 className="text-2xl font-bold text-slate-900">CreatorHub</h1>
+                <p className="text-sm text-slate-600">Welcome back, {userData.name}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <button
                 onClick={() => setIsEditingHandles(true)}
-                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
               >
                 <Edit3 className="h-4 w-4 mr-2" />
                 Edit Handles
@@ -394,14 +415,14 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition-all duration-200"
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
                 Refresh Data
               </button>
               <button
                 onClick={onReset}
-                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
@@ -487,9 +508,77 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Analytics Dashboard</h2>
-          <p className="text-gray-600">Track your performance across all social media platforms</p>
+        {/* Hero Section */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Analytics Dashboard</h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              Comprehensive insights into your social media performance with real-time data and actionable recommendations
+            </p>
+          </div>
+          
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Total Followers</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {formatNumber(
+                      (getPlatformData('youtube')?.subscribers || 0) +
+                      (getPlatformData('instagram')?.followers || 0) +
+                      (getPlatformData('tiktok')?.followers || 0)
+                    )}
+                  </p>
+                </div>
+                <Users className="h-8 w-8 text-indigo-600" />
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Total Views</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {formatNumber(
+                      (getPlatformData('youtube')?.views || 0) +
+                      (getPlatformData('instagram')?.totalViews || 0) +
+                      (getPlatformData('tiktok')?.totalViews || 0)
+                    )}
+                  </p>
+                </div>
+                <Eye className="h-8 w-8 text-green-600" />
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Total Content</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {formatNumber(
+                      (getPlatformData('youtube')?.videos || 0) +
+                      (getPlatformData('instagram')?.posts || 0) +
+                      (getPlatformData('tiktok')?.videos || 0)
+                    )}
+                  </p>
+                </div>
+                <BarChart3 className="h-8 w-8 text-purple-600" />
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Est. Revenue</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    ${formatNumber(getPlatformData('youtube')?.estimatedRevenue || 0)}
+                  </p>
+                </div>
+                <DollarSign className="h-8 w-8 text-orange-600" />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Platform Cards */}
@@ -685,10 +774,10 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
         </div>
 
         {/* Content Distribution */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-8">
           <div className="flex items-center mb-6">
             <BarChart3 className="h-5 w-5 text-purple-600 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900">Content Distribution</h3>
+            <h3 className="text-lg font-semibold text-slate-900">Content Distribution</h3>
           </div>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -710,6 +799,117 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
                 <Tooltip formatter={(value) => formatNumber(Number(value))} />
               </PieChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Insights & Recommendations */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Performance Insights */}
+          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+            <div className="flex items-center mb-6">
+              <Sparkles className="h-5 w-5 text-indigo-600 mr-2" />
+              <h3 className="text-lg font-semibold text-slate-900">Performance Insights</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="bg-green-100 rounded-full p-1 mt-1">
+                  <TrendingUp className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-900">Top Performing Platform</p>
+                  <p className="text-sm text-slate-600">
+                    {(() => {
+                      const youtube = getPlatformData('youtube')?.subscribers || 0
+                      const instagram = getPlatformData('instagram')?.followers || 0
+                      const tiktok = getPlatformData('tiktok')?.followers || 0
+                      const max = Math.max(youtube, instagram, tiktok)
+                      if (max === youtube) return 'YouTube is your strongest platform'
+                      if (max === instagram) return 'Instagram is your strongest platform'
+                      if (max === tiktok) return 'TikTok is your strongest platform'
+                      return 'All platforms are performing equally'
+                    })()}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <div className="bg-blue-100 rounded-full p-1 mt-1">
+                  <Target className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-900">Growth Opportunity</p>
+                  <p className="text-sm text-slate-600">
+                    Focus on creating more short-form content to boost engagement across all platforms
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <div className="bg-purple-100 rounded-full p-1 mt-1">
+                  <Zap className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-900">Content Strategy</p>
+                  <p className="text-sm text-slate-600">
+                    Consider cross-posting your best performing content across platforms for maximum reach
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Engagement Analysis */}
+          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+            <div className="flex items-center mb-6">
+              <Activity className="h-5 w-5 text-green-600 mr-2" />
+              <h3 className="text-lg font-semibold text-slate-900">Engagement Analysis</h3>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-slate-700">YouTube Engagement</span>
+                  <span className="text-sm font-semibold text-slate-900">
+                    {getPlatformData('youtube')?.totalLikes || 0} likes
+                  </span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div 
+                    className="bg-red-600 h-2 rounded-full" 
+                    style={{ width: `${Math.min((getPlatformData('youtube')?.totalLikes || 0) / 1000 * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-slate-700">Instagram Engagement</span>
+                  <span className="text-sm font-semibold text-slate-900">
+                    {getPlatformData('instagram')?.totalLikes || 0} likes
+                  </span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div 
+                    className="bg-pink-600 h-2 rounded-full" 
+                    style={{ width: `${Math.min((getPlatformData('instagram')?.totalLikes || 0) / 1000 * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-slate-700">TikTok Engagement</span>
+                  <span className="text-sm font-semibold text-slate-900">
+                    {getPlatformData('tiktok')?.totalLikes || 0} likes
+                  </span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div 
+                    className="bg-black h-2 rounded-full" 
+                    style={{ width: `${Math.min((getPlatformData('tiktok')?.totalLikes || 0) / 1000 * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
