@@ -152,14 +152,19 @@ async function fetchInstagramData(handle: string) {
 
 async function fetchYouTubeData(handle: string) {
   console.log('Fetching YouTube data for:', handle)
+  const cleanHandle = handle.replace('@', '')
+  
+  // Use startUrls instead of searchQueries for direct channel access
   const inputData = {
-    searchQueries: [handle.replace('@', '')],
-    maxResults: 1
+    startUrls: [`https://www.youtube.com/@${cleanHandle}`],
+    maxResults: 1,
+    maxResultsShorts: 0,
+    maxResultStreams: 0
   }
   
   console.log('YouTube API Request:', JSON.stringify(inputData, null, 2))
   
-  const response = await fetch(`https://api.apify.com/v2/acts/apify~youtube-scraper/runs?token=${APIFY_API_KEY}`, {
+  const response = await fetch(`https://api.apify.com/v2/acts/streamers~youtube-scraper/runs?token=${APIFY_API_KEY}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -180,13 +185,16 @@ async function fetchYouTubeData(handle: string) {
   const results = await waitForCompletion(run.data.id)
   console.log('YouTube results:', results)
   
+  // Extract channel data from the first video result
+  const channelData = results?.channel || {}
+  
   return {
-    subscribers: results?.subscriberCount || 0,
-    videos: results?.videoCount || 0,
-    views: results?.viewCount || 0,
-    verified: results?.verified || false,
-    title: results?.title || '',
-    avatar: results?.avatar || ''
+    subscribers: channelData?.subscriberCount || 0,
+    videos: channelData?.videoCount || 0,
+    views: channelData?.viewCount || 0,
+    verified: channelData?.verified || false,
+    title: channelData?.title || channelData?.name || '',
+    avatar: channelData?.avatar || channelData?.thumbnail || ''
   }
 }
 
