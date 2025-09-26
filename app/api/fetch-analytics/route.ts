@@ -97,6 +97,9 @@ async function fetchTikTokData(handle: string) {
   
   // Wait for completion and get results
   const results = await waitForCompletion(run.data.id)
+  console.log('TikTok results type:', typeof results)
+  console.log('TikTok results is array:', Array.isArray(results))
+  console.log('TikTok results length:', results?.length)
   console.log('TikTok results:', JSON.stringify(results, null, 2))
   
   // Handle case where results is null or empty
@@ -115,6 +118,8 @@ async function fetchTikTokData(handle: string) {
   
   // Get the first result (profile data)
   const profileData = results[0]
+  console.log('TikTok profile data type:', typeof profileData)
+  console.log('TikTok profile data keys:', Object.keys(profileData || {}))
   console.log('TikTok profile data:', JSON.stringify(profileData, null, 2))
   
   return {
@@ -156,6 +161,9 @@ async function fetchInstagramData(handle: string) {
   
   // Wait for completion and get results
   const results = await waitForCompletion(run.data.id)
+  console.log('Instagram results type:', typeof results)
+  console.log('Instagram results is array:', Array.isArray(results))
+  console.log('Instagram results length:', results?.length)
   console.log('Instagram results:', JSON.stringify(results, null, 2))
   
   // Handle case where results is null or empty
@@ -173,6 +181,8 @@ async function fetchInstagramData(handle: string) {
   
   // Get the first result (profile data)
   const profileData = results[0]
+  console.log('Instagram profile data type:', typeof profileData)
+  console.log('Instagram profile data keys:', Object.keys(profileData || {}))
   console.log('Instagram profile data:', JSON.stringify(profileData, null, 2))
   
   return {
@@ -226,6 +236,9 @@ async function fetchYouTubeData(handle: string) {
   
   // Wait for completion and get results
   const results = await waitForCompletion(run.data.id)
+  console.log('YouTube results type:', typeof results)
+  console.log('YouTube results is array:', Array.isArray(results))
+  console.log('YouTube results length:', results?.length)
   console.log('YouTube results:', JSON.stringify(results, null, 2))
   
   // Handle case where results is null or empty
@@ -243,10 +256,14 @@ async function fetchYouTubeData(handle: string) {
   
   // Get the first result and extract channel data
   const firstResult = results[0]
+  console.log('YouTube first result type:', typeof firstResult)
+  console.log('YouTube first result keys:', Object.keys(firstResult || {}))
   console.log('YouTube first result:', JSON.stringify(firstResult, null, 2))
   
   // Extract channel data from the result
   const channelData = firstResult?.channel || firstResult || {}
+  console.log('YouTube channel data type:', typeof channelData)
+  console.log('YouTube channel data keys:', Object.keys(channelData || {}))
   console.log('YouTube channel data:', JSON.stringify(channelData, null, 2))
   
   return {
@@ -274,9 +291,16 @@ async function waitForCompletion(runId: string) {
       
       const results = await resultsResponse.json()
       console.log(`Raw results for run ${runId}:`, JSON.stringify(results, null, 2))
+      console.log(`Raw results type:`, typeof results)
+      console.log(`Raw results has items:`, 'items' in results)
+      console.log(`Raw results items type:`, typeof results.items)
+      console.log(`Raw results items is array:`, Array.isArray(results.items))
+      console.log(`Raw results items length:`, results.items?.length)
       
       // Return all items, not just the first one
-      return results.items || null
+      const items = results.items || null
+      console.log(`Returning items for run ${runId}:`, JSON.stringify(items, null, 2))
+      return items
     }
     
     if (status.data.status === 'FAILED') {
