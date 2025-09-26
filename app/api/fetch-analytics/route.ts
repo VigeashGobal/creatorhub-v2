@@ -297,10 +297,9 @@ async function waitForCompletion(runId: string) {
       console.log(`Raw results items is array:`, Array.isArray(results.items))
       console.log(`Raw results items length:`, results.items?.length)
       
-      // Return all items, not just the first one
-      const items = results.items || null
-      console.log(`Returning items for run ${runId}:`, JSON.stringify(items, null, 2))
-      return items
+      // Return the results directly (they are already the array of items)
+      console.log(`Returning results for run ${runId}:`, JSON.stringify(results, null, 2))
+      return results
     }
     
     if (status.data.status === 'FAILED') {
