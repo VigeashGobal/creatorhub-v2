@@ -58,6 +58,12 @@ interface Competitor {
   contentTypes: string[]
   strengths: string[]
   opportunities: string[]
+  recentPosts: {
+    title: string
+    views: number
+    likes: number
+    comments: number
+  }[]
 }
 
 interface ContentSuggestion {
