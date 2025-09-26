@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { 
   Users, 
   Calendar, 
@@ -362,9 +363,11 @@ export default function CRMDashboard({ userData, onReset }: CRMDashboardProps) {
               <div key={member.id} className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
                 <div className="flex items-center space-x-4 mb-4">
                   <div className="relative">
-                    <img 
+                    <Image 
                       src={member.avatar} 
                       alt={member.name}
+                      width={48}
+                      height={48}
                       className="w-12 h-12 rounded-full object-cover"
                     />
                     <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${getStatusIcon(member.status)}`}></div>

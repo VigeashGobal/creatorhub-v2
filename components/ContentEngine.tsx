@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { 
   TrendingUp, 
   Search, 
@@ -41,7 +41,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   const [userProfile, setUserProfile] = useState<any>(null)
 
   // Fetch real competitor analysis data
-  const fetchAnalysisData = async () => {
+  const fetchAnalysisData = useCallback(async () => {
     if (!userData?.youtube && !userData?.instagram && !userData?.tiktok) {
       console.log('No social media handles provided')
       return
@@ -81,12 +81,12 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [userData])
 
   // Fetch data when component mounts
   React.useEffect(() => {
     fetchAnalysisData()
-  }, [])
+  }, [fetchAnalysisData])
 
   // Use real data if available, otherwise fall back to dummy data
   const trendingTopics = analysisData?.industryTrends || [
@@ -390,7 +390,7 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
           <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-12 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Analyzing Your Content</h3>
-            <p className="text-slate-600">We're analyzing your social media profiles and finding relevant trends and competitors...</p>
+            <p className="text-slate-600">We&apos;re analyzing your social media profiles and finding relevant trends and competitors...</p>
           </div>
         )}
 
