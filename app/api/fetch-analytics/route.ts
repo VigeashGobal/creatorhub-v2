@@ -130,23 +130,34 @@ async function fetchTikTokData(handle: string) {
   let topVideoLikes = 0
   let topVideoViews = 0
   
+  console.log('TikTok processing results:', results?.length, 'items')
+  
   if (results && results.length > 1) {
     // Process all posts for engagement metrics
-    results.forEach((post: any) => {
-      if (post.stats) {
-        totalLikes += post.stats.diggCount || 0
-        totalComments += post.stats.commentCount || 0
-        totalShares += post.stats.shareCount || 0
-        totalViews += post.stats.playCount || 0
-        
-        // Track top performing video
-        if (post.stats.diggCount > topVideoLikes) {
-          topVideoLikes = post.stats.diggCount
-          topVideoViews = post.stats.playCount || 0
-        }
+    results.forEach((post: any, index: number) => {
+      console.log(`TikTok post ${index}:`, JSON.stringify(post, null, 2))
+      
+      // Try different possible data structures
+      const stats = post.stats || post.statistics || post.metrics || {}
+      const likes = stats.diggCount || stats.likeCount || stats.likes || 0
+      const comments = stats.commentCount || stats.comments || 0
+      const shares = stats.shareCount || stats.shares || 0
+      const views = stats.playCount || stats.viewCount || stats.views || 0
+      
+      totalLikes += likes
+      totalComments += comments
+      totalShares += shares
+      totalViews += views
+      
+      // Track top performing video
+      if (likes > topVideoLikes) {
+        topVideoLikes = likes
+        topVideoViews = views
       }
     })
   }
+  
+  console.log('TikTok calculated metrics:', { totalLikes, totalComments, totalShares, totalViews })
   
   const followers = profileData?.authorMeta?.fans || 0
   const engagementRate = followers > 0 ? ((totalLikes + totalComments + totalShares) / followers * 100) : 0
@@ -234,30 +245,40 @@ async function fetchInstagramData(handle: string) {
   let reelsCount = 0
   let storiesCount = 0
   
+  console.log('Instagram processing results:', results?.length, 'items')
+  
   if (results && results.length > 1) {
     // Process all posts for engagement metrics
-    results.forEach((post: any) => {
-      if (post.likesCount !== undefined) {
-        totalLikes += post.likesCount || 0
-        totalComments += post.commentsCount || 0
-        totalViews += post.videoViewCount || 0
-        
-        // Track top performing post
-        if (post.likesCount > topPostLikes) {
-          topPostLikes = post.likesCount
-          topPostViews = post.videoViewCount || 0
-        }
-        
-        // Count content types
-        if (post.type === 'ReelsVideo') {
-          reelsCount++
-        }
-        if (post.type === 'Story') {
-          storiesCount++
-        }
+    results.forEach((post: any, index: number) => {
+      console.log(`Instagram post ${index}:`, JSON.stringify(post, null, 2))
+      
+      // Try different possible data structures
+      const likes = post.likesCount || post.likeCount || post.likes || 0
+      const comments = post.commentsCount || post.commentCount || post.comments || 0
+      const views = post.videoViewCount || post.viewCount || post.views || 0
+      const postType = post.type || post.mediaType || post.contentType || ''
+      
+      totalLikes += likes
+      totalComments += comments
+      totalViews += views
+      
+      // Track top performing post
+      if (likes > topPostLikes) {
+        topPostLikes = likes
+        topPostViews = views
+      }
+      
+      // Count content types
+      if (postType.toLowerCase().includes('reel') || postType === 'ReelsVideo') {
+        reelsCount++
+      }
+      if (postType.toLowerCase().includes('story') || postType === 'Story') {
+        storiesCount++
       }
     })
   }
+  
+  console.log('Instagram calculated metrics:', { totalLikes, totalComments, totalViews, reelsCount, storiesCount })
   
   const followers = profileData?.followersCount || 0
   const engagementRate = followers > 0 ? ((totalLikes + totalComments) / followers * 100) : 0
@@ -365,32 +386,43 @@ async function fetchYouTubeData(handle: string) {
   let liveStreamsCount = 0
   let avgViewsPerVideo = 0
   
+  console.log('YouTube processing results:', results?.length, 'items')
+  
   if (results && results.length > 1) {
     // Process all videos for engagement metrics
-    results.forEach((video: any) => {
-      if (video.likeCount !== undefined) {
-        totalLikes += video.likeCount || 0
-        totalComments += video.commentCount || 0
-        totalViews += video.viewCount || 0
-        
-        // Track top performing video
-        if (video.likeCount > topVideoLikes) {
-          topVideoLikes = video.likeCount
-          topVideoViews = video.viewCount || 0
-        }
-        
-        // Count content types
-        if (video.isShort) {
-          shortsCount++
-        }
-        if (video.isLive) {
-          liveStreamsCount++
-        }
+    results.forEach((video: any, index: number) => {
+      console.log(`YouTube video ${index}:`, JSON.stringify(video, null, 2))
+      
+      // Try different possible data structures
+      const likes = video.likeCount || video.likes || video.statistics?.likeCount || 0
+      const comments = video.commentCount || video.comments || video.statistics?.commentCount || 0
+      const views = video.viewCount || video.views || video.statistics?.viewCount || 0
+      const isShort = video.isShort || video.short || video.duration < 60 || false
+      const isLive = video.isLive || video.live || video.liveStreamingDetails || false
+      
+      totalLikes += likes
+      totalComments += comments
+      totalViews += views
+      
+      // Track top performing video
+      if (likes > topVideoLikes) {
+        topVideoLikes = likes
+        topVideoViews = views
+      }
+      
+      // Count content types
+      if (isShort) {
+        shortsCount++
+      }
+      if (isLive) {
+        liveStreamsCount++
       }
     })
     
-    avgViewsPerVideo = totalViews / (results.length - 1)
+    avgViewsPerVideo = results.length > 1 ? totalViews / (results.length - 1) : 0
   }
+  
+  console.log('YouTube calculated metrics:', { totalLikes, totalComments, totalViews, shortsCount, liveStreamsCount })
   
   const subscribers = channelData?.subscriberCount || 0
   const engagementRate = subscribers > 0 ? ((totalLikes + totalComments) / subscribers * 100) : 0

@@ -22,6 +22,20 @@ import {
   Award,
   Activity
 } from 'lucide-react'
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line
+} from 'recharts'
 
 interface AnalyticsDashboardProps {
   userData: any
@@ -117,6 +131,89 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
     return data
   }
 
+  // Prepare chart data
+  const getFollowersChartData = () => {
+    const youtubeData = getPlatformData('youtube')
+    const instagramData = getPlatformData('instagram')
+    const tiktokData = getPlatformData('tiktok')
+    
+    return [
+      {
+        platform: 'YouTube',
+        followers: youtubeData?.followers || 0,
+        color: '#FF0000'
+      },
+      {
+        platform: 'Instagram', 
+        followers: instagramData?.followers || 0,
+        color: '#E4405F'
+      },
+      {
+        platform: 'TikTok',
+        followers: tiktokData?.followers || 0,
+        color: '#000000'
+      }
+    ]
+  }
+
+  const getEngagementChartData = () => {
+    const youtubeData = getPlatformData('youtube')
+    const instagramData = getPlatformData('instagram')
+    const tiktokData = getPlatformData('tiktok')
+    
+    return [
+      {
+        platform: 'YouTube',
+        engagement: youtubeData?.engagementRate || 0,
+        color: '#FF0000'
+      },
+      {
+        platform: 'Instagram',
+        engagement: instagramData?.engagementRate || 0,
+        color: '#E4405F'
+      },
+      {
+        platform: 'TikTok',
+        engagement: tiktokData?.engagementRate || 0,
+        color: '#000000'
+      }
+    ]
+  }
+
+  const getContentDistributionData = () => {
+    const youtubeData = getPlatformData('youtube')
+    const instagramData = getPlatformData('instagram')
+    const tiktokData = getPlatformData('tiktok')
+    
+    return [
+      {
+        name: 'YouTube Videos',
+        value: youtubeData?.videos || 0,
+        color: '#FF0000'
+      },
+      {
+        name: 'Instagram Posts',
+        value: instagramData?.posts || 0,
+        color: '#E4405F'
+      },
+      {
+        name: 'TikTok Videos',
+        value: tiktokData?.videos || 0,
+        color: '#000000'
+      },
+      {
+        name: 'Instagram Reels',
+        value: instagramData?.reelsCount || 0,
+        color: '#833AB4'
+      },
+      {
+        name: 'YouTube Shorts',
+        value: youtubeData?.shortsCount || 0,
+        color: '#FF6B6B'
+      }
+    ].filter(item => item.value > 0)
+  }
+
   const PlatformCard = ({ 
     platform, 
     icon, 
@@ -184,11 +281,11 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
                 </div>
                 <div className="text-sm text-gray-500">Est. Revenue</div>
               </div>
-              <div className="text-center col-span-2">
-                <div className="text-lg font-semibold text-blue-600">
-                  {data.engagementRate || 0}%
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {formatNumber(data.totalLikes || 0)}
                 </div>
-                <div className="text-sm text-gray-500">Engagement Rate</div>
+                <div className="text-sm text-gray-500">Total Likes</div>
               </div>
             </>
           )}
@@ -219,11 +316,11 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
                 </div>
                 <div className="text-sm text-gray-500">Stories</div>
               </div>
-              <div className="text-center col-span-2">
-                <div className="text-lg font-semibold text-blue-600">
-                  {data.engagementRate || 0}%
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {formatNumber(data.totalLikes || 0)}
                 </div>
-                <div className="text-sm text-gray-500">Engagement Rate</div>
+                <div className="text-sm text-gray-500">Total Likes</div>
               </div>
             </>
           )}
@@ -254,11 +351,11 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
                 </div>
                 <div className="text-sm text-gray-500">Total Views</div>
               </div>
-              <div className="text-center col-span-2">
-                <div className="text-lg font-semibold text-green-600">
-                  {data.engagementRate || 0}%
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {formatNumber(data.totalComments || 0)}
                 </div>
-                <div className="text-sm text-gray-500">Engagement Rate</div>
+                <div className="text-sm text-gray-500">Total Comments</div>
               </div>
             </>
           )}
@@ -439,7 +536,7 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">
                   {formatNumber(
-                    (getPlatformData('youtube')?.totalViews || 0) +
+                    (getPlatformData('youtube')?.views || 0) +
                     (getPlatformData('instagram')?.totalViews || 0) +
                     (getPlatformData('tiktok')?.totalViews || 0)
                   )}
@@ -467,40 +564,40 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
             </div>
           </div>
 
-          {/* Engagement Analysis */}
+          {/* Content Summary */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center mb-4">
-              <Activity className="h-5 w-5 text-green-600 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-900">Engagement Analysis</h3>
+              <BarChart3 className="h-5 w-5 text-purple-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">Content Summary</h3>
             </div>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">YouTube Engagement</span>
+                <span className="text-sm text-gray-600">YouTube Videos</span>
                 <span className="text-lg font-semibold text-red-600">
-                  {getPlatformData('youtube')?.engagementRate || 0}%
+                  {formatNumber(getPlatformData('youtube')?.videos || 0)}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Instagram Engagement</span>
+                <span className="text-sm text-gray-600">Instagram Posts</span>
                 <span className="text-lg font-semibold text-pink-600">
-                  {getPlatformData('instagram')?.engagementRate || 0}%
+                  {formatNumber(getPlatformData('instagram')?.posts || 0)}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">TikTok Engagement</span>
+                <span className="text-sm text-gray-600">TikTok Videos</span>
                 <span className="text-lg font-semibold text-black">
-                  {getPlatformData('tiktok')?.engagementRate || 0}%
+                  {formatNumber(getPlatformData('tiktok')?.videos || 0)}
                 </span>
               </div>
               <div className="pt-2 border-t border-gray-200">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">Average Engagement</span>
+                  <span className="text-sm font-medium text-gray-700">Total Content</span>
                   <span className="text-lg font-bold text-blue-600">
-                    {Math.round((
-                      (getPlatformData('youtube')?.engagementRate || 0) +
-                      (getPlatformData('instagram')?.engagementRate || 0) +
-                      (getPlatformData('tiktok')?.engagementRate || 0)
-                    ) / 3 * 100) / 100}%
+                    {formatNumber(
+                      (getPlatformData('youtube')?.videos || 0) +
+                      (getPlatformData('instagram')?.posts || 0) +
+                      (getPlatformData('tiktok')?.videos || 0)
+                    )}
                   </span>
                 </div>
               </div>
@@ -543,6 +640,76 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               </div>
               <div className="text-sm text-gray-500">Live/Stories</div>
             </div>
+          </div>
+        </div>
+
+        {/* Charts and Analytics */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Followers Comparison */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center mb-4">
+              <Users className="h-5 w-5 text-blue-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">Followers by Platform</h3>
+            </div>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={getFollowersChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="platform" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => formatNumber(Number(value))} />
+                  <Bar dataKey="followers" fill="#3B82F6" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Engagement Comparison */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center mb-4">
+              <Activity className="h-5 w-5 text-green-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">Engagement Rates</h3>
+            </div>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={getEngagementChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="platform" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => `${value}%`} />
+                  <Bar dataKey="engagement" fill="#10B981" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Distribution */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="flex items-center mb-6">
+            <BarChart3 className="h-5 w-5 text-purple-600 mr-2" />
+            <h3 className="text-lg font-semibold text-gray-900">Content Distribution</h3>
+          </div>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={getContentDistributionData()}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {getContentDistributionData().map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => formatNumber(Number(value))} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>
