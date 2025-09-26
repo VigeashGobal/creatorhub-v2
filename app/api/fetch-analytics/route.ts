@@ -100,7 +100,7 @@ async function fetchTikTokData(handle: string) {
   console.log('TikTok results:', JSON.stringify(results, null, 2))
   
   // Handle case where results is null or empty
-  if (!results) {
+  if (!results || !Array.isArray(results) || results.length === 0) {
     console.log('TikTok: No results returned')
     return {
       followers: 0,
@@ -113,14 +113,18 @@ async function fetchTikTokData(handle: string) {
     }
   }
   
+  // Get the first result (profile data)
+  const profileData = results[0]
+  console.log('TikTok profile data:', JSON.stringify(profileData, null, 2))
+  
   return {
-    followers: results?.authorMeta?.fans || 0,
-    following: results?.authorMeta?.following || 0,
-    likes: results?.authorMeta?.heart || 0,
-    videos: results?.authorMeta?.video || 0,
-    verified: results?.authorMeta?.verified || false,
-    bio: results?.authorMeta?.signature || '',
-    avatar: results?.authorMeta?.avatar || ''
+    followers: profileData?.authorMeta?.fans || 0,
+    following: profileData?.authorMeta?.following || 0,
+    likes: profileData?.authorMeta?.heart || 0,
+    videos: profileData?.authorMeta?.video || 0,
+    verified: profileData?.authorMeta?.verified || false,
+    bio: profileData?.authorMeta?.signature || '',
+    avatar: profileData?.authorMeta?.avatar || ''
   }
 }
 
@@ -155,7 +159,7 @@ async function fetchInstagramData(handle: string) {
   console.log('Instagram results:', JSON.stringify(results, null, 2))
   
   // Handle case where results is null or empty
-  if (!results) {
+  if (!results || !Array.isArray(results) || results.length === 0) {
     console.log('Instagram: No results returned')
     return {
       followers: 0,
@@ -167,13 +171,17 @@ async function fetchInstagramData(handle: string) {
     }
   }
   
+  // Get the first result (profile data)
+  const profileData = results[0]
+  console.log('Instagram profile data:', JSON.stringify(profileData, null, 2))
+  
   return {
-    followers: results?.followersCount || 0,
-    following: results?.followsCount || 0,
-    posts: results?.postsCount || 0,
-    verified: results?.isVerified || false,
-    bio: results?.biography || '',
-    avatar: results?.profilePicUrl || ''
+    followers: profileData?.followersCount || 0,
+    following: profileData?.followsCount || 0,
+    posts: profileData?.postsCount || 0,
+    verified: profileData?.isVerified || false,
+    bio: profileData?.biography || '',
+    avatar: profileData?.profilePicUrl || ''
   }
 }
 
@@ -221,7 +229,7 @@ async function fetchYouTubeData(handle: string) {
   console.log('YouTube results:', JSON.stringify(results, null, 2))
   
   // Handle case where results is null or empty
-  if (!results) {
+  if (!results || !Array.isArray(results) || results.length === 0) {
     console.log('YouTube: No results returned')
     return {
       subscribers: 0,
@@ -233,8 +241,13 @@ async function fetchYouTubeData(handle: string) {
     }
   }
   
-  // Extract channel data from the first video result
-  const channelData = results?.channel || {}
+  // Get the first result and extract channel data
+  const firstResult = results[0]
+  console.log('YouTube first result:', JSON.stringify(firstResult, null, 2))
+  
+  // Extract channel data from the result
+  const channelData = firstResult?.channel || firstResult || {}
+  console.log('YouTube channel data:', JSON.stringify(channelData, null, 2))
   
   return {
     subscribers: channelData?.subscriberCount || 0,
@@ -254,15 +267,20 @@ async function waitForCompletion(runId: string) {
     const statusResponse = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_API_KEY}`)
     
     const status = await statusResponse.json()
+    console.log(`Run ${runId} status:`, status.data.status)
     
     if (status.data.status === 'SUCCEEDED') {
       const resultsResponse = await fetch(`https://api.apify.com/v2/actor-runs/${runId}/dataset/items?token=${APIFY_API_KEY}`)
       
       const results = await resultsResponse.json()
-      return results.items?.[0] || null
+      console.log(`Raw results for run ${runId}:`, JSON.stringify(results, null, 2))
+      
+      // Return all items, not just the first one
+      return results.items || null
     }
     
     if (status.data.status === 'FAILED') {
+      console.error(`Run ${runId} failed:`, status.data)
       throw new Error('Scraper run failed')
     }
     
