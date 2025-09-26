@@ -392,19 +392,14 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
+    <div className="min-h-screen">
+      {/* Action Bar */}
+      <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-2 mr-4">
-                <BarChart3 className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900">CreatorHub</h1>
-                <p className="text-sm text-slate-600">Welcome back, {userData.name}</p>
-              </div>
+          <div className="flex justify-between items-center py-4">
+            <div>
+              <h2 className="text-xl font-semibold text-slate-900">Analytics Dashboard</h2>
+              <p className="text-sm text-slate-600">Welcome back, {userData.name}</p>
             </div>
             <div className="flex items-center space-x-3">
               <button
@@ -421,13 +416,6 @@ export default function AnalyticsDashboard({ userData, onReset }: AnalyticsDashb
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
                 Refresh Data
-              </button>
-              <button
-                onClick={onReset}
-                className="flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
               </button>
             </div>
           </div>

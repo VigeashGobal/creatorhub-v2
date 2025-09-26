@@ -16,10 +16,14 @@ import {
 } from 'lucide-react'
 import OnboardingForm from '@/components/OnboardingForm'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
+import CRMDashboard from '@/components/CRMDashboard'
+import ContentEngine from '@/components/ContentEngine'
+import Navigation from '@/components/Navigation'
 
 export default function Home() {
   const [userData, setUserData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState('analytics')
 
   useEffect(() => {
     // Check if user data exists in localStorage
@@ -130,9 +134,27 @@ export default function Home() {
     )
   }
 
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'analytics':
+        return <AnalyticsDashboard userData={userData} onReset={handleReset} />
+      case 'crm':
+        return <CRMDashboard userData={userData} onReset={handleReset} />
+      case 'content':
+        return <ContentEngine userData={userData} onReset={handleReset} />
+      default:
+        return <AnalyticsDashboard userData={userData} onReset={handleReset} />
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AnalyticsDashboard userData={userData} onReset={handleReset} />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <Navigation 
+        currentPage={currentPage} 
+        onPageChange={setCurrentPage} 
+        onReset={handleReset} 
+      />
+      {renderCurrentPage()}
     </div>
   )
 }
