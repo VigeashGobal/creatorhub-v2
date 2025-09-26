@@ -97,7 +97,21 @@ async function fetchTikTokData(handle: string) {
   
   // Wait for completion and get results
   const results = await waitForCompletion(run.data.id)
-  console.log('TikTok results:', results)
+  console.log('TikTok results:', JSON.stringify(results, null, 2))
+  
+  // Handle case where results is null or empty
+  if (!results) {
+    console.log('TikTok: No results returned')
+    return {
+      followers: 0,
+      following: 0,
+      likes: 0,
+      videos: 0,
+      verified: false,
+      bio: '',
+      avatar: ''
+    }
+  }
   
   return {
     followers: results?.authorMeta?.fans || 0,
@@ -138,7 +152,20 @@ async function fetchInstagramData(handle: string) {
   
   // Wait for completion and get results
   const results = await waitForCompletion(run.data.id)
-  console.log('Instagram results:', results)
+  console.log('Instagram results:', JSON.stringify(results, null, 2))
+  
+  // Handle case where results is null or empty
+  if (!results) {
+    console.log('Instagram: No results returned')
+    return {
+      followers: 0,
+      following: 0,
+      posts: 0,
+      verified: false,
+      bio: '',
+      avatar: ''
+    }
+  }
   
   return {
     followers: results?.followersCount || 0,
@@ -154,9 +181,17 @@ async function fetchYouTubeData(handle: string) {
   console.log('Fetching YouTube data for:', handle)
   const cleanHandle = handle.replace('@', '')
   
-  // Use startUrls instead of searchQueries for direct channel access
+  // Try different URL formats for YouTube channels
+  const possibleUrls = [
+    `https://www.youtube.com/@${cleanHandle}`,
+    `https://www.youtube.com/c/${cleanHandle}`,
+    `https://www.youtube.com/user/${cleanHandle}`,
+    `https://www.youtube.com/channel/${cleanHandle}`
+  ]
+  
+  // Use searchQueries as fallback if direct URLs don't work
   const inputData = {
-    startUrls: [`https://www.youtube.com/@${cleanHandle}`],
+    searchQueries: [cleanHandle],
     maxResults: 1,
     maxResultsShorts: 0,
     maxResultStreams: 0
@@ -183,7 +218,20 @@ async function fetchYouTubeData(handle: string) {
   
   // Wait for completion and get results
   const results = await waitForCompletion(run.data.id)
-  console.log('YouTube results:', results)
+  console.log('YouTube results:', JSON.stringify(results, null, 2))
+  
+  // Handle case where results is null or empty
+  if (!results) {
+    console.log('YouTube: No results returned')
+    return {
+      subscribers: 0,
+      videos: 0,
+      views: 0,
+      verified: false,
+      title: '',
+      avatar: ''
+    }
+  }
   
   // Extract channel data from the first video result
   const channelData = results?.channel || {}
