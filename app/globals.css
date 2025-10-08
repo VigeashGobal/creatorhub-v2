@@ -2,6 +2,238 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Robinhood-inspired Design System */
+:root {
+  /* Primary Colors - Robinhood Green */
+  --robinhood-green: #00C805;
+  --robinhood-green-dark: #00A805;
+  --robinhood-green-light: #E6F7E6;
+  
+  /* Neutral Palette */
+  --robinhood-black: #000000;
+  --robinhood-gray-900: #1A1A1A;
+  --robinhood-gray-800: #2D2D2D;
+  --robinhood-gray-700: #404040;
+  --robinhood-gray-600: #666666;
+  --robinhood-gray-500: #8C8C8C;
+  --robinhood-gray-400: #B3B3B3;
+  --robinhood-gray-300: #D9D9D9;
+  --robinhood-gray-200: #F0F0F0;
+  --robinhood-gray-100: #F8F8F8;
+  --robinhood-white: #FFFFFF;
+  
+  /* Status Colors */
+  --robinhood-red: #FF3B30;
+  --robinhood-red-light: #FFEBEB;
+  --robinhood-orange: #FF9500;
+  --robinhood-orange-light: #FFF4E6;
+  --robinhood-blue: #007AFF;
+  --robinhood-blue-light: #E6F2FF;
+}
+
+/* Base Styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--robinhood-white);
+  color: var(--robinhood-gray-900);
+  line-height: 1.5;
+}
+
+/* Typography */
+.text-robinhood-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--robinhood-black);
+}
+
+.text-robinhood-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--robinhood-gray-900);
+}
+
+.text-robinhood-body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--robinhood-gray-700);
+}
+
+.text-robinhood-caption {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--robinhood-gray-600);
+}
+
+/* Button Styles */
+.btn-robinhood-primary {
+  background-color: var(--robinhood-green);
+  color: var(--robinhood-white);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.btn-robinhood-primary:hover {
+  background-color: var(--robinhood-green-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 200, 5, 0.3);
+}
+
+.btn-robinhood-secondary {
+  background-color: var(--robinhood-white);
+  color: var(--robinhood-gray-700);
+  border: 1px solid var(--robinhood-gray-300);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.btn-robinhood-secondary:hover {
+  background-color: var(--robinhood-gray-100);
+  border-color: var(--robinhood-gray-400);
+}
+
+/* Card Styles */
+.card-robinhood {
+  background-color: var(--robinhood-white);
+  border: 1px solid var(--robinhood-gray-200);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.card-robinhood:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Input Styles */
+.input-robinhood {
+  background-color: var(--robinhood-white);
+  border: 1px solid var(--robinhood-gray-300);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--robinhood-gray-900);
+  transition: all 0.2s ease;
+}
+
+.input-robinhood:focus {
+  outline: none;
+  border-color: var(--robinhood-green);
+  box-shadow: 0 0 0 3px rgba(0, 200, 5, 0.1);
+}
+
+/* Status Indicators */
+.status-positive {
+  color: var(--robinhood-green);
+  font-weight: 600;
+}
+
+.status-negative {
+  color: var(--robinhood-red);
+  font-weight: 600;
+}
+
+.status-neutral {
+  color: var(--robinhood-gray-600);
+  font-weight: 500;
+}
+
+/* Badge Styles */
+.badge-robinhood {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.badge-robinhood-success {
+  background-color: var(--robinhood-green-light);
+  color: var(--robinhood-green-dark);
+}
+
+.badge-robinhood-warning {
+  background-color: var(--robinhood-orange-light);
+  color: var(--robinhood-orange);
+}
+
+.badge-robinhood-info {
+  background-color: var(--robinhood-blue-light);
+  color: var(--robinhood-blue);
+}
+
+/* Navigation Styles */
+.nav-robinhood {
+  background-color: var(--robinhood-white);
+  border-bottom: 1px solid var(--robinhood-gray-200);
+  backdrop-filter: blur(10px);
+}
+
+.nav-item-robinhood {
+  color: var(--robinhood-gray-600);
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-item-robinhood:hover {
+  background-color: var(--robinhood-gray-100);
+  color: var(--robinhood-gray-900);
+}
+
+.nav-item-robinhood.active {
+  background-color: var(--robinhood-green);
+  color: var(--robinhood-white);
+}
+
+/* Chart Colors */
+.chart-robinhood-green {
+  color: var(--robinhood-green);
+}
+
+.chart-robinhood-red {
+  color: var(--robinhood-red);
+}
+
+.chart-robinhood-blue {
+  color: var(--robinhood-blue);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

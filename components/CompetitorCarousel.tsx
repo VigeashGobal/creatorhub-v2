@@ -192,8 +192,8 @@ export default function CompetitorCarousel() {
   const PlatformIcon = platformIcons[activePlatform]
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Competitor Content</h3>
+    <div className="card-robinhood p-6">
+      <h3 className="text-robinhood-heading mb-4">Competitor Content</h3>
       
       {/* Platform Tabs */}
       <div className="flex space-x-2 mb-6">
@@ -206,7 +206,7 @@ export default function CompetitorCarousel() {
               className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                 activePlatform === platform
                   ? `${platformColors[platform]} text-white`
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-robinhood-gray-100 text-robinhood-gray-600 hover:bg-robinhood-gray-200'
               }`}
             >
               <Icon className="h-4 w-4 mr-2" />
@@ -222,7 +222,7 @@ export default function CompetitorCarousel() {
           {competitorContent[activePlatform].map((content) => (
             <div
               key={content.id}
-              className="flex-shrink-0 w-64 bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+              className="flex-shrink-0 w-64 bg-robinhood-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
             >
               <div className="relative">
                 <img
@@ -237,12 +237,12 @@ export default function CompetitorCarousel() {
               </div>
               
               <div className="p-4">
-                <h4 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2">
+                <h4 className="font-semibold text-robinhood-gray-900 text-sm mb-2 line-clamp-2">
                   {content.title}
                 </h4>
-                <p className="text-xs text-gray-600 mb-3">{content.creator}</p>
+                <p className="text-xs text-robinhood-gray-600 mb-3">{content.creator}</p>
                 
-                <div className="flex items-center justify-between text-xs text-gray-600">
+                <div className="flex items-center justify-between text-xs text-robinhood-gray-600">
                   <div className="flex items-center">
                     <Eye className="h-3 w-3 mr-1" />
                     {content.views}
@@ -257,7 +257,7 @@ export default function CompetitorCarousel() {
                   </div>
                 </div>
                 
-                <button className="mt-3 w-full bg-green-600 text-white py-2 rounded-lg text-xs font-semibold hover:bg-green-700 transition-colors">
+                <button className="mt-3 w-full btn-robinhood-primary text-xs">
                   View Details
                 </button>
               </div>
