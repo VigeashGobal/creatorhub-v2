@@ -62,101 +62,140 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            <User className="inline w-4 h-4 mr-2" />
-            Full Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all duration-200"
-            placeholder="Enter your full name"
-          />
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-xl">C</span>
+            </div>
+            <div className="ml-3">
+              <h1 className="text-2xl font-bold text-gray-900">CreatorHub</h1>
+              <p className="text-sm text-gray-600">Creator Analytics Platform</p>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to CreatorHub</h2>
+          <p className="text-gray-600">Connect your social media accounts to get started with powerful analytics and insights.</p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            <Mail className="inline w-4 h-4 mr-2" />
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all duration-200"
-            placeholder="Enter your email"
-          />
+        {/* Form */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className="flex items-center">
+                  <User className="w-4 h-4 mr-2 text-gray-500" />
+                  Full Name
+                </div>
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 transition-all duration-200 bg-white"
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className="flex items-center">
+                  <Mail className="w-4 h-4 mr-2 text-gray-500" />
+                  Email Address
+                </div>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 transition-all duration-200 bg-white"
+                placeholder="Enter your email address"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className="flex items-center">
+                  <Youtube className="w-4 h-4 mr-2 text-red-600" />
+                  YouTube Handle
+                </div>
+              </label>
+              <input
+                type="text"
+                name="youtube"
+                value={formData.youtube}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 transition-all duration-200 bg-white"
+                placeholder="@yourhandle or channel name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className="flex items-center">
+                  <Instagram className="w-4 h-4 mr-2 text-pink-600" />
+                  Instagram Handle
+                </div>
+              </label>
+              <input
+                type="text"
+                name="instagram"
+                value={formData.instagram}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 transition-all duration-200 bg-white"
+                placeholder="@yourhandle"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className="flex items-center">
+                  <Music className="w-4 h-4 mr-2 text-black" />
+                  TikTok Handle
+                </div>
+              </label>
+              <input
+                type="text"
+                name="tiktok"
+                value={formData.tiktok}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 transition-all duration-200 bg-white"
+                placeholder="@yourhandle"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 px-6 rounded-lg hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                  Fetching Analytics...
+                </>
+              ) : (
+                <>
+                  Get My Analytics
+                  <ArrowRight className="ml-3 w-5 h-5" />
+                </>
+              )}
+            </button>
+          </form>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            <Youtube className="inline w-4 h-4 mr-2 text-red-600" />
-            YouTube Handle
-          </label>
-          <input
-            type="text"
-            name="youtube"
-            value={formData.youtube}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all duration-200"
-            placeholder="@yourhandle or channel name"
-          />
+        {/* Footer */}
+        <div className="text-center">
+          <p className="text-sm text-gray-500">
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </p>
         </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            <Instagram className="inline w-4 h-4 mr-2 text-pink-600" />
-            Instagram Handle
-          </label>
-          <input
-            type="text"
-            name="instagram"
-            value={formData.instagram}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all duration-200"
-            placeholder="@yourhandle"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            <Music className="inline w-4 h-4 mr-2 text-black" />
-            TikTok Handle
-          </label>
-          <input
-            type="text"
-            name="tiktok"
-            value={formData.tiktok}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all duration-200"
-            placeholder="@yourhandle"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-        >
-          {isSubmitting ? (
-            <>
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-              Fetching Analytics...
-            </>
-          ) : (
-            <>
-              Get My Analytics
-              <ArrowRight className="ml-3 w-5 h-5" />
-            </>
-          )}
-        </button>
-      </form>
+      </div>
+    </div>
   )
 }
