@@ -259,7 +259,7 @@ export default function Home() {
     const chartData = generateChartData()
     
     return (
-      <div className="min-h-screen bg-robinhood-white">
+      <div className="min-h-screen bg-white">
         {/* Navigation */}
         <Navigation 
           currentPage={currentPage} 
@@ -280,7 +280,7 @@ export default function Home() {
                     const nextIndex = (currentIndex + 1) % metrics.length
                     setSelectedMetric(metrics[nextIndex])
                   }}
-                  className="flex items-center space-x-2 text-robinhood-gray-600 hover:text-robinhood-gray-900 transition-colors"
+                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   <span className="text-sm font-medium uppercase tracking-wide">
                     {selectedMetric === 'views' ? 'Total Views' : 
@@ -292,10 +292,10 @@ export default function Home() {
               </div>
               
               <div className="flex items-baseline space-x-4">
-                <h2 className="text-robinhood-display">
+                <h2 className="text-5xl font-bold text-gray-900">
                   {formatNumber(currentValue)}
                 </h2>
-                <div className="flex items-center status-positive">
+                <div className="flex items-center text-green-600">
                   <TrendingUp className="h-5 w-5 mr-1" />
                   <span className="text-lg font-semibold">+{selectedTimeframe === '30d' ? '12.5' : selectedTimeframe === '60d' ? '18.2' : '24.7'}%</span>
                 </div>
@@ -311,8 +311,8 @@ export default function Home() {
                     onClick={() => setSelectedPlatform(platform)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                       selectedPlatform === platform
-                        ? 'bg-robinhood-green text-robinhood-white'
-                        : 'bg-robinhood-gray-100 text-robinhood-gray-600 hover:bg-robinhood-gray-200'
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
                     {platform === 'all' ? 'All Platforms' : platform.charAt(0).toUpperCase() + platform.slice(1)}
@@ -320,7 +320,7 @@ export default function Home() {
                 ))}
               </div>
               
-              <div className="h-6 w-px bg-robinhood-gray-300"></div>
+              <div className="h-6 w-px bg-gray-300"></div>
               
               <div className="flex space-x-2">
                 {(['30d', '60d', '90d'] as const).map((timeframe) => (
@@ -329,8 +329,8 @@ export default function Home() {
                     onClick={() => setSelectedTimeframe(timeframe)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                       selectedTimeframe === timeframe
-                        ? 'bg-robinhood-black text-robinhood-white'
-                        : 'bg-robinhood-gray-100 text-robinhood-gray-600 hover:bg-robinhood-gray-200'
+                        ? 'bg-gray-900 text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
                     {timeframe}
@@ -346,7 +346,7 @@ export default function Home() {
                   <Line 
                     type="monotone" 
                     dataKey="value" 
-                    stroke="var(--robinhood-green)" 
+                    stroke="#22c55e" 
                     strokeWidth={2}
                     dot={false}
                   />
@@ -357,28 +357,28 @@ export default function Home() {
 
           {/* AI Trending Topics (Where "Options" would be in Robinhood) */}
           <div className="mb-8">
-            <div className="card-robinhood p-6">
-              <h3 className="text-robinhood-heading mb-4">Trending Topics for You</h3>
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Trending Topics for You</h3>
               <div className="space-y-3">
                 {trendingTopics.map((topic) => (
-                  <div key={topic.id} className="flex items-center justify-between py-3 border-b border-robinhood-gray-200 last:border-b-0">
+                  <div key={topic.id} className="flex items-center justify-between py-3 border-b border-gray-200 last:border-b-0">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3">
-                        <h4 className="font-medium text-robinhood-gray-900">{topic.topic}</h4>
-                        <span className={`badge-robinhood ${
-                          topic.relevance === 'High' ? 'badge-robinhood-success' : 'badge-robinhood-warning'
+                        <h4 className="font-medium text-gray-900">{topic.topic}</h4>
+                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                          topic.relevance === 'High' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                         }`}>
                           {topic.relevance}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 mt-1">
-                        <TrendingUp className="h-3 w-3 status-positive" />
-                        <span className="text-sm status-positive font-medium">{topic.growth}</span>
+                        <TrendingUp className="h-3 w-3 text-green-600" />
+                        <span className="text-sm text-green-600 font-medium">{topic.growth}</span>
                       </div>
                     </div>
                     <button 
                       onClick={() => handleAddToConcepts(topic.topic)}
-                      className="btn-robinhood-primary text-sm"
+                      className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
                     >
                       Add to Concepts
                     </button>

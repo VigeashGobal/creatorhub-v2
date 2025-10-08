@@ -285,30 +285,30 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   }
 
   return (
-    <div className="min-h-screen bg-robinhood-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-robinhood-white/80 backdrop-blur-sm border-b border-robinhood-gray-200 sticky top-0 z-50">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <div className="bg-robinhood-green rounded-xl p-2 mr-4">
+              <div className="bg-green-600 rounded-xl p-2 mr-4">
                 <Lightbulb className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-robinhood-heading">Content Engine</h1>
-                <p className="text-sm text-robinhood-gray-600">Discover trends, analyze competitors, and get content ideas</p>
+                <h1 className="text-2xl font-bold text-gray-900">Content Engine</h1>
+                <p className="text-sm text-gray-600">Discover trends, analyze competitors, and get content ideas</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <button 
                 onClick={fetchAnalysisData}
                 disabled={isLoading}
-                className="btn-robinhood-secondary flex items-center disabled:opacity-50"
+                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 disabled:opacity-50"
               >
                 <Search className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 {isLoading ? 'Analyzing...' : 'Refresh Analysis'}
               </button>
-              <button className="btn-robinhood-primary flex items-center">
+              <button className="flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200">
                 <Plus className="h-4 w-4 mr-2" />
                 New Campaign
               </button>
@@ -321,28 +321,28 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* User Profile Section */}
         {userProfile && (
-          <div className="card-robinhood p-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-robinhood-heading">Your Profile Analysis</h3>
-              <span className="badge-robinhood badge-robinhood-success">
+              <h3 className="text-lg font-semibold text-gray-900">Your Profile Analysis</h3>
+              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                 {userProfile.industry?.charAt(0).toUpperCase() + userProfile.industry?.slice(1)} Creator
               </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <h4 className="text-sm font-medium text-robinhood-gray-700 mb-2">Detected Industry</h4>
-                <p className="text-lg font-semibold text-robinhood-gray-900">{userProfile.industry?.charAt(0).toUpperCase() + userProfile.industry?.slice(1)}</p>
-                <p className="text-sm text-robinhood-gray-600">Based on your content and handles</p>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Detected Industry</h4>
+                <p className="text-lg font-semibold text-gray-900">{userProfile.industry?.charAt(0).toUpperCase() + userProfile.industry?.slice(1)}</p>
+                <p className="text-sm text-gray-600">Based on your content and handles</p>
               </div>
               <div>
-                <h4 className="text-sm font-medium text-robinhood-gray-700 mb-2">Primary Niche</h4>
-                <p className="text-lg font-semibold text-robinhood-gray-900">{userProfile.niche?.charAt(0).toUpperCase() + userProfile.niche?.slice(1)}</p>
-                <p className="text-sm text-robinhood-gray-600">Your main content focus</p>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Primary Niche</h4>
+                <p className="text-lg font-semibold text-gray-900">{userProfile.niche?.charAt(0).toUpperCase() + userProfile.niche?.slice(1)}</p>
+                <p className="text-sm text-gray-600">Your main content focus</p>
               </div>
               <div>
-                <h4 className="text-sm font-medium text-robinhood-gray-700 mb-2">Content Style</h4>
-                <p className="text-lg font-semibold text-robinhood-gray-900">{userProfile.contentStyle?.charAt(0).toUpperCase() + userProfile.contentStyle?.slice(1)}</p>
-                <p className="text-sm text-robinhood-gray-600">Your content approach</p>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Content Style</h4>
+                <p className="text-lg font-semibold text-gray-900">{userProfile.contentStyle?.charAt(0).toUpperCase() + userProfile.contentStyle?.slice(1)}</p>
+                <p className="text-sm text-gray-600">Your content approach</p>
               </div>
             </div>
           </div>
@@ -350,43 +350,43 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="card-robinhood p-6">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-robinhood-gray-600">Trending Topics</p>
-                <p className="text-2xl font-bold text-robinhood-gray-900">{trendingTopics?.length || 0}</p>
+                <p className="text-sm font-medium text-gray-600">Trending Topics</p>
+                <p className="text-2xl font-bold text-gray-900">{trendingTopics?.length || 0}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-robinhood-green" />
+              <TrendingUp className="h-8 w-8 text-green-600" />
             </div>
           </div>
           
-          <div className="card-robinhood p-6">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-robinhood-gray-600">Competitors Tracked</p>
-                <p className="text-2xl font-bold text-robinhood-gray-900">{competitors?.length || 0}</p>
+                <p className="text-sm font-medium text-gray-600">Competitors Tracked</p>
+                <p className="text-2xl font-bold text-gray-900">{competitors?.length || 0}</p>
               </div>
-              <Users className="h-8 w-8 text-robinhood-blue" />
+              <Users className="h-8 w-8 text-blue-600" />
             </div>
           </div>
           
-          <div className="card-robinhood p-6">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-robinhood-gray-600">Content Ideas</p>
-                <p className="text-2xl font-bold text-robinhood-gray-900">{contentSuggestions?.length || 0}</p>
+                <p className="text-sm font-medium text-gray-600">Content Ideas</p>
+                <p className="text-2xl font-bold text-gray-900">{contentSuggestions?.length || 0}</p>
               </div>
-              <Lightbulb className="h-8 w-8 text-robinhood-orange" />
+              <Lightbulb className="h-8 w-8 text-orange-600" />
             </div>
           </div>
           
-          <div className="card-robinhood p-6">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-robinhood-gray-600">Industry Focus</p>
-                <p className="text-2xl font-bold text-robinhood-gray-900">{userProfile?.industry?.charAt(0).toUpperCase() + userProfile?.industry?.slice(1) || 'General'}</p>
+                <p className="text-sm font-medium text-gray-600">Industry Focus</p>
+                <p className="text-2xl font-bold text-gray-900">{userProfile?.industry?.charAt(0).toUpperCase() + userProfile?.industry?.slice(1) || 'General'}</p>
               </div>
-              <BarChart3 className="h-8 w-8 text-robinhood-green" />
+              <BarChart3 className="h-8 w-8 text-green-600" />
             </div>
           </div>
         </div>
