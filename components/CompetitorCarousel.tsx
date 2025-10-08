@@ -192,25 +192,37 @@ export default function CompetitorCarousel() {
   const PlatformIcon = platformIcons[activePlatform]
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Competitor Content</h3>
+    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className="text-xl font-bold text-gray-900">Competitor Intelligence</h3>
+          <p className="text-sm text-gray-600 mt-1">Top-performing content from your industry</p>
+        </div>
+        <div className="flex items-center space-x-2 text-sm text-gray-500">
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          <span>Live monitoring</span>
+        </div>
+      </div>
       
-      {/* Platform Tabs */}
-      <div className="flex space-x-2 mb-6">
+      {/* Enhanced Platform Tabs */}
+      <div className="flex space-x-3 mb-8">
         {(['youtube', 'instagram', 'tiktok'] as const).map((platform) => {
           const Icon = platformIcons[platform]
           return (
             <button
               key={platform}
               onClick={() => setActivePlatform(platform)}
-              className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+              className={`flex items-center px-6 py-3 rounded-xl transition-all duration-200 font-semibold ${
                 activePlatform === platform
-                  ? `${platformColors[platform]} text-white`
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? `${platformColors[platform]} text-white shadow-lg transform scale-105`
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-md'
               }`}
             >
-              <Icon className="h-4 w-4 mr-2" />
+              <Icon className="h-5 w-5 mr-3" />
               {platform.charAt(0).toUpperCase() + platform.slice(1)}
+              {activePlatform === platform && (
+                <div className="ml-2 w-2 h-2 bg-white rounded-full"></div>
+              )}
             </button>
           )
         })}
@@ -222,43 +234,55 @@ export default function CompetitorCarousel() {
           {competitorContent[activePlatform].map((content) => (
             <div
               key={content.id}
-              className="flex-shrink-0 w-64 bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+              className="flex-shrink-0 w-72 bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
             >
               <div className="relative">
                 <img
                   src={content.thumbnail}
                   alt={content.title}
-                  className="w-full h-40 object-cover"
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className={`absolute top-2 right-2 ${platformColors[activePlatform]} text-white px-2 py-1 rounded text-xs font-semibold`}>
+                <div className={`absolute top-3 right-3 ${platformColors[activePlatform]} text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg`}>
                   <PlatformIcon className="h-3 w-3 inline mr-1" />
                   {activePlatform.charAt(0).toUpperCase() + activePlatform.slice(1)}
                 </div>
+                <div className="absolute bottom-3 left-3 bg-black/70 text-white px-2 py-1 rounded-md text-xs font-medium">
+                  {content.duration || '2:30'}
+                </div>
               </div>
               
-              <div className="p-4">
-                <h4 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2">
+              <div className="p-5">
+                <h4 className="font-bold text-gray-900 text-base mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
                   {content.title}
                 </h4>
-                <p className="text-xs text-gray-600 mb-3">{content.creator}</p>
+                <p className="text-sm text-gray-600 mb-4 font-medium">{content.creator}</p>
                 
-                <div className="flex items-center justify-between text-xs text-gray-600">
-                  <div className="flex items-center">
-                    <Eye className="h-3 w-3 mr-1" />
-                    {content.views}
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-1">
+                      <Eye className="h-4 w-4 text-gray-500" />
+                    </div>
+                    <div className="text-xs font-bold text-gray-900">{content.views}</div>
+                    <div className="text-xs text-gray-500">Views</div>
                   </div>
-                  <div className="flex items-center">
-                    <Heart className="h-3 w-3 mr-1" />
-                    {content.likes}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-1">
+                      <Heart className="h-4 w-4 text-red-500" />
+                    </div>
+                    <div className="text-xs font-bold text-gray-900">{content.likes}</div>
+                    <div className="text-xs text-gray-500">Likes</div>
                   </div>
-                  <div className="flex items-center">
-                    <MessageCircle className="h-3 w-3 mr-1" />
-                    {content.comments}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-1">
+                      <MessageCircle className="h-4 w-4 text-blue-500" />
+                    </div>
+                    <div className="text-xs font-bold text-gray-900">{content.comments}</div>
+                    <div className="text-xs text-gray-500">Comments</div>
                   </div>
                 </div>
                 
-                <button className="mt-3 w-full bg-green-600 text-white py-2 rounded-lg text-xs font-semibold hover:bg-green-700 transition-colors">
-                  View Details
+                <button className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 rounded-lg text-sm font-bold hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                  Analyze Content
                 </button>
               </div>
             </div>

@@ -348,45 +348,81 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
           </div>
         )}
 
-        {/* Stats Overview */}
+        {/* Enhanced Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Trending Topics</p>
-                <p className="text-2xl font-bold text-gray-900">{trendingTopics?.length || 0}</p>
+          <div className="bg-gradient-to-br from-white to-green-50 rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-white" />
               </div>
-              <TrendingUp className="h-8 w-8 text-green-600" />
+              <div className="text-right">
+                <div className="flex items-center text-green-600 text-sm font-semibold">
+                  <TrendingUp className="h-3 w-3 mr-1" />
+                  +12.5%
+                </div>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-1">Trending Topics</p>
+              <p className="text-3xl font-bold text-gray-900">{trendingTopics?.length || 0}</p>
+              <p className="text-xs text-gray-500 mt-1">AI-powered insights</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Competitors Tracked</p>
-                <p className="text-2xl font-bold text-gray-900">{competitors?.length || 0}</p>
+          <div className="bg-gradient-to-br from-white to-blue-50 rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                <Users className="h-6 w-6 text-white" />
               </div>
-              <Users className="h-8 w-8 text-blue-600" />
+              <div className="text-right">
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  <Users className="h-3 w-3 mr-1" />
+                  +8.2%
+                </div>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-1">Competitors Tracked</p>
+              <p className="text-3xl font-bold text-gray-900">{competitors?.length || 0}</p>
+              <p className="text-xs text-gray-500 mt-1">Active monitoring</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Content Ideas</p>
-                <p className="text-2xl font-bold text-gray-900">{contentSuggestions?.length || 0}</p>
+          <div className="bg-gradient-to-br from-white to-orange-50 rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+                <Lightbulb className="h-6 w-6 text-white" />
               </div>
-              <Lightbulb className="h-8 w-8 text-orange-600" />
+              <div className="text-right">
+                <div className="flex items-center text-orange-600 text-sm font-semibold">
+                  <Lightbulb className="h-3 w-3 mr-1" />
+                  +15.3%
+                </div>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-1">Content Ideas</p>
+              <p className="text-3xl font-bold text-gray-900">{contentSuggestions?.length || 0}</p>
+              <p className="text-xs text-gray-500 mt-1">Generated today</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Industry Focus</p>
-                <p className="text-2xl font-bold text-gray-900">{userProfile?.industry?.charAt(0).toUpperCase() + userProfile?.industry?.slice(1) || 'General'}</p>
+          <div className="bg-gradient-to-br from-white to-purple-50 rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <BarChart3 className="h-6 w-6 text-white" />
               </div>
-              <BarChart3 className="h-8 w-8 text-green-600" />
+              <div className="text-right">
+                <div className="flex items-center text-purple-600 text-sm font-semibold">
+                  <BarChart3 className="h-3 w-3 mr-1" />
+                  +5.7%
+                </div>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-1">Industry Focus</p>
+              <p className="text-2xl font-bold text-gray-900">{userProfile?.industry?.charAt(0).toUpperCase() + userProfile?.industry?.slice(1) || 'General'}</p>
+              <p className="text-xs text-gray-500 mt-1">Primary niche</p>
             </div>
           </div>
         </div>

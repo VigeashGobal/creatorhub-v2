@@ -192,33 +192,90 @@ export default function FinancialSnapshot({ userData, onReset }: FinancialSnapsh
             </div>
           </div>
 
-          {/* Revenue Chart */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Revenue Breakdown</h3>
-              <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
-                <Download className="h-4 w-4" />
-                <span className="text-sm">Export</span>
-              </button>
+          {/* Enhanced Revenue Chart */}
+          <div className="bg-white rounded-xl border border-gray-200 p-8 mb-6 shadow-lg">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">Revenue Analytics</h3>
+                <p className="text-sm text-gray-600 mt-1">Detailed breakdown by platform and time period</p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <button className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 bg-gray-100 rounded-lg transition-colors">
+                  <Download className="h-4 w-4" />
+                  <span className="text-sm font-medium">Export</span>
+                </button>
+                <button className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 bg-gray-100 rounded-lg transition-colors">
+                  <Filter className="h-4 w-4" />
+                  <span className="text-sm font-medium">Filter</span>
+                </button>
+              </div>
             </div>
-            <div className="h-80">
+            <div className="h-96">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={revenueChartData}>
+                <BarChart data={revenueChartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                  <defs>
+                    <linearGradient id="youtubeGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.3}/>
+                    </linearGradient>
+                    <linearGradient id="instagramGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f97316" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#f97316" stopOpacity={0.3}/>
+                    </linearGradient>
+                    <linearGradient id="tiktokGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#000000" stopOpacity={0.3}/>
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="month" stroke="#6b7280" />
-                  <YAxis stroke="#6b7280" />
+                  <XAxis 
+                    dataKey="month" 
+                    stroke="#6b7280"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis 
+                    stroke="#6b7280"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                  />
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: 'white', 
                       border: '1px solid #e5e7eb',
-                      borderRadius: '8px'
-                    }} 
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+                    }}
+                    labelStyle={{ color: '#374151', fontWeight: '600' }}
+                    formatter={(value: any, name: string) => [`$${value.toLocaleString()}`, name.charAt(0).toUpperCase() + name.slice(1)]}
                   />
-                  <Bar dataKey="youtube" fill="#ef4444" />
-                  <Bar dataKey="instagram" fill="#f97316" />
-                  <Bar dataKey="tiktok" fill="#000000" />
+                  <Bar dataKey="youtube" fill="url(#youtubeGradient)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="instagram" fill="url(#instagramGradient)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="tiktok" fill="url(#tiktokGradient)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+            <div className="mt-6 flex items-center justify-between">
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-red-500 rounded"></div>
+                  <span className="text-sm text-gray-600">YouTube</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-orange-500 rounded"></div>
+                  <span className="text-sm text-gray-600">Instagram</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-black rounded"></div>
+                  <span className="text-sm text-gray-600">TikTok</span>
+                </div>
+              </div>
+              <div className="text-sm text-gray-500">
+                Last updated: {new Date().toLocaleTimeString()}
+              </div>
             </div>
           </div>
         </div>

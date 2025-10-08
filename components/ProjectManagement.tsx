@@ -176,10 +176,28 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
             const columnProjects = projects.filter(p => p.status === column.id)
             return (
               <div key={column.id} className="flex-shrink-0 w-80">
-                <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">{column.title}</h3>
-                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">{columnProjects.length}</span>
+                <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl border border-gray-200 p-6 mb-6 shadow-lg">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <column.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-900 text-lg">{column.title}</h3>
+                        <p className="text-sm text-gray-600">Active projects</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-md">
+                        {columnProjects.length}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((columnProjects.length / 10) * 100, 100)}%` }}
+                    ></div>
                   </div>
                 </div>
 
@@ -187,7 +205,7 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
                   {columnProjects.map((project) => (
                     <div
                       key={project.id}
-                      className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-lg transition-shadow cursor-pointer"
+                      className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
                       draggable
                       onDragStart={(e) => e.dataTransfer.setData('projectId', project.id)}
                       onDragOver={(e) => e.preventDefault()}
@@ -197,20 +215,28 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
                         moveProject(projectId, column.id as Project['status'])
                       }}
                     >
-                      {/* Project Header */}
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center space-x-2">
-                          {getPlatformIcon(project.platform)}
-                          <span className="text-xs text-gray-500">{project.platform}</span>
+                      {/* Enhanced Project Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
+                            {getPlatformIcon(project.platform)}
+                          </div>
+                          <div>
+                            <span className="text-sm font-semibold text-gray-700">{project.platform}</span>
+                            <div className="flex items-center space-x-1 mt-1">
+                              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                              <span className="text-xs text-gray-500">Active</span>
+                            </div>
+                          </div>
                         </div>
-                        <button className="text-gray-400 hover:text-gray-600">
+                        <button className="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100 transition-colors">
                           <MoreVertical className="h-4 w-4" />
                         </button>
                       </div>
 
-                      {/* Project Title */}
-                      <h4 className="font-semibold text-gray-900 mb-2">{project.title}</h4>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{project.description}</p>
+                      {/* Enhanced Project Title */}
+                      <h4 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">{project.title}</h4>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">{project.description}</p>
 
                       {/* Project Metadata */}
                       <div className="space-y-2">
