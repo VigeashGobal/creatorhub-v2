@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Youtube, Instagram, Music, TrendingUp, Heart, MessageCircle, Eye } from 'lucide-react'
+import Image from 'next/image'
 
 interface CompetitorContent {
   id: string
@@ -12,6 +13,7 @@ interface CompetitorContent {
   comments: string
   platform: 'youtube' | 'instagram' | 'tiktok'
   creator: string
+  duration?: string
 }
 
 export default function CompetitorCarousel() {
@@ -237,9 +239,11 @@ export default function CompetitorCarousel() {
               className="flex-shrink-0 w-72 bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
             >
               <div className="relative">
-                <img
+                <Image
                   src={content.thumbnail}
                   alt={content.title}
+                  width={288}
+                  height={192}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className={`absolute top-3 right-3 ${platformColors[activePlatform]} text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg`}>

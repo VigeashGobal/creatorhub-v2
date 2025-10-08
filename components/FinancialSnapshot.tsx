@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { DollarSign, TrendingUp, Youtube, Instagram, Music, Calendar, Download, Plus } from 'lucide-react'
+import { DollarSign, TrendingUp, Youtube, Instagram, Music, Calendar, Download, Plus, Filter } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface FinancialSnapshotProps {

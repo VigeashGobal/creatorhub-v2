@@ -14,7 +14,10 @@ import {
   Send,
   CheckCircle,
   Clock,
-  Eye
+  Eye,
+  Lightbulb,
+  Play,
+  Edit
 } from 'lucide-react'
 
 interface Project {
@@ -125,12 +128,12 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
   }, [projects.length])
 
   const columns = [
-    { id: 'concept', title: 'Creative Concepts', color: 'bg-gray-100' },
-    { id: 'in-production', title: 'In Production', color: 'bg-blue-100' },
-    { id: 'editing', title: 'Editing', color: 'bg-purple-100' },
-    { id: 'sent-for-review', title: 'Sent for Review', color: 'bg-yellow-100' },
-    { id: 'ready-to-post', title: 'Ready to Post', color: 'bg-green-100' },
-    { id: 'published', title: 'Published Content', color: 'bg-indigo-100' }
+    { id: 'concept', title: 'Creative Concepts', color: 'bg-gray-100', icon: Lightbulb },
+    { id: 'in-production', title: 'In Production', color: 'bg-blue-100', icon: Play },
+    { id: 'editing', title: 'Editing', color: 'bg-purple-100', icon: Edit },
+    { id: 'sent-for-review', title: 'Sent for Review', color: 'bg-yellow-100', icon: Send },
+    { id: 'ready-to-post', title: 'Ready to Post', color: 'bg-green-100', icon: CheckCircle },
+    { id: 'published', title: 'Published Content', color: 'bg-indigo-100', icon: Eye }
   ]
 
   const getPlatformIcon = (platform: string) => {
