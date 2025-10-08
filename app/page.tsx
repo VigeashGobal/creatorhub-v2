@@ -220,9 +220,9 @@ export default function Home() {
               </div>
 
               {/* Chart and Trending Topics Side by Side */}
-              <div className="grid grid-cols-3 gap-6 mb-8">
-                {/* Chart - 2/3 width */}
-                <div className="col-span-2">
+              <div className="grid grid-cols-5 gap-6 mb-8">
+                {/* Chart - 4/5 width */}
+                <div className="col-span-4">
                   <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg h-full">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-gray-900">Performance Overview</h3>
@@ -231,7 +231,7 @@ export default function Home() {
                         <span>Live Data</span>
                       </div>
                     </div>
-                    <div className="h-64">
+                    <div className="h-80">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                           <defs>
@@ -288,7 +288,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Trending Topics - 1/3 width */}
+                {/* Trending Topics - 1/5 width */}
                 <div className="col-span-1">
                   <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg h-full">
                     <div className="flex items-center justify-between mb-6">
