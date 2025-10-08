@@ -149,18 +149,18 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-robinhood-gray-100">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-robinhood-white border-b border-robinhood-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Project Management</h1>
-              <p className="text-gray-600 mt-1">Manage your content pipeline from concept to publish</p>
+              <h1 className="text-robinhood-heading">Project Management</h1>
+              <p className="text-robinhood-gray-600 mt-1">Manage your content pipeline from concept to publish</p>
             </div>
             <button 
               onClick={() => setShowNewProjectModal(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="btn-robinhood-primary flex items-center space-x-2"
             >
               <Plus className="h-4 w-4" />
               <span>New Project</span>
@@ -176,10 +176,10 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
             const columnProjects = projects.filter(p => p.status === column.id)
             return (
               <div key={column.id} className="flex-shrink-0 w-80">
-                <div className={`${column.color} rounded-lg p-4 mb-4`}>
+                <div className="bg-robinhood-white rounded-lg border border-robinhood-gray-200 p-4 mb-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">{column.title}</h3>
-                    <span className="text-sm text-gray-600">{columnProjects.length}</span>
+                    <h3 className="font-semibold text-robinhood-gray-900">{column.title}</h3>
+                    <span className="badge-robinhood badge-robinhood-info">{columnProjects.length}</span>
                   </div>
                 </div>
 
@@ -187,7 +187,7 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
                   {columnProjects.map((project) => (
                     <div
                       key={project.id}
-                      className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-lg transition-shadow cursor-pointer"
+                      className="card-robinhood p-4 hover:shadow-lg transition-shadow cursor-pointer"
                       draggable
                       onDragStart={(e) => e.dataTransfer.setData('projectId', project.id)}
                       onDragOver={(e) => e.preventDefault()}
@@ -201,50 +201,50 @@ export default function ProjectManagement({ userData, onReset }: ProjectManageme
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center space-x-2">
                           {getPlatformIcon(project.platform)}
-                          <span className="text-xs text-gray-500">{project.platform}</span>
+                          <span className="text-xs text-robinhood-gray-500">{project.platform}</span>
                         </div>
-                        <button className="text-gray-400 hover:text-gray-600">
+                        <button className="text-robinhood-gray-400 hover:text-robinhood-gray-600">
                           <MoreVertical className="h-4 w-4" />
                         </button>
                       </div>
 
                       {/* Project Title */}
-                      <h4 className="font-semibold text-gray-900 mb-2">{project.title}</h4>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{project.description}</p>
+                      <h4 className="font-semibold text-robinhood-gray-900 mb-2">{project.title}</h4>
+                      <p className="text-sm text-robinhood-gray-600 mb-3 line-clamp-2">{project.description}</p>
 
                       {/* Project Metadata */}
                       <div className="space-y-2">
                         {project.budget && (
                           <div className="flex items-center space-x-2 text-sm">
-                            <DollarSign className="h-4 w-4 text-green-600" />
-                            <span className="text-gray-700">${project.budget.toLocaleString()}</span>
+                            <DollarSign className="h-4 w-4 text-robinhood-green" />
+                            <span className="text-robinhood-gray-700">${project.budget.toLocaleString()}</span>
                           </div>
                         )}
                         
                         {project.contractId && (
                           <div className="flex items-center space-x-2 text-sm">
-                            <FileText className="h-4 w-4 text-blue-600" />
-                            <button className="text-blue-600 hover:underline">View Contract</button>
+                            <FileText className="h-4 w-4 text-robinhood-blue" />
+                            <button className="text-robinhood-blue hover:underline">View Contract</button>
                           </div>
                         )}
 
                         {project.dueDate && (
                           <div className="flex items-center space-x-2 text-sm">
-                            <Calendar className="h-4 w-4 text-orange-600" />
-                            <span className="text-gray-700">{new Date(project.dueDate).toLocaleDateString()}</span>
+                            <Calendar className="h-4 w-4 text-robinhood-orange" />
+                            <span className="text-robinhood-gray-700">{new Date(project.dueDate).toLocaleDateString()}</span>
                           </div>
                         )}
 
                         {project.views && (
                           <div className="flex items-center space-x-4 text-sm">
                             <div className="flex items-center space-x-1">
-                              <Eye className="h-4 w-4 text-gray-600" />
-                              <span className="text-gray-700">{project.views.toLocaleString()}</span>
+                              <Eye className="h-4 w-4 text-robinhood-gray-600" />
+                              <span className="text-robinhood-gray-700">{project.views.toLocaleString()}</span>
                             </div>
                             {project.engagement && (
                               <div className="flex items-center space-x-1">
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                                <span className="text-gray-700">{project.engagement.toLocaleString()}</span>
+                                <CheckCircle className="h-4 w-4 text-robinhood-green" />
+                                <span className="text-robinhood-gray-700">{project.engagement.toLocaleString()}</span>
                               </div>
                             )}
                           </div>
