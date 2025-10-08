@@ -150,11 +150,6 @@ export default function Home() {
         
         return (
           <div className="min-h-screen bg-white">
-            <Navigation 
-              currentPage={currentPage} 
-              onPageChange={setCurrentPage} 
-              onReset={handleReset} 
-            />
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Personal Platform Data - Toggleable Metrics */}
               <div className="mb-8">
@@ -224,121 +219,118 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Enhanced Chart */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8 shadow-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Performance Overview</h3>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span>Live Data</span>
+              {/* Chart and Trending Topics Side by Side */}
+              <div className="grid grid-cols-3 gap-6 mb-8">
+                {/* Chart - 2/3 width */}
+                <div className="col-span-2">
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg h-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900">Performance Overview</h3>
+                      <div className="flex items-center space-x-2 text-sm text-gray-600">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span>Live Data</span>
+                      </div>
+                    </div>
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                          <defs>
+                            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
+                              <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                          <XAxis 
+                            dataKey="date" 
+                            stroke="#6b7280"
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                          />
+                          <YAxis 
+                            stroke="#6b7280"
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                            tickFormatter={(value) => formatNumber(value)}
+                          />
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'white', 
+                              border: '1px solid #e5e7eb',
+                              borderRadius: '12px',
+                              boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+                            }}
+                            labelStyle={{ color: '#374151', fontWeight: '600' }}
+                            formatter={(value: any) => [formatNumber(value), selectedMetric === 'views' ? 'Views' : selectedMetric === 'engagement' ? 'Engagement' : 'Subscribers']}
+                          />
+                          <Line 
+                            type="monotone" 
+                            dataKey="value" 
+                            stroke="#22c55e" 
+                            strokeWidth={3}
+                            dot={{ fill: '#22c55e', strokeWidth: 2, r: 4 }}
+                            activeDot={{ r: 6, stroke: '#22c55e', strokeWidth: 2 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+                      <span>Last updated: {new Date().toLocaleTimeString()}</span>
+                      <div className="flex items-center space-x-4">
+                        <span className="flex items-center">
+                          <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                          {selectedMetric === 'views' ? 'Views' : selectedMetric === 'engagement' ? 'Engagement' : 'Subscribers'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                      <defs>
-                        <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis 
-                        dataKey="date" 
-                        stroke="#6b7280"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <YAxis 
-                        stroke="#6b7280"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => formatNumber(value)}
-                      />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: 'white', 
-                          border: '1px solid #e5e7eb',
-                          borderRadius: '12px',
-                          boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
-                        }}
-                        labelStyle={{ color: '#374151', fontWeight: '600' }}
-                        formatter={(value: any) => [formatNumber(value), selectedMetric === 'views' ? 'Views' : selectedMetric === 'engagement' ? 'Engagement' : 'Subscribers']}
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="#22c55e" 
-                        strokeWidth={3}
-                        dot={{ fill: '#22c55e', strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6, stroke: '#22c55e', strokeWidth: 2 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
-                  <span>Last updated: {new Date().toLocaleTimeString()}</span>
-                  <div className="flex items-center space-x-4">
-                    <span className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                      {selectedMetric === 'views' ? 'Views' : selectedMetric === 'engagement' ? 'Engagement' : 'Subscribers'}
-                    </span>
-                  </div>
-                </div>
-              </div>
 
-              {/* Enhanced AI Trending Topics */}
-              <div className="mb-8">
-                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">AI-Powered Trending Topics</h3>
-                      <p className="text-sm text-gray-600 mt-1">Personalized content opportunities based on your niche</p>
+                {/* Trending Topics - 1/3 width */}
+                <div className="col-span-1">
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg h-full">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">Trending Topics</h3>
+                        <p className="text-xs text-gray-600 mt-1">AI-powered insights</p>
+                      </div>
+                      <div className="flex items-center space-x-2 text-xs text-gray-500">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                        <span>Live</span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2 text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                      <span>Updated 2m ago</span>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    {trendingTopics.map((topic) => (
-                      <div key={topic.id} className="group bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-3 mb-2">
-                              <h4 className="font-semibold text-gray-900 text-lg">{topic.topic}</h4>
-                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                topic.relevance === 'High' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-yellow-100 text-yellow-800 border border-yellow-200'
-                              }`}>
-                                {topic.relevance}
-                              </span>
-                            </div>
-                            <div className="flex items-center space-x-4 text-sm text-gray-600">
-                              <div className="flex items-center space-x-1">
-                                <TrendingUp className="h-4 w-4 text-green-600" />
-                                <span className="font-semibold text-green-600">{topic.growth}</span>
+                    <div className="space-y-3">
+                      {trendingTopics.map((topic) => (
+                        <div key={topic.id} className="group bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200 p-3 hover:shadow-md transition-all duration-200">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <h4 className="font-semibold text-gray-900 text-sm">{topic.topic}</h4>
+                                <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                                  topic.relevance === 'High' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                }`}>
+                                  {topic.relevance}
+                                </span>
                               </div>
-                              <div className="flex items-center space-x-1">
-                                <Users className="h-4 w-4 text-blue-600" />
-                                <span>2.3M mentions</span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Clock className="h-4 w-4 text-gray-500" />
-                                <span>Peak: 2h ago</span>
+                              <div className="flex items-center space-x-2 text-xs text-gray-600">
+                                <div className="flex items-center space-x-1">
+                                  <TrendingUp className="h-3 w-3 text-green-600" />
+                                  <span className="font-semibold text-green-600">{topic.growth}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
                           <button 
                             onClick={() => handleAddToConcepts(topic.topic)}
-                            className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                            className="w-full px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white text-xs font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg"
                           >
                             Add to Concepts
                           </button>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
