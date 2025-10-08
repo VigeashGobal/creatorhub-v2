@@ -94,6 +94,25 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
   const [isInitialized, setIsInitialized] = useState(false)
   const [isReady, setIsReady] = useState(false)
 
+  // Create project in project management
+  const handleCreateProject = (title: string, description: string, platform: string, type: string = 'content-idea') => {
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]')
+    const newProject = {
+      id: Date.now().toString(),
+      title,
+      description,
+      platform,
+      status: 'concept',
+      tags: [type, 'from-content-engine'],
+      createdAt: new Date().toISOString()
+    }
+    projects.push(newProject)
+    localStorage.setItem('projects', JSON.stringify(projects))
+    
+    // Navigate to project management
+    window.location.href = '/?page=projects'
+  }
+
   // Fetch real competitor analysis data
   const fetchAnalysisData = useCallback(async () => {
     if (!userData?.youtube && !userData?.instagram && !userData?.tiktok) {
@@ -459,9 +478,12 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                   </div>
                   
                   <div className="ml-6">
-                    <button className="flex items-center px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-all duration-200">
+                    <button 
+                      onClick={() => handleCreateProject(topic.title, topic.description, topic.platforms[0] || 'Multi-platform', 'trending-topic')}
+                      className="flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200"
+                    >
                       <Plus className="h-4 w-4 mr-2" />
-                      Create Content
+                      Create Now
                     </button>
                   </div>
                 </div>
@@ -538,6 +560,25 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                       ))}
                     </div>
                   </div>
+                </div>
+
+                <div className="flex items-center space-x-3 pt-4 border-t border-slate-100">
+                  <button 
+                    onClick={() => handleCreateProject(
+                      `Content inspired by ${competitor.name}`,
+                      `Create ${competitor.contentTypes[0] || 'content'} inspired by ${competitor.name}'s successful strategy on ${competitor.platform}`,
+                      competitor.platform,
+                      'competitor-analysis'
+                    )}
+                    className="flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Now
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all duration-200">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    View Profile
+                  </button>
                 </div>
               </div>
             )) : (
@@ -625,9 +666,12 @@ export default function ContentEngine({ userData, onReset }: ContentEngineProps)
                       <Bookmark className="h-4 w-4 mr-2" />
                       Save Idea
                     </button>
-                    <button className="flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200">
-                      <ArrowRight className="h-4 w-4 mr-2" />
-                      Start Creating
+                    <button 
+                      onClick={() => handleCreateProject(suggestion.title, suggestion.description, suggestion.platform, 'content-suggestion')}
+                      className="flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create Now
                     </button>
                   </div>
                 </div>

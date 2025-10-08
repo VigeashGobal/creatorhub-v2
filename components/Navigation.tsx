@@ -4,7 +4,11 @@ import {
   BarChart3, 
   Users, 
   Lightbulb,
-  LogOut
+  LogOut,
+  DollarSign,
+  Briefcase,
+  FileText,
+  Receipt
 } from 'lucide-react'
 
 interface NavigationProps {
@@ -15,9 +19,12 @@ interface NavigationProps {
 
 export default function Navigation({ currentPage, onPageChange, onReset }: NavigationProps) {
   const pages = [
-    { id: 'analytics', name: 'Analytics', icon: BarChart3 },
-    { id: 'crm', name: 'Project Management', icon: Users },
-    { id: 'content', name: 'Content Engine', icon: Lightbulb }
+    { id: 'analytics', name: 'Home', icon: BarChart3 },
+    { id: 'financial', name: 'Financial', icon: DollarSign },
+    { id: 'content', name: 'Content Engine', icon: Lightbulb },
+    { id: 'projects', name: 'Projects', icon: Briefcase },
+    { id: 'legal', name: 'Legal', icon: FileText },
+    { id: 'invoicing', name: 'Invoicing', icon: Receipt }
   ]
 
   return (
