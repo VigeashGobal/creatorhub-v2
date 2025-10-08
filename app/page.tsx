@@ -260,43 +260,12 @@ export default function Home() {
     
     return (
       <div className="min-h-screen bg-white">
-        {/* Top Navigation Bar */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-4">
-              <div className="flex items-center">
-                <div className="bg-black rounded-lg p-2 mr-4">
-                  <BarChart3 className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">CreatorHub</h1>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search across all tabs..."
-                    className="pl-10 pr-4 py-2 w-80 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
-                  <Bell className="h-5 w-5" />
-                </button>
-                
-                <button 
-                  onClick={handleReset}
-                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
-                >
-                  <User className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Navigation */}
+        <Navigation 
+          currentPage={currentPage} 
+          onPageChange={setCurrentPage} 
+          onReset={handleReset} 
+        />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Personal Platform Data - Toggleable Metrics */}
