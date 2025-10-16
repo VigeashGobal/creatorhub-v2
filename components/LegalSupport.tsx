@@ -129,12 +129,13 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       
       let currentSection = ''
       for (const line of lines) {
-        if (line.match(/^[A-Z][a-z\s&]+:$/)) {
-          currentSection = line.replace(':', '').trim()
+        // Match section headers (### Section Name: or ## Section Name: or Section Name:)
+        if (line.match(/^#{1,3}\s*[A-Z][a-z\s&]+:?$/) || line.match(/^[A-Z][a-z\s&]+:$/)) {
+          currentSection = line.replace(/^#{1,3}\s*/, '').replace(':', '').trim()
           sections[currentSection] = []
-        } else if (currentSection && line.startsWith('•')) {
-          sections[currentSection].push(line.replace('•', '').trim())
-        } else if (currentSection && line.trim()) {
+        } else if (currentSection && (line.startsWith('•') || line.startsWith('-') || line.startsWith('*'))) {
+          sections[currentSection].push(line.replace(/^[•\-*]\s*/, '').trim())
+        } else if (currentSection && line.trim() && !line.startsWith('#')) {
           sections[currentSection].push(line.trim())
         }
       }
@@ -143,26 +144,45 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       
       // Extract and format the sections
       const summary = sections['Summary']?.[0] || 'Analysis completed'
+      
+      // Key Terms & Payment - combine commercial terms and payment info
       const keyTerms = [
         ...(sections['Key Commercial Terms'] || []),
         ...(sections['Compensation & Payment'] || [])
-      ].slice(0, 6)
+      ].slice(0, 8)
       
+      // Risks & Weak Clauses - combine risk assessment and missing clauses
       const risks = [
         ...(sections['Risk Assessment'] || []),
         ...(sections['Missing/Weak Clauses'] || [])
-      ].slice(0, 5)
+      ].slice(0, 6)
       
+      // Action Items & Negotiation - combine negotiation suggestions and questions
       const suggestions = [
         ...(sections['Negotiation Suggestions'] || []),
         ...(sections['Questions for Counterparty'] || [])
+      ].slice(0, 8)
+      
+      // Questions to Ask - extract from various sections
+      const questions = [
+        ...(sections['Questions for Counterparty'] || []),
+        ...(sections['Risk Assessment'] || []).filter((item: string) => item.includes('?')),
+        ...(sections['Negotiation Suggestions'] || []).filter((item: string) => item.includes('?'))
       ].slice(0, 6)
       
       const additionalInfo = {
         ipMusic: sections['IP & Music'] || [],
-        questions: sections['Questions for Counterparty'] || [],
+        questions: questions,
         missingClauses: sections['Missing/Weak Clauses'] || []
       }
+      
+      console.log('Final parsed data:', {
+        summary,
+        keyTerms,
+        risks,
+        suggestions,
+        additionalInfo
+      })
       
       setAnalysisResult({
         summary,
