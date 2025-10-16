@@ -14,6 +14,7 @@ export async function POST(req: Request) {
 
     const filename = (file as any).name || 'upload'
     const mime = file.type || ''
+    console.log('Processing file:', { filename, mime, size: file.size })
     const ab = await file.arrayBuffer()
     const buf = Buffer.from(ab)
 
@@ -26,9 +27,11 @@ export async function POST(req: Request) {
         error: 'PDF extraction is temporarily unavailable. Please copy and paste the text content directly, or convert the PDF to a text file first.' 
       }, { status: 400 })
     } else if (mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || filename.toLowerCase().endsWith('.docx')) {
+      console.log('Processing DOCX file')
       const mammoth = await import('mammoth')
       const result = await mammoth.extractRawText({ buffer: buf })
       text = result.value || ''
+      console.log('Extracted text length:', text.length)
     } else if (mime === 'text/plain' || filename.toLowerCase().endsWith('.txt')) {
       text = buf.toString('utf8')
     } else {
@@ -46,8 +49,10 @@ export async function POST(req: Request) {
       text = text.slice(0, MAX_CHARS)
     }
 
+    console.log('Returning text, length:', text.length)
     return NextResponse.json({ text })
   } catch (e) {
+    console.error('Error in extract API:', e)
     return NextResponse.json({ error: 'Failed to extract text' }, { status: 500 })
   }
 }

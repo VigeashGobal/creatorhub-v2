@@ -156,12 +156,18 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                   }
                   if (f.name.toLowerCase().endsWith('.docx')) {
                     try {
+                      setUploadError('Processing file...')
                       const form = new FormData()
                       form.append('file', f)
                       const res = await fetch('/api/legal/extract', { method: 'POST', body: form })
                       const data = await res.json()
+                      console.log('API Response:', { status: res.status, data })
                       if (!res.ok) throw new Error(data?.error || 'Failed to extract text')
+                      if (!data.text || data.text.trim().length === 0) {
+                        throw new Error('No text content found in the document')
+                      }
                       setFileText(data.text || '')
+                      setUploadError('')
                       setShowUploadModal(false)
                     } catch (err: any) {
                       setUploadError(err.message)
