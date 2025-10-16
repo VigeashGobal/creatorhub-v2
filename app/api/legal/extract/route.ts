@@ -20,26 +20,11 @@ export async function POST(req: Request) {
     let text = ''
 
     if (mime === 'application/pdf' || filename.toLowerCase().endsWith('.pdf')) {
-      // Use pdfjs-dist for serverless compatibility with proper worker setup
-      const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs')
-      
-      // Set up worker for serverless environment
-      pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
-      
-      const loadingTask = pdfjs.getDocument({ data: buf })
-      const pdf = await loadingTask.promise
-      
-      let extractedText = ''
-      const maxPages = Math.min(pdf.numPages, 50) // Limit to 50 pages for performance
-      
-      for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
-        const page = await pdf.getPage(pageNum)
-        const content = await page.getTextContent()
-        const pageText = content.items.map((item: any) => item.str || '').join(' ')
-        extractedText += pageText + '\n\n'
-      }
-      
-      text = extractedText.trim()
+      // For now, return a helpful message about PDF support
+      // PDF extraction requires server-side dependencies that don't work well in Vercel serverless
+      return NextResponse.json({ 
+        error: 'PDF extraction is temporarily unavailable. Please copy and paste the text content directly, or convert the PDF to a text file first.' 
+      }, { status: 400 })
     } else if (mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || filename.toLowerCase().endsWith('.docx')) {
       const mammoth = await import('mammoth')
       const result = await mammoth.extractRawText({ buffer: buf })
