@@ -20,44 +20,26 @@ export async function POST(req: Request) {
     let text = ''
 
     if (mime === 'application/pdf' || filename.toLowerCase().endsWith('.pdf')) {
-      // Use pdf2json for serverless compatibility
-      const PDFParser = await import('pdf2json')
-      const pdfParser = new (PDFParser as any).default()
+      // Use pdfjs-dist for serverless compatibility with proper worker setup
+      const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs')
       
-      const extractedText = await new Promise<string>((resolve, reject) => {
-        pdfParser.on('pdfParser_dataError', (errData: any) => {
-          reject(new Error('Failed to parse PDF: ' + errData.parserError))
-        })
-        
-        pdfParser.on('pdfParser_dataReady', (pdfData: any) => {
-          try {
-            // Extract text from all pages
-            let text = ''
-            if (pdfData.Pages) {
-              for (const page of pdfData.Pages) {
-                if (page.Texts) {
-                  for (const textItem of page.Texts) {
-                    if (textItem.R) {
-                      for (const r of textItem.R) {
-                        if (r.T) {
-                          text += decodeURIComponent(r.T) + ' '
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            resolve(text.trim())
-          } catch (error) {
-            reject(new Error('Failed to extract text from PDF'))
-          }
-        })
-        
-        pdfParser.parseBuffer(buf)
-      })
+      // Set up worker for serverless environment
+      pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
       
-      text = extractedText
+      const loadingTask = pdfjs.getDocument({ data: buf })
+      const pdf = await loadingTask.promise
+      
+      let extractedText = ''
+      const maxPages = Math.min(pdf.numPages, 50) // Limit to 50 pages for performance
+      
+      for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
+        const page = await pdf.getPage(pageNum)
+        const content = await page.getTextContent()
+        const pageText = content.items.map((item: any) => item.str || '').join(' ')
+        extractedText += pageText + '\n\n'
+      }
+      
+      text = extractedText.trim()
     } else if (mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || filename.toLowerCase().endsWith('.docx')) {
       const mammoth = await import('mammoth')
       const result = await mammoth.extractRawText({ buffer: buf })
