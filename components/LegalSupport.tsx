@@ -71,19 +71,11 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
 
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [fileText, setFileText] = useState('')
-  const [redactedPreview, setRedactedPreview] = useState('')
-  const [analysis, setAnalysis] = useState('')
+  const [analysisResult, setAnalysisResult] = useState<any>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [uploadError, setUploadError] = useState('')
-  const [context, setContext] = useState({
-    title: '',
-    platforms: [] as string[],
-    campaignType: '',
-    deliverables: '',
-    term: '',
-    territory: '',
-    compModel: ''
-  })
+  const [contractTitle, setContractTitle] = useState('')
+  const [platforms, setPlatforms] = useState('')
 
   const getStatusColor = (status: Contract['status']) => {
     switch (status) {
@@ -100,6 +92,43 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       case 'under-review': return <AlertCircle className="h-4 w-4" />
       case 'approved': return <CheckCircle className="h-4 w-4" />
       case 'signed': return <CheckCircle className="h-4 w-4" />
+    }
+  }
+
+  const handleAnalyze = async () => {
+    if (!fileText.trim()) return
+    
+    setIsAnalyzing(true)
+    setAnalysisResult(null)
+    
+    try {
+      const res = await fetch('/api/legal/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          originalText: fileText, 
+          mime: 'text/plain',
+          context: {
+            title: contractTitle,
+            platforms: platforms.split(',').map(s => s.trim()).filter(Boolean)
+          }
+        })
+      })
+      
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || 'Failed to analyze')
+      
+      setAnalysisResult(data)
+    } catch (e: any) {
+      console.error('Analysis error:', e)
+      setAnalysisResult({ 
+        summary: 'Analysis failed', 
+        keyTerms: [], 
+        risks: [], 
+        suggestions: [] 
+      })
+    } finally {
+      setIsAnalyzing(false)
     }
   }
 
@@ -191,124 +220,114 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
           This tool provides general informational guidance only and is not legal advice. Consult a qualified attorney for legal advice.
         </div>
 
-        {/* Upload and Analyze Panel */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Left: Upload & Context */}
-          <div className="lg:col-span-1 bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Upload or Paste Contract</h3>
+        {/* Upload and Analysis Panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Upload Section */}
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Upload Contract</h3>
+            
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Paste Text</label>
-                <textarea
-                  value={fileText}
-                  onChange={(e) => setFileText(e.target.value)}
-                  className="w-full h-40 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  placeholder="Paste contract text here (TXT preferred). PDFs/DOCs will be supported soon."
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-2">Contract File</label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                  <div className="space-y-2">
+                    <div className="text-gray-500">
+                      {fileText ? 'Contract loaded successfully' : 'No file selected'}
+                    </div>
+                    <button
+                      onClick={() => setShowUploadModal(true)}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    >
+                      Choose File
+                    </button>
+                    <div className="text-xs text-gray-400">
+                      TXT and DOCX files supported
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder="Title"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  value={context.title}
-                  onChange={(e) => setContext({ ...context, title: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Platforms (comma)"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  onChange={(e) => setContext({ ...context, platforms: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
-                />
-                <input
-                  type="text"
-                  placeholder="Campaign type"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  value={context.campaignType}
-                  onChange={(e) => setContext({ ...context, campaignType: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Deliverables"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  value={context.deliverables}
-                  onChange={(e) => setContext({ ...context, deliverables: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Term"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  value={context.term}
-                  onChange={(e) => setContext({ ...context, term: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Territory"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  value={context.territory}
-                  onChange={(e) => setContext({ ...context, territory: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Compensation model"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  value={context.compModel}
-                  onChange={(e) => setContext({ ...context, compModel: e.target.value })}
-                />
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contract Title</label>
+                  <input
+                    type="text"
+                    value={contractTitle}
+                    onChange={(e) => setContractTitle(e.target.value)}
+                    placeholder="Contract name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Platforms</label>
+                  <input
+                    type="text"
+                    value={platforms}
+                    onChange={(e) => setPlatforms(e.target.value)}
+                    placeholder="YouTube, Instagram"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  />
+                </div>
               </div>
-
-              <button
-                onClick={async () => {
-                  setIsAnalyzing(true)
-                  setAnalysis('')
-                  setRedactedPreview('')
-                  try {
-                    const res = await fetch('/api/legal/analyze', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ originalText: fileText, mime: 'text/plain', context })
-                    })
-                    const data = await res.json()
-                    if (!res.ok) throw new Error(data?.error || 'Failed to analyze')
-                    setRedactedPreview(data.redactedPreview || '')
-                    setAnalysis(data.result || '')
-                  } catch (e: any) {
-                    setAnalysis(`Unable to analyze: ${e.message}`)
-                  } finally {
-                    setIsAnalyzing(false)
-                  }
-                }}
-                disabled={!fileText || isAnalyzing}
-                className={classNames(
-                  'w-full flex items-center justify-center px-4 py-2 rounded-lg text-white font-semibold transition-colors',
-                  isAnalyzing ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'
-                )}
-              >
-                {isAnalyzing ? 'Analyzing…' : 'Analyze (Redacted)'}
-              </button>
             </div>
           </div>
 
-          {/* Right: Previews & Results */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Redacted Preview</h3>
-              <div className="h-48 overflow-auto whitespace-pre-wrap text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded p-3">
-                {redactedPreview || 'Upload or paste a contract to see a redacted preview.'}
-              </div>
-              <p className="text-xs text-gray-500 mt-2">Only redacted text is sent to the AI. Sensitive data is removed.</p>
+          {/* Analysis Section */}
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Contract Analysis</h3>
+              <button
+                onClick={handleAnalyze}
+                disabled={!fileText.trim() || isAnalyzing}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isAnalyzing ? 'Analyzing...' : 'Analyze Contract'}
+              </button>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">AI Guidance (Not Legal Advice)</h3>
-              <div className="prose prose-sm max-w-none whitespace-pre-wrap text-gray-900">
-                {analysis || 'Run Analyze to receive structured guidance tailored to influencer/creator/media contracts.'}
+            {analysisResult && (
+              <div className="space-y-4">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-900 mb-2">Summary</h4>
+                  <p className="text-green-800">{analysisResult.summary}</p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-blue-900 mb-2">Key Terms</h4>
+                    <ul className="text-blue-800 space-y-1">
+                      {analysisResult.keyTerms?.map((term: string, index: number) => (
+                        <li key={index}>• {term}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-orange-900 mb-2">Potential Risks</h4>
+                    <ul className="text-orange-800 space-y-1">
+                      {analysisResult.risks?.map((risk: string, index: number) => (
+                        <li key={index}>• {risk}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-purple-900 mb-2">Negotiation Suggestions</h4>
+                    <ul className="text-purple-800 space-y-1">
+                      {analysisResult.suggestions?.map((suggestion: string, index: number) => (
+                        <li key={index}>• {suggestion}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <div className="mt-3 text-xs text-gray-500">
-                This guidance is informational only and not legal advice. Consult a qualified attorney for legal advice.
+            )}
+
+            {!analysisResult && (
+              <div className="text-center py-8 text-gray-500">
+                Upload a contract and click &quot;Analyze Contract&quot; to get started
               </div>
-            </div>
+            )}
           </div>
         </div>
 
