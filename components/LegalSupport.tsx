@@ -20,7 +20,13 @@ export default function LegalSupport() {
         setFileText(String(reader.result || ''))
         setUploadError('')
         // Auto-analyze after successful upload
-        setTimeout(() => handleAnalyze(), 500)
+        setTimeout(() => {
+          const text = String(reader.result || '')
+          console.log('Auto-analyzing with text length:', text.length)
+          if (text.trim()) {
+            handleAnalyzeWithText(text)
+          }
+        }, 500)
       }
       reader.onerror = () => setUploadError('Failed to read the file. Please try again.')
       reader.readAsText(f)
@@ -42,7 +48,13 @@ export default function LegalSupport() {
         setFileText(data.text || '')
         setUploadError('')
         // Auto-analyze after successful upload
-        setTimeout(() => handleAnalyze(), 500)
+        setTimeout(() => {
+          const text = data.text || ''
+          console.log('Auto-analyzing DOCX with text length:', text.length)
+          if (text.trim()) {
+            handleAnalyzeWithText(text)
+          }
+        }, 500)
       } catch (err: any) {
         setUploadError(err.message)
       }
@@ -52,8 +64,8 @@ export default function LegalSupport() {
     setUploadError('Unsupported file type. Please upload a TXT or DOCX file.')
   }
 
-  const handleAnalyze = async () => {
-    if (!fileText.trim()) return
+  const handleAnalyzeWithText = async (text: string) => {
+    if (!text.trim()) return
 
     setIsAnalyzing(true)
     setAnalysisResult(null)
@@ -63,7 +75,7 @@ export default function LegalSupport() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          originalText: fileText,
+          originalText: text,
           mime: 'text/plain',
           context: {
             title: 'Contract Analysis',
@@ -275,6 +287,11 @@ export default function LegalSupport() {
     } finally {
       setIsAnalyzing(false)
     }
+  }
+
+  const handleAnalyze = async () => {
+    if (!fileText.trim()) return
+    await handleAnalyzeWithText(fileText)
   }
 
   return (
