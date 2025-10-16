@@ -214,24 +214,31 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       // Key Terms & Payment - combine commercial terms and payment info
       const keyTerms = [
         ...(sections['Key Commercial Terms'] || []),
-        ...(sections['Compensation & Payment'] || [])
+        ...(sections['Compensation & Payment'] || []),
+        ...(sections['Compensation'] || []),
+        ...(sections['Payment'] || [])
       ].slice(0, 8)
       
       // Risks & Weak Clauses - combine risk assessment and missing clauses
       const risks = [
         ...(sections['Risk Assessment'] || []),
-        ...(sections['Missing/Weak Clauses'] || [])
+        ...(sections['Missing/Weak Clauses'] || []),
+        ...(sections['Missing Clauses'] || []),
+        ...(sections['Weak Clauses'] || [])
       ].slice(0, 6)
       
       // Action Items & Negotiation - combine negotiation suggestions and questions
       const suggestions = [
         ...(sections['Negotiation Suggestions'] || []),
-        ...(sections['Questions for Counterparty'] || [])
+        ...(sections['Questions for Counterparty'] || []),
+        ...(sections['Negotiation'] || []),
+        ...(sections['Suggestions'] || [])
       ].slice(0, 8)
       
       // Questions to Ask - extract from various sections
       const questions = [
         ...(sections['Questions for Counterparty'] || []),
+        ...(sections['Questions'] || []),
         ...(sections['Risk Assessment'] || []).filter((item: string) => item.includes('?')),
         ...(sections['Negotiation Suggestions'] || []).filter((item: string) => item.includes('?'))
       ].slice(0, 6)
@@ -250,13 +257,50 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
         additionalInfo
       })
       
-      setAnalysisResult({
-        summary,
-        keyTerms,
-        risks,
-        suggestions,
-        additionalInfo
-      })
+      console.log('Available sections:', Object.keys(sections))
+      console.log('Section contents:', sections)
+      
+      // If all arrays are empty, try to extract content directly from the raw result
+      if (keyTerms.length === 0 && risks.length === 0 && suggestions.length === 0 && questions.length === 0) {
+        console.log('All sections empty, trying direct extraction from raw result...')
+        
+        // Extract any bullet points or numbered items from the entire result
+        const allLines = result.split('\n').filter((line: string) => line.trim())
+        const bulletPoints = allLines
+          .filter((line: string) => line.startsWith('•') || line.startsWith('-') || line.startsWith('*') || /^\d+\./.test(line))
+          .map((line: string) => line.replace(/^[•\-*]\s*/, '').replace(/^\d+\.\s*/, '').trim())
+          .filter((item: string) => item.length > 10)
+        
+        console.log('Extracted bullet points:', bulletPoints)
+        
+        // Distribute the bullet points across sections
+        const half = Math.ceil(bulletPoints.length / 2)
+        const quarter = Math.ceil(bulletPoints.length / 4)
+        
+        const fallbackKeyTerms = bulletPoints.slice(0, quarter)
+        const fallbackRisks = bulletPoints.slice(quarter, quarter * 2)
+        const fallbackSuggestions = bulletPoints.slice(quarter * 2, quarter * 3)
+        const fallbackQuestions = bulletPoints.slice(quarter * 3)
+        
+        setAnalysisResult({
+          summary,
+          keyTerms: fallbackKeyTerms,
+          risks: fallbackRisks,
+          suggestions: fallbackSuggestions,
+          additionalInfo: {
+            ...additionalInfo,
+            questions: fallbackQuestions
+          }
+        })
+      } else {
+        setAnalysisResult({
+          summary,
+          keyTerms,
+          risks,
+          suggestions,
+          additionalInfo
+        })
+      }
     } catch (e: any) {
       console.error('Analysis error:', e)
       setAnalysisResult({ 
