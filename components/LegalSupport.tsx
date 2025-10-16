@@ -116,9 +116,26 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       })
       
       const data = await res.json()
+      console.log('Analyze API Response:', { status: res.status, data })
       if (!res.ok) throw new Error(data?.error || 'Failed to analyze')
       
-      setAnalysisResult(data)
+      // Parse the structured result from the API
+      const result = data.result || ''
+      console.log('Raw result:', result)
+      const lines = result.split('\n').filter((line: string) => line.trim())
+      
+      // Extract sections from the consolidated result
+      const summary = lines.find((line: string) => line.includes('Summary:'))?.replace('Summary:', '').trim() || 'Analysis completed'
+      const keyTerms = lines.filter((line: string) => line.includes('•') || line.includes('-')).slice(0, 5)
+      const risks = lines.filter((line: string) => line.toLowerCase().includes('risk')).slice(0, 3)
+      const suggestions = lines.filter((line: string) => line.toLowerCase().includes('suggest') || line.toLowerCase().includes('negotiat')).slice(0, 3)
+      
+      setAnalysisResult({
+        summary,
+        keyTerms,
+        risks,
+        suggestions
+      })
     } catch (e: any) {
       console.error('Analysis error:', e)
       setAnalysisResult({ 
@@ -177,6 +194,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                     const reader = new FileReader()
                     reader.onload = () => {
                       setFileText(String(reader.result || ''))
+                      setUploadError('')
                       setShowUploadModal(false)
                     }
                     reader.onerror = () => setUploadError('Failed to read the file. Please try again.')
