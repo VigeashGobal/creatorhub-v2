@@ -131,7 +131,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
             <div className="absolute inset-0 bg-black/40" onClick={() => setShowUploadModal(false)}></div>
             <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-lg mx-4 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Contract</h3>
-              <p className="text-sm text-gray-600 mb-4">TXT, PDF, and DOCX are supported. Scanned images without selectable text aren’t supported yet.</p>
+              <p className="text-sm text-gray-600 mb-4">TXT and DOCX are supported. PDF support is temporarily unavailable - please copy/paste PDF text or convert to TXT first.</p>
 
               {uploadError && (
                 <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded p-2">{uploadError}</div>
@@ -139,7 +139,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
 
               <input
                 type="file"
-                accept=".txt,.pdf,.docx,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={async (e) => {
                   setUploadError('')
                   const f = e.target.files?.[0]
@@ -154,7 +154,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                     reader.readAsText(f)
                     return
                   }
-                  if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf') || f.name.toLowerCase().endsWith('.docx')) {
+                  if (f.name.toLowerCase().endsWith('.docx')) {
                     try {
                       const form = new FormData()
                       form.append('file', f)
@@ -168,7 +168,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                     }
                     return
                   }
-                  setUploadError('Unsupported file type. Please upload PDF, DOCX, or TXT.')
+                  setUploadError('Unsupported file type. Please upload DOCX or TXT.')
                 }}
                 className="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer"
               />
