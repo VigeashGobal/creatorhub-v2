@@ -461,9 +461,9 @@ export default function LegalSupport() {
             </div>
           )}
 
-          {!analysisResult && (
+          {!analysisResult && !isAnalyzing && (
             <div className="text-center py-8 text-gray-500">
-              Upload a contract and click &quot;Analyze Contract&quot; to get started
+              Upload a contract to get started
             </div>
           )}
         </div>
