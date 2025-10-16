@@ -26,6 +26,9 @@ dependencies:
   next:
     specifier: 14.0.0
     version: 14.0.0(react-dom@18.3.1)(react@18.3.1)
+  openai:
+    specifier: ^6.3.0
+    version: 6.3.0(zod@4.1.12)
   postcss:
     specifier: ^8
     version: 8.5.6
@@ -44,6 +47,9 @@ dependencies:
   typescript:
     specifier: ^5
     version: 5.9.2
+  zod:
+    specifier: ^4.1.12
+    version: 4.1.12
 
 devDependencies:
   eslint:
@@ -2579,6 +2585,21 @@ packages:
       wrappy: 1.0.2
     dev: true
 
+  /openai@6.3.0(zod@4.1.12):
+    resolution: {integrity: sha512-E6vOGtZvdcb4yXQ5jXvDlUG599OhIkb/GjBLZXS+qk0HF+PJReIldEc9hM8Ft81vn+N6dRdFRb7BZNK8bbvXrw==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.25 || ^4.0
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      zod: 4.1.12
+    dev: false
+
   /optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -3612,3 +3633,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod@4.1.12:
+    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
+    dev: false
