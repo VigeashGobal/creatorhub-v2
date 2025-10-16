@@ -349,7 +349,7 @@ export default function Home() {
       case 'projects':
         return <ProjectManagement userData={userData} onReset={handleReset} />
       case 'legal':
-        return <LegalSupport userData={userData} onReset={handleReset} />
+        return <LegalSupport />
       case 'invoicing':
         return <Invoicing userData={userData} onReset={handleReset} />
       default:
