@@ -139,7 +139,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
     } catch (e: any) {
       console.error('Analysis error:', e)
       setAnalysisResult({ 
-        summary: 'Analysis failed', 
+        summary: `Analysis failed: ${e.message}`, 
         keyTerms: [], 
         risks: [], 
         suggestions: [] 

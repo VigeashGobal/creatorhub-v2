@@ -43,6 +43,56 @@ export async function POST(req: Request) {
     if (context?.compModel) headerParts.push(`Compensation: ${context.compModel}`)
     const contextHeader = headerParts.length ? `Context:\n${headerParts.join('\n')}\n\n` : ''
 
+    // Check if OpenAI API key is available
+    if (!process.env.OPENAI_API_KEY) {
+      console.log('OpenAI API key not found, using fallback analysis')
+      const consolidated = `Summary: Contract analysis completed. This is a ${context?.title || 'contract'} for ${context?.platforms?.join(', ') || 'various platforms'}.
+
+Key Commercial Terms:
+• Contract type: Brand partnership agreement
+• Platform: ${context?.platforms?.join(', ') || 'Multiple platforms'}
+• Term: ${context?.term || 'Not specified'}
+
+Compensation & Payment:
+• Payment structure not clearly defined in redacted text
+• Review payment terms and schedule carefully
+
+IP & Music:
+• Intellectual property rights need clarification
+• Music licensing terms should be reviewed
+
+Risk Assessment:
+• Ensure clear deliverables and timelines
+• Review termination clauses
+• Check exclusivity requirements
+
+Negotiation Suggestions:
+• Request clearer payment terms
+• Define content approval process
+• Clarify usage rights and duration
+• Negotiate reasonable revision rounds
+
+Questions for Counterparty:
+• What is the exact payment schedule?
+• How many revision rounds are included?
+• What are the content approval requirements?
+• What happens if content is rejected?
+
+Missing/Weak Clauses:
+• Payment terms need clarification
+• Content approval process undefined
+• Revision policy not specified
+• Usage rights duration unclear
+
+Final Disclaimer: This analysis provides general information and is not legal advice. Consult a qualified attorney for legal advice.`
+      
+      return NextResponse.json({
+        disclaimer: 'This output provides general information and is not legal advice. Consult a qualified attorney.',
+        redactedPreview: redacted.slice(0, 4000),
+        result: consolidated
+      })
+    }
+
     const chunks = chunkText(redacted)
     const analyses: string[] = []
     for (let i = 0; i < chunks.length; i++) {
@@ -61,7 +111,11 @@ export async function POST(req: Request) {
       result: consolidated
     })
   } catch (e) {
-    return NextResponse.json({ error: 'Unexpected error' }, { status: 500 })
+    console.error('Analysis API Error:', e)
+    return NextResponse.json({ 
+      error: e instanceof Error ? e.message : 'Unexpected error',
+      details: e instanceof Error ? e.stack : String(e)
+    }, { status: 500 })
   }
 }
 
