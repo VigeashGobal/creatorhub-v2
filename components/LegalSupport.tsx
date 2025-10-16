@@ -122,19 +122,48 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       // Parse the structured result from the API
       const result = data.result || ''
       console.log('Raw result:', result)
-      const lines = result.split('\n').filter((line: string) => line.trim())
       
-      // Extract sections from the consolidated result
-      const summary = lines.find((line: string) => line.includes('Summary:'))?.replace('Summary:', '').trim() || 'Analysis completed'
-      const keyTerms = lines.filter((line: string) => line.includes('•') || line.includes('-')).slice(0, 5)
-      const risks = lines.filter((line: string) => line.toLowerCase().includes('risk')).slice(0, 3)
-      const suggestions = lines.filter((line: string) => line.toLowerCase().includes('suggest') || line.toLowerCase().includes('negotiat')).slice(0, 3)
+      // Parse the structured sections from the API response
+      const sections = result.split(/\n(?=[A-Z][a-z\s&]+:)/).reduce((acc: any, section: string) => {
+        const lines = section.split('\n').filter((line: string) => line.trim())
+        if (lines.length === 0) return acc
+        
+        const header = lines[0].replace(':', '').trim()
+        const content = lines.slice(1).filter((line: string) => line.trim())
+        
+        acc[header] = content
+        return acc
+      }, {})
+      
+      // Extract and format the sections
+      const summary = sections['Summary']?.[0] || 'Analysis completed'
+      const keyTerms = [
+        ...(sections['Key Commercial Terms'] || []),
+        ...(sections['Compensation & Payment'] || [])
+      ].slice(0, 6)
+      
+      const risks = [
+        ...(sections['Risk Assessment'] || []),
+        ...(sections['Missing/Weak Clauses'] || [])
+      ].slice(0, 5)
+      
+      const suggestions = [
+        ...(sections['Negotiation Suggestions'] || []),
+        ...(sections['Questions for Counterparty'] || [])
+      ].slice(0, 6)
+      
+      const additionalInfo = {
+        ipMusic: sections['IP & Music'] || [],
+        questions: sections['Questions for Counterparty'] || [],
+        missingClauses: sections['Missing/Weak Clauses'] || []
+      }
       
       setAnalysisResult({
         summary,
         keyTerms,
         risks,
-        suggestions
+        suggestions,
+        additionalInfo
       })
     } catch (e: any) {
       console.error('Analysis error:', e)
@@ -310,9 +339,9 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                   <p className="text-green-800">{analysisResult.summary}</p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-blue-900 mb-2">Key Terms</h4>
+                    <h4 className="font-semibold text-blue-900 mb-2">Key Terms & Payment</h4>
                     <ul className="text-blue-800 space-y-1">
                       {analysisResult.keyTerms?.map((term: string, index: number) => (
                         <li key={index}>• {term}</li>
@@ -321,7 +350,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                   </div>
 
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-orange-900 mb-2">Potential Risks</h4>
+                    <h4 className="font-semibold text-orange-900 mb-2">Risks & Weak Clauses</h4>
                     <ul className="text-orange-800 space-y-1">
                       {analysisResult.risks?.map((risk: string, index: number) => (
                         <li key={index}>• {risk}</li>
@@ -330,12 +359,42 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                   </div>
 
                   <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-purple-900 mb-2">Negotiation Suggestions</h4>
+                    <h4 className="font-semibold text-purple-900 mb-2">Action Items & Negotiation</h4>
                     <ul className="text-purple-800 space-y-1">
                       {analysisResult.suggestions?.map((suggestion: string, index: number) => (
                         <li key={index}>• {suggestion}</li>
                       ))}
                     </ul>
+                  </div>
+
+                  <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-indigo-900 mb-2">Questions to Ask</h4>
+                    <ul className="text-indigo-800 space-y-1">
+                      {analysisResult.additionalInfo?.questions?.map((question: string, index: number) => (
+                        <li key={index}>• {question}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {analysisResult.additionalInfo?.ipMusic?.length > 0 && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-yellow-900 mb-2">IP & Music Rights</h4>
+                    <ul className="text-yellow-800 space-y-1">
+                      {analysisResult.additionalInfo.ipMusic.map((item: string, index: number) => (
+                        <li key={index}>• {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-2">Next Steps</h4>
+                  <div className="text-gray-700 space-y-2">
+                    <p><strong>1. Review & Prioritize:</strong> Go through each section above and identify your top 3 concerns.</p>
+                    <p><strong>2. Prepare Questions:</strong> Use the questions listed to clarify unclear terms with the brand.</p>
+                    <p><strong>3. Negotiate Key Points:</strong> Focus on payment terms, content approval process, and usage rights.</p>
+                    <p><strong>4. Get Legal Review:</strong> Have a qualified attorney review the final contract before signing.</p>
                   </div>
                 </div>
               </div>
