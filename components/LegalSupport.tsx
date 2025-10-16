@@ -131,7 +131,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
             <div className="absolute inset-0 bg-black/40" onClick={() => setShowUploadModal(false)}></div>
             <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-lg mx-4 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Contract</h3>
-              <p className="text-sm text-gray-600 mb-4">TXT supported now. PDF/DOCX support will be added shortly.</p>
+              <p className="text-sm text-gray-600 mb-4">TXT, PDF, and DOCX are supported. Scanned images without selectable text aren’t supported yet.</p>
 
               {uploadError && (
                 <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded p-2">{uploadError}</div>
