@@ -46,43 +46,51 @@ export async function POST(req: Request) {
     // Check if OpenAI API key is available
     if (!process.env.OPENAI_API_KEY) {
       console.log('OpenAI API key not found, using fallback analysis')
-      const consolidated = `Summary: Contract analysis completed. This is a ${context?.title || 'contract'} for ${context?.platforms?.join(', ') || 'various platforms'}.
+      const consolidated = `Summary: This ${context?.title || 'brand partnership'} contract for ${context?.platforms?.join(', ') || 'multiple platforms'} requires careful review of payment terms, content approval processes, and intellectual property rights.
 
 Key Commercial Terms:
-• Contract type: Brand partnership agreement
-• Platform: ${context?.platforms?.join(', ') || 'Multiple platforms'}
-• Term: ${context?.term || 'Not specified'}
+• Contract Type: Brand partnership agreement for ${context?.platforms?.join(', ') || 'social media platforms'}
+• Duration: ${context?.term || 'Term not specified - request clarification'}
+• Platforms: ${context?.platforms?.join(', ') || 'All platforms - verify exclusivity requirements'}
+• Deliverables: ${context?.deliverables || 'Content requirements not clearly defined'}
 
 Compensation & Payment:
-• Payment structure not clearly defined in redacted text
-• Review payment terms and schedule carefully
+• Payment Amount: Not specified in redacted text - this is a critical missing detail
+• Payment Schedule: Request specific payment dates and milestones
+• Late Payment: Check for penalties and interest on overdue payments
+• Currency: Verify payment currency and exchange rate handling
 
 IP & Music:
-• Intellectual property rights need clarification
-• Music licensing terms should be reviewed
+• Content Ownership: Clarify who owns the final content after posting
+• Usage Rights: Define how long the brand can use your content
+• Music Licensing: Ensure you have rights to any music used
+• Brand Assets: Clarify usage of brand logos, products, and trademarks
 
 Risk Assessment:
-• Ensure clear deliverables and timelines
-• Review termination clauses
-• Check exclusivity requirements
+• Content Approval: Unclear approval process could delay posting
+• Termination Clauses: Review early termination penalties and notice periods
+• Exclusivity: Check if you're restricted from working with competitors
+• Force Majeure: Ensure pandemic/emergency clauses protect both parties
 
 Negotiation Suggestions:
-• Request clearer payment terms
-• Define content approval process
-• Clarify usage rights and duration
-• Negotiate reasonable revision rounds
+• Request 50% payment upfront before content creation begins
+• Limit content approval to 2 rounds maximum to prevent delays
+• Negotiate usage rights for 6-12 months maximum, not perpetual
+• Add clause allowing you to decline if content conflicts with your values
 
 Questions for Counterparty:
-• What is the exact payment schedule?
-• How many revision rounds are included?
-• What are the content approval requirements?
-• What happens if content is rejected?
+• What is the exact payment amount and schedule?
+• How many content revisions are included in the fee?
+• What happens if the brand rejects the content after 2 rounds?
+• Can you work with competing brands during the contract term?
+• Who owns the content after the campaign ends?
 
 Missing/Weak Clauses:
-• Payment terms need clarification
-• Content approval process undefined
-• Revision policy not specified
-• Usage rights duration unclear
+• Payment terms are completely undefined - this is the biggest risk
+• No content approval timeline specified
+• Missing force majeure protection for emergencies
+• No clear termination process or notice period
+• Usage rights duration not specified
 
 Final Disclaimer: This analysis provides general information and is not legal advice. Consult a qualified attorney for legal advice.`
       

@@ -124,16 +124,22 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       console.log('Raw result:', result)
       
       // Parse the structured sections from the API response
-      const sections = result.split(/\n(?=[A-Z][a-z\s&]+:)/).reduce((acc: any, section: string) => {
-        const lines = section.split('\n').filter((line: string) => line.trim())
-        if (lines.length === 0) return acc
-        
-        const header = lines[0].replace(':', '').trim()
-        const content = lines.slice(1).filter((line: string) => line.trim())
-        
-        acc[header] = content
-        return acc
-      }, {})
+      const sections: any = {}
+      const lines = result.split('\n').filter((line: string) => line.trim())
+      
+      let currentSection = ''
+      for (const line of lines) {
+        if (line.match(/^[A-Z][a-z\s&]+:$/)) {
+          currentSection = line.replace(':', '').trim()
+          sections[currentSection] = []
+        } else if (currentSection && line.startsWith('•')) {
+          sections[currentSection].push(line.replace('•', '').trim())
+        } else if (currentSection && line.trim()) {
+          sections[currentSection].push(line.trim())
+        }
+      }
+      
+      console.log('Parsed sections:', sections)
       
       // Extract and format the sections
       const summary = sections['Summary']?.[0] || 'Analysis completed'
@@ -389,12 +395,41 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                 )}
 
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">Next Steps</h4>
-                  <div className="text-gray-700 space-y-2">
-                    <p><strong>1. Review & Prioritize:</strong> Go through each section above and identify your top 3 concerns.</p>
-                    <p><strong>2. Prepare Questions:</strong> Use the questions listed to clarify unclear terms with the brand.</p>
-                    <p><strong>3. Negotiate Key Points:</strong> Focus on payment terms, content approval process, and usage rights.</p>
-                    <p><strong>4. Get Legal Review:</strong> Have a qualified attorney review the final contract before signing.</p>
+                  <h4 className="font-semibold text-gray-900 mb-2">Immediate Action Plan</h4>
+                  <div className="text-gray-700 space-y-3">
+                    <div className="bg-red-50 border border-red-200 rounded p-3">
+                      <p className="font-semibold text-red-800">🚨 Critical Issues (Address First):</p>
+                      <ul className="text-red-700 mt-1 space-y-1">
+                        <li>• Payment amount and schedule are missing - this is your biggest risk</li>
+                        <li>• Content approval process is undefined - could delay your payment</li>
+                        <li>• Usage rights duration not specified - could lock up your content forever</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
+                      <p className="font-semibold text-yellow-800">📋 Before You Respond:</p>
+                      <ul className="text-yellow-700 mt-1 space-y-1">
+                        <li>• Calculate your minimum acceptable rate based on your time and reach</li>
+                        <li>• Decide your maximum revision rounds (recommend 2 max)</li>
+                        <li>• Set your preferred usage rights duration (6-12 months max)</li>
+                        <li>• Prepare your counter-offer with specific terms</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-blue-50 border border-blue-200 rounded p-3">
+                      <p className="font-semibold text-blue-800">💬 Your Response Strategy:</p>
+                      <ul className="text-blue-700 mt-1 space-y-1">
+                        <li>• &quot;I&apos;d love to work together! I need clarification on a few key terms...&quot;</li>
+                        <li>• &quot;What&apos;s the payment amount and when would I receive it?&quot;</li>
+                        <li>• &quot;How many content revisions are included in the fee?&quot;</li>
+                        <li>• &quot;What&apos;s the timeline for content approval and posting?&quot;</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-green-50 border border-green-200 rounded p-3">
+                      <p className="font-semibold text-green-800">⚖️ Legal Protection:</p>
+                      <p className="text-green-700">Before signing, have a contract attorney review the final version. The $200-500 cost could save you thousands in disputes.</p>
+                    </div>
                   </div>
                 </div>
               </div>
