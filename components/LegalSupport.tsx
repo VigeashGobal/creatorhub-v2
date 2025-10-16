@@ -139,8 +139,8 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
 
               <input
                 type="file"
-                accept=".txt,.pdf,.doc,.docx,text/plain,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                onChange={(e) => {
+                accept=".txt,.pdf,.docx,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                onChange={async (e) => {
                   setUploadError('')
                   const f = e.target.files?.[0]
                   if (!f) return
@@ -154,11 +154,21 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
                     reader.readAsText(f)
                     return
                   }
-                  if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf') || f.name.toLowerCase().endsWith('.doc') || f.name.toLowerCase().endsWith('.docx')) {
-                    setUploadError('PDF/DOCX extraction is not yet enabled. Please paste text or upload a TXT file.')
+                  if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf') || f.name.toLowerCase().endsWith('.docx')) {
+                    try {
+                      const form = new FormData()
+                      form.append('file', f)
+                      const res = await fetch('/api/legal/extract', { method: 'POST', body: form })
+                      const data = await res.json()
+                      if (!res.ok) throw new Error(data?.error || 'Failed to extract text')
+                      setFileText(data.text || '')
+                      setShowUploadModal(false)
+                    } catch (err: any) {
+                      setUploadError(err.message)
+                    }
                     return
                   }
-                  setUploadError('Unsupported file type. Please upload a TXT file.')
+                  setUploadError('Unsupported file type. Please upload PDF, DOCX, or TXT.')
                 }}
                 className="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer"
               />

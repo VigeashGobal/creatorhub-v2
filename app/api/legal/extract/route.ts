@@ -1,0 +1,63 @@
+import { NextResponse } from 'next/server'
+
+// We intentionally avoid persisting any uploads; everything is processed in-memory
+
+export const runtime = 'nodejs'
+
+export async function POST(req: Request) {
+  try {
+    const form = await req.formData()
+    const file = form.get('file') as File | null
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    }
+
+    const filename = (file as any).name || 'upload'
+    const mime = file.type || ''
+    const ab = await file.arrayBuffer()
+    const buf = Buffer.from(ab)
+
+    let text = ''
+
+    if (mime === 'application/pdf' || filename.toLowerCase().endsWith('.pdf')) {
+      // Minimal PDF text extraction using pdfjs-dist to avoid pdf-parse bundling issues
+      const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs')
+      const loadingTask = pdfjs.getDocument({ data: buf })
+      const pdf = await loadingTask.promise
+      let extracted = ''
+      const maxPages = Math.min(pdf.numPages, 50)
+      for (let p = 1; p <= maxPages; p++) {
+        const page = await pdf.getPage(p)
+        const content = await page.getTextContent()
+        const strings = content.items.map((it: any) => (it?.str ?? ''))
+        extracted += strings.join(' ') + '\n\n'
+      }
+      text = extracted
+    } else if (mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || filename.toLowerCase().endsWith('.docx')) {
+      const mammoth = await import('mammoth')
+      const result = await mammoth.extractRawText({ buffer: buf })
+      text = result.value || ''
+    } else if (mime === 'text/plain' || filename.toLowerCase().endsWith('.txt')) {
+      text = buf.toString('utf8')
+    } else {
+      return NextResponse.json({ error: 'Unsupported file type. Please upload PDF, DOCX, or TXT.' }, { status: 400 })
+    }
+
+    text = text.replace(/\u0000/g, '')
+    if (!text || text.trim().length < 10) {
+      return NextResponse.json({ error: 'Could not extract text. Please ensure the file contains selectable text.' }, { status: 400 })
+    }
+
+    // Enforce a max size of ~1MB of text
+    const MAX_CHARS = 1_000_000
+    if (text.length > MAX_CHARS) {
+      text = text.slice(0, MAX_CHARS)
+    }
+
+    return NextResponse.json({ text })
+  } catch (e) {
+    return NextResponse.json({ error: 'Failed to extract text' }, { status: 500 })
+  }
+}
+
+
