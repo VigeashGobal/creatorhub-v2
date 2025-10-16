@@ -133,14 +133,80 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
         if (line.match(/^#{1,3}\s*[A-Z][a-z\s&]+:?$/) || line.match(/^[A-Z][a-z\s&]+:$/)) {
           currentSection = line.replace(/^#{1,3}\s*/, '').replace(':', '').trim()
           sections[currentSection] = []
-        } else if (currentSection && (line.startsWith('•') || line.startsWith('-') || line.startsWith('*'))) {
-          sections[currentSection].push(line.replace(/^[•\-*]\s*/, '').trim())
-        } else if (currentSection && line.trim() && !line.startsWith('#')) {
+        } else if (currentSection && (line.startsWith('•') || line.startsWith('-') || line.startsWith('*') || line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.') || line.startsWith('4.') || line.startsWith('5.') || line.startsWith('6.'))) {
+          // Handle bullet points and numbered lists
+          const cleanLine = line.replace(/^[•\-*]\s*/, '').replace(/^\d+\.\s*/, '').trim()
+          if (cleanLine) {
+            sections[currentSection].push(cleanLine)
+          }
+        } else if (currentSection && line.trim() && !line.startsWith('#') && !line.match(/^[A-Z][a-z\s&]+:$/)) {
+          // Add any other content to the current section
           sections[currentSection].push(line.trim())
         }
       }
       
       console.log('Parsed sections:', sections)
+      
+      // If parsing failed, try alternative approach
+      if (Object.keys(sections).length === 0 || Object.values(sections).every((arr: any) => arr.length === 0)) {
+        console.log('Primary parsing failed, trying alternative approach...')
+        
+        // Alternative parsing: look for specific patterns
+        const alternativeSections: any = {}
+        
+        // Extract Risk Assessment
+        const riskMatch = result.match(/### Risk Assessment[\s\S]*?(?=###|$)/)
+        if (riskMatch) {
+          const riskContent = riskMatch[0]
+          const riskItems = riskContent.split('\n')
+            .filter((line: string) => line.trim() && !line.startsWith('###'))
+            .map((line: string) => line.replace(/^[•\-*]\s*/, '').replace(/^\d+\.\s*/, '').trim())
+            .filter((item: string) => item.length > 10)
+          alternativeSections['Risk Assessment'] = riskItems
+        }
+        
+        // Extract Negotiation Suggestions
+        const negotiationMatch = result.match(/### Negotiation Suggestions[\s\S]*?(?=###|$)/)
+        if (negotiationMatch) {
+          const negotiationContent = negotiationMatch[0]
+          const negotiationItems = negotiationContent.split('\n')
+            .filter((line: string) => line.trim() && !line.startsWith('###'))
+            .map((line: string) => line.replace(/^[•\-*]\s*/, '').replace(/^\d+\.\s*/, '').trim())
+            .filter((item: string) => item.length > 10)
+          alternativeSections['Negotiation Suggestions'] = negotiationItems
+        }
+        
+        // Extract Questions for Counterparty
+        const questionsMatch = result.match(/### Questions for Counterparty[\s\S]*?(?=###|$)/)
+        if (questionsMatch) {
+          const questionsContent = questionsMatch[0]
+          const questionItems = questionsContent.split('\n')
+            .filter((line: string) => line.trim() && !line.startsWith('###'))
+            .map((line: string) => line.replace(/^[•\-*]\s*/, '').replace(/^\d+\.\s*/, '').trim())
+            .filter((item: string) => item.length > 10)
+          alternativeSections['Questions for Counterparty'] = questionItems
+        }
+        
+        // Extract Missing/Weak Clauses
+        const missingMatch = result.match(/### Missing\/Weak Clauses[\s\S]*?(?=###|$)/)
+        if (missingMatch) {
+          const missingContent = missingMatch[0]
+          const missingItems = missingContent.split('\n')
+            .filter((line: string) => line.trim() && !line.startsWith('###'))
+            .map((line: string) => line.replace(/^[•\-*]\s*/, '').replace(/^\d+\.\s*/, '').trim())
+            .filter((item: string) => item.length > 10)
+          alternativeSections['Missing/Weak Clauses'] = missingItems
+        }
+        
+        console.log('Alternative parsing results:', alternativeSections)
+        
+        // Merge alternative results
+        Object.keys(alternativeSections).forEach(key => {
+          if (!sections[key] || sections[key].length === 0) {
+            sections[key] = alternativeSections[key]
+          }
+        })
+      }
       
       // Extract and format the sections
       const summary = sections['Summary']?.[0] || 'Analysis completed'
