@@ -74,6 +74,7 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
   const [redactedPreview, setRedactedPreview] = useState('')
   const [analysis, setAnalysis] = useState('')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [uploadError, setUploadError] = useState('')
   const [context, setContext] = useState({
     title: '',
     platforms: [] as string[],
@@ -124,6 +125,51 @@ export default function LegalSupport({ userData, onReset }: LegalSupportProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Upload Modal */}
+        {showUploadModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/40" onClick={() => setShowUploadModal(false)}></div>
+            <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-lg mx-4 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Contract</h3>
+              <p className="text-sm text-gray-600 mb-4">TXT supported now. PDF/DOCX support will be added shortly.</p>
+
+              {uploadError && (
+                <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded p-2">{uploadError}</div>
+              )}
+
+              <input
+                type="file"
+                accept=".txt,.pdf,.doc,.docx,text/plain,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                onChange={(e) => {
+                  setUploadError('')
+                  const f = e.target.files?.[0]
+                  if (!f) return
+                  if (f.type === 'text/plain' || f.name.toLowerCase().endsWith('.txt')) {
+                    const reader = new FileReader()
+                    reader.onload = () => {
+                      setFileText(String(reader.result || ''))
+                      setShowUploadModal(false)
+                    }
+                    reader.onerror = () => setUploadError('Failed to read the file. Please try again.')
+                    reader.readAsText(f)
+                    return
+                  }
+                  if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf') || f.name.toLowerCase().endsWith('.doc') || f.name.toLowerCase().endsWith('.docx')) {
+                    setUploadError('PDF/DOCX extraction is not yet enabled. Please paste text or upload a TXT file.')
+                    return
+                  }
+                  setUploadError('Unsupported file type. Please upload a TXT file.')
+                }}
+                className="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer"
+              />
+
+              <div className="mt-4 flex items-center justify-end space-x-2">
+                <button onClick={() => setShowUploadModal(false)} className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button onClick={() => setShowUploadModal(false)} className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">Done</button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Disclaimer */}
         <div className="bg-yellow-50 border border-yellow-200 text-yellow-900 rounded-lg p-4 mb-6">
           This tool provides general informational guidance only and is not legal advice. Consult a qualified attorney for legal advice.
