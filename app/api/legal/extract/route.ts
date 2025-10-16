@@ -20,11 +20,44 @@ export async function POST(req: Request) {
     let text = ''
 
     if (mime === 'application/pdf' || filename.toLowerCase().endsWith('.pdf')) {
-      // For now, return a helpful message about PDF support
-      // PDF extraction requires server-side dependencies that don't work well in Vercel serverless
-      return NextResponse.json({ 
-        error: 'PDF extraction is temporarily unavailable. Please copy and paste the text content directly, or convert the PDF to a text file first.' 
-      }, { status: 400 })
+      // Use pdf2json for serverless compatibility
+      const PDFParser = await import('pdf2json')
+      const pdfParser = new (PDFParser as any).default()
+      
+      const extractedText = await new Promise<string>((resolve, reject) => {
+        pdfParser.on('pdfParser_dataError', (errData: any) => {
+          reject(new Error('Failed to parse PDF: ' + errData.parserError))
+        })
+        
+        pdfParser.on('pdfParser_dataReady', (pdfData: any) => {
+          try {
+            // Extract text from all pages
+            let text = ''
+            if (pdfData.Pages) {
+              for (const page of pdfData.Pages) {
+                if (page.Texts) {
+                  for (const textItem of page.Texts) {
+                    if (textItem.R) {
+                      for (const r of textItem.R) {
+                        if (r.T) {
+                          text += decodeURIComponent(r.T) + ' '
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            resolve(text.trim())
+          } catch (error) {
+            reject(new Error('Failed to extract text from PDF'))
+          }
+        })
+        
+        pdfParser.parseBuffer(buf)
+      })
+      
+      text = extractedText
     } else if (mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || filename.toLowerCase().endsWith('.docx')) {
       const mammoth = await import('mammoth')
       const result = await mammoth.extractRawText({ buffer: buf })
