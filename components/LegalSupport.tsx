@@ -8,8 +8,6 @@ export default function LegalSupport() {
   const [analysisResult, setAnalysisResult] = useState<any>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [uploadError, setUploadError] = useState('')
-  const [contractTitle, setContractTitle] = useState('')
-  const [platforms, setPlatforms] = useState('')
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploadError('')
@@ -21,6 +19,8 @@ export default function LegalSupport() {
       reader.onload = () => {
         setFileText(String(reader.result || ''))
         setUploadError('')
+        // Auto-analyze after successful upload
+        setTimeout(() => handleAnalyze(), 500)
       }
       reader.onerror = () => setUploadError('Failed to read the file. Please try again.')
       reader.readAsText(f)
@@ -41,6 +41,8 @@ export default function LegalSupport() {
         }
         setFileText(data.text || '')
         setUploadError('')
+        // Auto-analyze after successful upload
+        setTimeout(() => handleAnalyze(), 500)
       } catch (err: any) {
         setUploadError(err.message)
       }
@@ -64,8 +66,8 @@ export default function LegalSupport() {
           originalText: fileText,
           mime: 'text/plain',
           context: {
-            title: contractTitle,
-            platforms: platforms.split(',').map(s => s.trim()).filter(Boolean)
+            title: 'Contract Analysis',
+            platforms: ['Multiple Platforms']
           }
         })
       })
@@ -291,75 +293,53 @@ export default function LegalSupport() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Upload Section */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Upload Contract</h2>
-          
-          {uploadError && (
-            <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded p-3">{uploadError}</div>
-          )}
+        <div className="bg-white rounded-lg border border-gray-200 p-8 mb-8">
+          <div className="max-w-md mx-auto text-center">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Upload Contract</h2>
+            
+            {uploadError && (
+              <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded p-3">{uploadError}</div>
+            )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contract File</label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                {fileText ? (
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8">
+              {fileText ? (
+                <div className="space-y-4">
                   <div className="text-green-600 font-medium">Contract loaded successfully</div>
-                ) : (
-                  <div>
-                    <input
-                      type="file"
-                      accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <label
-                      htmlFor="file-upload"
-                      className="cursor-pointer inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                    >
-                      Choose File
-                    </label>
-                    <p className="text-sm text-gray-500 mt-2">TXT and DOCX files supported</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contract Title</label>
-              <input
-                type="text"
-                value={contractTitle}
-                onChange={(e) => setContractTitle(e.target.value)}
-                placeholder="Contract name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Platforms</label>
-              <input
-                type="text"
-                value={platforms}
-                onChange={(e) => setPlatforms(e.target.value)}
-                placeholder="YouTube, Instagram"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              />
+                  {isAnalyzing && (
+                    <div className="space-y-2">
+                      <div className="flex justify-center">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
+                      </div>
+                      <p className="text-sm text-gray-600">Analyzing contract... This may take 10-30 seconds</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <input
+                    type="file"
+                    accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label
+                    htmlFor="file-upload"
+                    className="cursor-pointer inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-lg font-medium"
+                  >
+                    Choose File
+                  </label>
+                  <p className="text-sm text-gray-500 mt-4">TXT and DOCX files supported</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Analysis Section - Full Width */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex justify-between items-center mb-6">
+          <div className="mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Contract Analysis</h2>
-            <button
-              onClick={handleAnalyze}
-              disabled={!fileText || isAnalyzing}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isAnalyzing ? 'Analyzing...' : 'Analyze Contract'}
-            </button>
           </div>
 
           {/* Disclaimer */}
