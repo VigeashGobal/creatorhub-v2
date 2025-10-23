@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global Utility Classes */
+@layer components {
+  .surface { 
+    @apply bg-bg-soft border border-edge-subtle rounded-xl2 shadow-card; 
+  }
+  .p-card { 
+    @apply p-5 md:p-6 lg:p-7; 
+  }
+  .h1 { 
+    @apply text-3xl md:text-4xl font-semibold text-fg-high tracking-tight; 
+  }
+  .h2 { 
+    @apply text-xl md:text-2xl font-semibold text-fg-high; 
+  }
+  .body { 
+    @apply text-sm md:text-[15px] leading-6 text-fg-base; 
+  }
+  .muted { 
+    @apply text-sm text-fg-dim; 
+  }
+  .hr { 
+    @apply border-t border-edge-subtle; 
+  }
+  .ring-subtle { 
+    @apply ring-1 ring-edge-subtle; 
+  }
+}
+
 /* Daily Pulse Dark Theme Design System */
 :root {
   /* Dark Theme Colors */
