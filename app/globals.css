@@ -35,82 +35,115 @@
   --gradient-success: linear-gradient(135deg, #10B981 0%, #34D399 100%);
 }
 
-/* Professional Typography */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Bold, Dynamic Typography */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* Base Styles */
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--dark-bg-primary);
   color: var(--text-primary);
   line-height: 1.5;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
 }
 
-/* Professional Typography Scale */
+/* Bold, Dynamic Typography Scale */
 .text-display {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.0;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .text-heading-xl {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.text-heading-lg {
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.text-heading {
+  font-size: 1.75rem;
+  font-weight: 600;
   line-height: 1.2;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
-.text-heading-lg {
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-
-.text-heading {
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--text-primary);
-  letter-spacing: -0.005em;
-}
-
 .text-body-lg {
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-.text-body {
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.25rem;
+  font-weight: 500;
   line-height: 1.5;
   color: var(--text-secondary);
 }
 
-.text-caption {
-  font-size: 0.875rem;
+.text-body {
+  font-size: 1.125rem;
   font-weight: 500;
   line-height: 1.4;
-  color: var(--text-muted);
-  letter-spacing: 0.01em;
+  color: var(--text-secondary);
 }
 
-.text-overline {
-  font-size: 0.75rem;
+.text-caption {
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.3;
   color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.text-overline {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Monospace for numbers and data */
+.text-mono {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-weight: 600;
   letter-spacing: 0.05em;
+}
+
+/* Bold accent text */
+.text-accent {
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+}
+
+/* Loud, impactful text for key metrics */
+.text-impact {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Dynamic text with glow effect */
+.text-glow {
+  text-shadow: 0 0 20px rgba(74, 158, 255, 0.5);
+  color: var(--accent-blue);
 }
 
 /* Enhanced Card Styles with Depth */

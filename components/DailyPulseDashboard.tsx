@@ -82,17 +82,17 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Performance Score Card */}
         <div className="card-dark p-8 animate-float">
-          <div className="text-center mb-6">
-            <div className="text-display text-white mb-4">83</div>
-            <div className="flex items-center justify-center mb-4">
-              <div className="performance-tier expert mr-3">EXPERT</div>
-              <div className="achievement-badge gold">TOP 5%</div>
-            </div>
-            <div className="text-heading text-blue-400 mb-4">STRONG PERFORMANCE</div>
-            <p className="text-body text-gray-300 leading-relaxed">
-              Consider reviewing outstanding & overdue payments, optimized posting times and your remaining action items for today.
-            </p>
+        <div className="text-center mb-6">
+          <div className="text-display text-white mb-4 text-glow">83</div>
+          <div className="flex items-center justify-center mb-4">
+            <div className="performance-tier expert mr-3">EXPERT</div>
+            <div className="achievement-badge gold">TOP 5%</div>
           </div>
+          <div className="text-heading text-accent mb-4">STRONG PERFORMANCE</div>
+          <p className="text-body text-gray-300 leading-relaxed">
+            Consider reviewing outstanding & overdue payments, optimized posting times and your remaining action items for today.
+          </p>
+        </div>
         </div>
 
         {/* Key Metrics */}
@@ -100,8 +100,8 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
           <div className="card-dark p-6 glow-blue">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-overline text-gray-400 mb-1">Total Followers</div>
-                <div className="text-heading-lg text-white">294K</div>
+                <div className="text-overline text-gray-400 mb-1">TOTAL FOLLOWERS</div>
+                <div className="text-impact text-white text-mono">294K</div>
                 <div className="text-caption text-green-400">+12.5% this month</div>
               </div>
               <Users className="w-8 h-8 text-blue-400" />
@@ -111,8 +111,8 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
           <div className="card-dark p-6 glow-purple">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-overline text-gray-400 mb-1">Avg Engagement</div>
-                <div className="text-heading-lg text-white">9.2%</div>
+                <div className="text-overline text-gray-400 mb-1">AVG ENGAGEMENT</div>
+                <div className="text-impact text-white text-mono">9.2%</div>
                 <div className="text-caption text-green-400">+2.1% this week</div>
               </div>
               <Heart className="w-8 h-8 text-purple-400" />
@@ -122,8 +122,8 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
           <div className="card-dark p-6 glow-green">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-overline text-gray-400 mb-1">Content Views</div>
-                <div className="text-heading-lg text-white">2.4M</div>
+                <div className="text-overline text-gray-400 mb-1">CONTENT VIEWS</div>
+                <div className="text-impact text-white text-mono">2.4M</div>
                 <div className="text-caption text-green-400">+18.3% this month</div>
               </div>
               <Eye className="w-8 h-8 text-green-400" />
@@ -133,8 +133,8 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
           <div className="card-dark p-6 glow-pink">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-overline text-gray-400 mb-1">Comments</div>
-                <div className="text-heading-lg text-white">8.7K</div>
+                <div className="text-overline text-gray-400 mb-1">COMMENTS</div>
+                <div className="text-impact text-white text-mono">8.7K</div>
                 <div className="text-caption text-green-400">+5.2% this week</div>
               </div>
               <MessageCircle className="w-8 h-8 text-pink-400" />
@@ -149,9 +149,9 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
         <div className="card-dark p-8 glow-blue">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <div className="wealth-indicator text-4xl font-bold text-white mb-2">$24,680</div>
-              <div className="text-caption text-gray-400 mb-2">Total Portfolio Value</div>
-              <div className="revenue-streak">7-Day Growth Streak</div>
+              <div className="wealth-indicator text-4xl font-bold text-white mb-2 text-mono">$24,680</div>
+              <div className="text-caption text-gray-400 mb-2">TOTAL PORTFOLIO VALUE</div>
+              <div className="revenue-streak">7-DAY GROWTH STREAK</div>
             </div>
             <div className="flex space-x-2">
               <button 
