@@ -46,7 +46,7 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
       </div>
 
       {/* Pulse Score Section */}
-      <div className="bg-gray-800 rounded-2xl p-6 mb-6" style={{ backgroundColor: '#2A2A3A' }}>
+      <div className="card-dark p-6 mb-6 animate-float">
         {/* Pulse Graph */}
         <div className="mb-4">
           <div className="h-16 flex items-end justify-between">
@@ -77,7 +77,7 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
       </div>
 
       {/* Total Value Section */}
-      <div className="bg-gray-800 rounded-2xl p-6 mb-6" style={{ backgroundColor: '#2A2A3A' }}>
+      <div className="card-dark p-6 mb-6 glow-blue">
         <div className="flex justify-between items-center mb-4">
           <div>
             <div className="text-3xl font-bold text-white">$24,680</div>
@@ -115,7 +115,7 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
       </div>
 
       {/* Rev Summary Section */}
-      <div className="bg-gray-800 rounded-2xl p-6 mb-6" style={{ backgroundColor: '#2A2A3A' }}>
+      <div className="card-dark p-6 mb-6 glow-purple">
         <div className="flex items-center mb-4">
           <BarChart3 className="w-5 h-5 text-blue-400 mr-2" />
           <h3 className="text-lg font-semibold text-white">Rev Summary</h3>
@@ -157,7 +157,7 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
       </div>
 
       {/* Pulse Trends Section */}
-      <div className="bg-gray-800 rounded-2xl p-6" style={{ backgroundColor: '#2A2A3A' }}>
+      <div className="card-dark p-6 glow-green">
         <div className="flex items-center mb-4">
           <Activity className="w-5 h-5 text-blue-400 mr-2" />
           <h3 className="text-lg font-semibold text-white">Pulse</h3>
