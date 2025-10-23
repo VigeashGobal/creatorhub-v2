@@ -2,7 +2,7 @@
 
 import { Card } from '@/components/ui/Card'
 import { KpiCard } from '@/components/ui/KpiCard'
-import { DollarSign, TrendingUp, Calendar, CreditCard, ArrowUpRight, ArrowDownLeft, Target, Zap, Trophy, Star, Award, Crown, Flame, Sparkles } from 'lucide-react'
+import { DollarSign, TrendingUp, Calendar, CreditCard, ArrowUpRight, Target, Zap, Trophy, Star, Award, Crown, Flame, Sparkles } from 'lucide-react'
 
 interface DailyPulseDashboardProps {
   userData: any
@@ -33,12 +33,6 @@ const upcomingRevenue = [
   { source: 'Affiliate Commissions', amount: 1800, dueDate: 'Aug 30', status: 'confirmed', type: 'affiliate' },
 ]
 
-const revenueStreaks = [
-  { type: 'Monthly Growth', streak: 4, maxStreak: 6, reward: '+$2K bonus' },
-  { type: 'Brand Partnerships', streak: 3, maxStreak: 5, reward: '+$5K potential' },
-  { type: 'Content Consistency', streak: 7, maxStreak: 30, reward: '+15% engagement' },
-]
-
 export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDashboardProps) {
   const totalRevenue = 35400
   const monthlyTarget = 35000
@@ -48,13 +42,41 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
   return (
     <div className="min-h-screen bg-bg">
       <div className="mx-auto max-w-[1280px] px-4 md:px-6 lg:px-8 py-6 md:py-8 grid grid-cols-12 gap-4 md:gap-6">
-        {/* Hero Revenue Section */}
+        {/* Header */}
+        <div className="col-span-12 mb-6">
+          <h1 className="h1">Daily Pulse</h1>
+          <p className="muted">Creator Performance Analytics</p>
+        </div>
+
+        {/* Main Revenue Metrics */}
+        <div className="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+          <KpiCard 
+            label="This Month's Revenue" 
+            value="$35,400" 
+            delta="+22.5% vs last month" 
+            icon="users" 
+          />
+          <KpiCard 
+            label="Upcoming Revenue" 
+            value="$25,500" 
+            delta="4 payments pending" 
+            icon="heart" 
+          />
+          <KpiCard 
+            label="Monthly Goal Progress" 
+            value="101%" 
+            delta="Target exceeded" 
+            icon="eye" 
+          />
+        </div>
+
+        {/* Revenue Overview & Achievements */}
         <div className="col-span-12 lg:col-span-8">
           <Card>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="h1">Your Revenue Dashboard</h1>
-                <p className="muted">Track your earnings and unlock new opportunities</p>
+                <h2 className="h2">Revenue Overview</h2>
+                <p className="muted">Monthly earnings and growth trends</p>
               </div>
               <div className="flex items-center gap-2">
                 <div className="text-xs px-3 py-1 rounded-full bg-accent-green/10 text-accent-green ring-1 ring-accent-green/20">
@@ -64,40 +86,8 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
               </div>
             </div>
 
-            {/* Main Revenue Display */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-5xl md:text-6xl font-bold text-fg-high mb-2">${totalRevenue.toLocaleString()}</div>
-                <div className="text-sm text-fg-dim mb-2">This Month&apos;s Revenue</div>
-                <div className="flex items-center justify-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-accent-green" />
-                  <span className="text-sm text-accent-green font-semibold">+22.5% vs last month</span>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-fg-high mb-2">${upcomingTotal.toLocaleString()}</div>
-                <div className="text-sm text-fg-dim mb-2">Upcoming Revenue</div>
-                <div className="flex items-center justify-center gap-2">
-                  <Calendar className="w-4 h-4 text-accent-blue" />
-                  <span className="text-sm text-accent-blue font-semibold">4 payments pending</span>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-fg-high mb-2">{Math.round(progressPercentage)}%</div>
-                <div className="text-sm text-fg-dim mb-2">Monthly Goal Progress</div>
-                <div className="w-full bg-bg-sunken rounded-full h-2 mt-2">
-                  <div 
-                    className="h-2 rounded-full bg-gradient-to-r from-accent-green to-accent-blue"
-                    style={{ width: `${Math.min(progressPercentage, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* Revenue Chart */}
-            <div className="h-48 flex items-end justify-between gap-2">
+            <div className="h-48 flex items-end justify-between gap-2 mb-6">
               {revenueData.map((data, index) => (
                 <div key={index} className="flex-1 flex flex-col items-center">
                   <div className="w-full flex flex-col items-center gap-1 mb-2">
@@ -115,22 +105,38 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
                 </div>
               ))}
             </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-bg-sunken rounded-lg">
+                <div className="text-2xl font-bold text-fg-high">$35.4K</div>
+                <div className="text-xs text-fg-dim">Current Month</div>
+              </div>
+              <div className="text-center p-4 bg-bg-sunken rounded-lg">
+                <div className="text-2xl font-bold text-fg-high">+22.5%</div>
+                <div className="text-xs text-fg-dim">Growth Rate</div>
+              </div>
+              <div className="text-center p-4 bg-bg-sunken rounded-lg">
+                <div className="text-2xl font-bold text-fg-high">101%</div>
+                <div className="text-xs text-fg-dim">Goal Progress</div>
+              </div>
+            </div>
           </Card>
         </div>
 
-        {/* Achievements & Streaks */}
+        {/* Achievements */}
         <div className="col-span-12 lg:col-span-4">
           <Card>
             <div className="flex items-center justify-between mb-6">
               <h2 className="h2">Achievements</h2>
-              <Trophy className="w-6 h-6 text-accent-yellow" />
+              <Trophy className="w-5 h-5 text-accent-yellow" />
             </div>
             
             <div className="space-y-3">
               {achievements.map((achievement) => (
                 <div key={achievement.id} className={`p-3 rounded-lg transition-all ${
                   achievement.unlocked 
-                    ? 'bg-accent-green/10 border border-accent-green/20' 
+                    ? 'bg-accent-green/5 border border-accent-green/20' 
                     : 'bg-bg-sunken'
                 }`}>
                   <div className="flex items-center gap-3">
@@ -158,40 +164,12 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
           </Card>
         </div>
 
-        {/* Revenue Streaks */}
-        <div className="col-span-12 lg:col-span-6">
-          <Card>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="h2">Revenue Streaks</h2>
-              <Flame className="w-6 h-6 text-accent-orange" />
-            </div>
-            
-            <div className="space-y-4">
-              {revenueStreaks.map((streak, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="body font-semibold text-fg-high">{streak.type}</span>
-                    <span className="text-sm text-fg-high">{streak.streak}/{streak.maxStreak}</span>
-                  </div>
-                  <div className="w-full bg-bg-sunken rounded-full h-2">
-                    <div 
-                      className="h-2 rounded-full bg-gradient-to-r from-accent-orange to-accent-yellow"
-                      style={{ width: `${(streak.streak / streak.maxStreak) * 100}%` }}
-                    />
-                  </div>
-                  <div className="text-xs text-fg-dim">{streak.reward}</div>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-
         {/* Upcoming Revenue */}
         <div className="col-span-12 lg:col-span-6">
           <Card>
             <div className="flex items-center justify-between mb-6">
               <h2 className="h2">Upcoming Revenue</h2>
-              <Calendar className="w-6 h-6 text-accent-blue" />
+              <Calendar className="w-5 h-5 text-accent-blue" />
             </div>
             
             <div className="space-y-3">
@@ -217,33 +195,78 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
           </Card>
         </div>
 
-        {/* Quick Revenue Actions */}
+        {/* Revenue Streaks */}
+        <div className="col-span-12 lg:col-span-6">
+          <Card>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="h2">Revenue Streaks</h2>
+              <Flame className="w-5 h-5 text-accent-orange" />
+            </div>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="body font-semibold text-fg-high">Monthly Growth</span>
+                  <span className="text-sm text-fg-high">4/6</span>
+                </div>
+                <div className="w-full bg-bg-sunken rounded-full h-2">
+                  <div className="h-2 rounded-full bg-gradient-to-r from-accent-orange to-accent-yellow" style={{ width: '67%' }} />
+                </div>
+                <div className="text-xs text-fg-dim">+$2K bonus</div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="body font-semibold text-fg-high">Brand Partnerships</span>
+                  <span className="text-sm text-fg-high">3/5</span>
+                </div>
+                <div className="w-full bg-bg-sunken rounded-full h-2">
+                  <div className="h-2 rounded-full bg-gradient-to-r from-accent-orange to-accent-yellow" style={{ width: '60%' }} />
+                </div>
+                <div className="text-xs text-fg-dim">+$5K potential</div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="body font-semibold text-fg-high">Content Consistency</span>
+                  <span className="text-sm text-fg-high">7/30</span>
+                </div>
+                <div className="w-full bg-bg-sunken rounded-full h-2">
+                  <div className="h-2 rounded-full bg-gradient-to-r from-accent-orange to-accent-yellow" style={{ width: '23%' }} />
+                </div>
+                <div className="text-xs text-fg-dim">+15% engagement</div>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Quick Actions */}
         <div className="col-span-12">
           <Card>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="h2">Boost Your Revenue</h2>
+              <h2 className="h2">Quick Actions</h2>
               <Zap className="w-6 h-6 text-accent-blue" />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <button className="flex items-center justify-center gap-2 p-4 bg-accent-blue/10 hover:bg-accent-blue/20 rounded-lg transition-colors">
-                <DollarSign className="w-5 h-5 text-accent-blue" />
-                <span className="text-sm font-semibold">Request Payment</span>
+              <button className="flex items-center justify-center gap-2 p-4 bg-bg-sunken hover:bg-bg-sunken/80 rounded-lg transition-colors">
+                <DollarSign className="w-5 h-5 text-fg-dim" />
+                <span className="text-sm font-semibold text-fg-high">Request Payment</span>
               </button>
               
-              <button className="flex items-center justify-center gap-2 p-4 bg-accent-green/10 hover:bg-accent-green/20 rounded-lg transition-colors">
-                <Target className="w-5 h-5 text-accent-green" />
-                <span className="text-sm font-semibold">Set Revenue Goals</span>
+              <button className="flex items-center justify-center gap-2 p-4 bg-bg-sunken hover:bg-bg-sunken/80 rounded-lg transition-colors">
+                <Target className="w-5 h-5 text-fg-dim" />
+                <span className="text-sm font-semibold text-fg-high">Set Revenue Goals</span>
               </button>
               
-              <button className="flex items-center justify-center gap-2 p-4 bg-accent-purple/10 hover:bg-accent-purple/20 rounded-lg transition-colors">
-                <TrendingUp className="w-5 h-5 text-accent-purple" />
-                <span className="text-sm font-semibold">Find Opportunities</span>
+              <button className="flex items-center justify-center gap-2 p-4 bg-bg-sunken hover:bg-bg-sunken/80 rounded-lg transition-colors">
+                <TrendingUp className="w-5 h-5 text-fg-dim" />
+                <span className="text-sm font-semibold text-fg-high">Find Opportunities</span>
               </button>
               
-              <button className="flex items-center justify-center gap-2 p-4 bg-accent-yellow/10 hover:bg-accent-yellow/20 rounded-lg transition-colors">
-                <Award className="w-5 h-5 text-accent-yellow" />
-                <span className="text-sm font-semibold">View Achievements</span>
+              <button className="flex items-center justify-center gap-2 p-4 bg-bg-sunken hover:bg-bg-sunken/80 rounded-lg transition-colors">
+                <Award className="w-5 h-5 text-fg-dim" />
+                <span className="text-sm font-semibold text-fg-high">View Analytics</span>
               </button>
             </div>
           </Card>
