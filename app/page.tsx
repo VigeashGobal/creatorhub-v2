@@ -1,23 +1,32 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { User, Mail, Youtube, Instagram, Music } from 'lucide-react'
 import OnboardingForm from '@/components/OnboardingForm'
-import AnalyticsDashboard from '@/components/AnalyticsDashboard'
+import DailyPulseDashboard from '@/components/DailyPulseDashboard'
+import FinanceDashboard from '@/components/FinanceDashboard'
+import ExploreTrends from '@/components/ExploreTrends'
+import WorkflowTools from '@/components/WorkflowTools'
+import Navigation from '@/components/Navigation'
+
+interface UserData {
+  name: string
+  youtube?: string
+  instagram?: string
+  tiktok?: string
+}
 
 export default function Home() {
-  const [userData, setUserData] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [userData, setUserData] = useState<UserData | null>(null)
+  const [currentPage, setCurrentPage] = useState('analytics')
 
   useEffect(() => {
-    // Check if user data exists in localStorage
-    const storedData = localStorage.getItem('creatorhub-user')
-    if (storedData) {
-      setUserData(JSON.parse(storedData))
+    const savedUserData = localStorage.getItem('creatorhub-user')
+    if (savedUserData) {
+      setUserData(JSON.parse(savedUserData))
     }
   }, [])
 
-  const handleOnboardingComplete = (data: any) => {
+  const handleSaveUserData = (data: UserData) => {
     setUserData(data)
     localStorage.setItem('creatorhub-user', JSON.stringify(data))
   }
@@ -27,34 +36,35 @@ export default function Home() {
     localStorage.removeItem('creatorhub-user')
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Fetching your analytics...</p>
-        </div>
-      </div>
-    )
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'analytics':
+        return <DailyPulseDashboard userData={userData} onReset={handleReset} />
+      case 'trends':
+        return <ExploreTrends userData={userData} onReset={handleReset} />
+      case 'workflow':
+        return <WorkflowTools userData={userData} onReset={handleReset} />
+      case 'financial':
+        return <FinanceDashboard userData={userData} onReset={handleReset} />
+      default:
+        return <DailyPulseDashboard userData={userData} onReset={handleReset} />
+    }
   }
 
   if (!userData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">CreatorHub</h1>
-            <p className="text-gray-600">Track your social media performance across all platforms</p>
-          </div>
-          <OnboardingForm onComplete={handleOnboardingComplete} />
-        </div>
-      </div>
-    )
+    return <OnboardingForm onComplete={handleSaveUserData} />
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AnalyticsDashboard userData={userData} onReset={handleReset} />
+    <div className="min-h-screen flex" style={{ backgroundColor: '#1A1A2E' }}>
+      <Navigation 
+        currentPage={currentPage} 
+        onPageChange={setCurrentPage} 
+        onReset={handleReset} 
+      />
+      <div className="flex-1 pb-16 lg:pb-0">
+      {renderCurrentPage()}
+      </div>
     </div>
   )
 }
