@@ -25,25 +25,29 @@ export default function FinanceDashboard({ userData, onReset }: FinanceDashboard
   return (
     <div className="min-h-screen p-4" style={{ backgroundColor: '#1A1A2E' }}>
       {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-white mb-2">Finance</h1>
+      <div className="text-center mb-8">
+        <h1 className="text-heading-xl text-white mb-2">Finance</h1>
+        <p className="text-caption text-gray-400">Revenue & Payment Management</p>
       </div>
 
       {/* Financial Summary Cards */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="card-dark p-4 glow-blue">
-          <div className="text-xs text-gray-400 mb-1">Available</div>
-          <div className="text-2xl font-bold text-white">$6,240</div>
+          <div className="text-overline text-gray-400 mb-2">Available</div>
+          <div className="text-heading-lg text-white mb-1">$6,240</div>
+          <div className="achievement-badge gold">Ready</div>
         </div>
         
         <div className="card-dark p-4 glow-purple">
-          <div className="text-xs text-gray-400 mb-1">Pending</div>
-          <div className="text-2xl font-bold text-white">$3,510</div>
+          <div className="text-overline text-gray-400 mb-2">Pending</div>
+          <div className="text-heading-lg text-white mb-1">$3,510</div>
+          <div className="milestone-indicator">Processing</div>
         </div>
         
         <div className="card-dark p-4 glow-pink">
-          <div className="text-xs text-gray-400 mb-1">Overdue</div>
-          <div className="text-2xl font-bold text-red-400">$1,240</div>
+          <div className="text-overline text-gray-400 mb-2">Overdue</div>
+          <div className="text-heading-lg text-red-400 mb-1">$1,240</div>
+          <div className="performance-tier rising">Action Required</div>
         </div>
       </div>
 
