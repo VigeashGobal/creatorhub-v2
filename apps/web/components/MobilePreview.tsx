@@ -5,6 +5,8 @@ import { Smartphone, Monitor, X } from 'lucide-react'
 
 interface MobilePreviewContextType {
   isMobileView: boolean
+  mobileTabBar?: React.ReactNode
+  setMobileTabBar?: (node: React.ReactNode) => void
 }
 
 const MobilePreviewContext = createContext<MobilePreviewContextType>({ isMobileView: false })
@@ -17,6 +19,7 @@ interface MobilePreviewProps {
 
 export default function MobilePreview({ children }: MobilePreviewProps) {
   const [isMobileView, setIsMobileView] = useState(false)
+  const [mobileTabBar, setMobileTabBar] = useState<React.ReactNode>(null)
 
   if (!isMobileView) {
     return (
@@ -36,7 +39,7 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
   }
 
   return (
-    <MobilePreviewContext.Provider value={{ isMobileView: true }}>
+    <MobilePreviewContext.Provider value={{ isMobileView: true, mobileTabBar, setMobileTabBar }}>
       <div className="fixed inset-0 z-50 bg-bg-sunken flex items-center justify-center p-4">
       {/* Controls */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-bg-soft px-4 py-2 rounded-full border border-edge-subtle shadow-lg">
@@ -89,15 +92,19 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
             </div>
 
             {/* App Content - Scrollable */}
-            <div className="w-full h-full overflow-y-auto overflow-x-hidden pt-12 pb-6" style={{ scrollbarWidth: 'thin' }}>
-              <div className="min-h-full w-full mobile-preview-content">
+            <div className="w-full h-full overflow-y-auto overflow-x-hidden pt-12" style={{ scrollbarWidth: 'thin' }}>
+              <div className="min-h-full w-full mobile-preview-content pb-24">
                 {children}
               </div>
             </div>
-          </div>
 
-          {/* Home Indicator */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-white/20 rounded-full"></div>
+            {/* Mobile Tab Bar - Fixed at bottom inside phone */}
+            {mobileTabBar && (
+              <div className="absolute bottom-1 left-0 right-0 z-30">
+                {mobileTabBar}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Phone Shadow */}

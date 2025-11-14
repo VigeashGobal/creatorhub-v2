@@ -16,8 +16,8 @@ export default function MobileTabBar({ currentPage, onPageChange }: MobileTabBar
   ]
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-bg-soft/95 backdrop-blur-lg border-t border-edge-subtle pb-safe z-30">
-      <div className="flex items-center justify-around px-2 py-2">
+    <div className="w-full bg-bg-soft/95 backdrop-blur-lg border-t border-edge-subtle">
+      <div className="flex items-center justify-around px-2 py-3 pb-6">
         {tabs.map(tab => {
           const Icon = tab.icon
           const isActive = currentPage === tab.id

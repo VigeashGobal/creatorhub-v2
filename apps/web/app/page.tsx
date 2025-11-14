@@ -18,7 +18,7 @@ interface UserData {
 }
 
 function AppContent() {
-  const { isMobileView } = useMobilePreview()
+  const { isMobileView, setMobileTabBar } = useMobilePreview()
   const [userData, setUserData] = useState<UserData | null>(null)
   const [currentPage, setCurrentPage] = useState('analytics')
 
@@ -28,6 +28,23 @@ function AppContent() {
       setUserData(JSON.parse(savedUserData))
     }
   }, [])
+
+  // Register mobile tab bar
+  useEffect(() => {
+    if (isMobileView && userData && setMobileTabBar) {
+      setMobileTabBar(
+        <MobileTabBar 
+          currentPage={currentPage} 
+          onPageChange={setCurrentPage} 
+        />
+      )
+    }
+    return () => {
+      if (setMobileTabBar) {
+        setMobileTabBar(null)
+      }
+    }
+  }, [isMobileView, userData, currentPage, setMobileTabBar])
 
   const handleSaveUserData = (data: UserData) => {
     setUserData(data)
@@ -67,15 +84,9 @@ function AppContent() {
           onReset={handleReset} 
         />
       )}
-      <div className={`flex-1 ${isMobileView ? 'pb-20' : 'pb-16 lg:pb-0'} w-full`}>
+      <div className={`flex-1 ${isMobileView ? '' : 'pb-16 lg:pb-0'} w-full`}>
         {renderCurrentPage()}
       </div>
-      {isMobileView && (
-        <MobileTabBar 
-          currentPage={currentPage} 
-          onPageChange={setCurrentPage} 
-        />
-      )}
     </div>
   )
 }
