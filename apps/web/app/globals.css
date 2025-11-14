@@ -968,6 +968,76 @@ body {
   line-height: 1.2 !important;
 }
 
+/* Compact revenue cards and opportunity cards */
+.mobile-preview-content [class*="Card"] > div {
+  padding: 12px !important;
+}
+
+/* Reduce large number displays */
+.mobile-preview-content .text-4xl,
+.mobile-preview-content .text-5xl {
+  font-size: 1.5rem !important;
+  line-height: 1.75rem !important;
+}
+
+/* Better card headers */
+.mobile-preview-content .flex.items-center.justify-between {
+  margin-bottom: 12px !important;
+}
+
+/* Compact badges and tags */
+.mobile-preview-content [class*="badge"],
+.mobile-preview-content [class*="tag"] {
+  font-size: 0.75rem !important;
+  padding: 2px 8px !important;
+}
+
+/* Hide less important content on mobile */
+.mobile-preview-content .text-muted.text-xs:not(:first-of-type) {
+  display: none;
+}
+
+/* Optimize stat grids */
+.mobile-preview-content .grid > div {
+  padding: 10px !important;
+}
+
+/* Smaller avatars and icons in lists */
+.mobile-preview-content img[class*="avatar"],
+.mobile-preview-content img[class*="w-10"],
+.mobile-preview-content img[class*="w-12"] {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+/* Compact leaderboard entries */
+.mobile-preview-content [class*="leaderboard"] > div,
+.mobile-preview-content [class*="Leaderboard"] > div {
+  padding: 8px !important;
+  gap: 8px !important;
+}
+
+/* Tighter achievement cards */
+.mobile-preview-content [class*="achievement"] {
+  padding: 10px !important;
+}
+
+/* Better spacing for challenge cards */
+.mobile-preview-content .space-y-3 > * + * {
+  margin-top: 10px !important;
+}
+
+/* Optimize next best action widget */
+.mobile-preview-content .bg-gradient-to-br {
+  padding: 12px !important;
+}
+
+/* Reduce card shadows on mobile */
+.mobile-preview-content .shadow-lg,
+.mobile-preview-content .shadow-xl {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .card-dark:hover {

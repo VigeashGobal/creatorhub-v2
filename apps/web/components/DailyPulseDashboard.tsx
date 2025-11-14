@@ -10,12 +10,14 @@ import { StreakCounter } from './gamification/StreakCounter'
 import { MoneyIndicator } from './gamification/MoneyIndicator'
 import { AchievementBadge } from './gamification/AchievementBadge'
 import { DailyLoginCalendar } from './gamification/DailyLoginCalendar'
+import { DailyLoginCalendarMobile } from './gamification/DailyLoginCalendar.mobile'
 import { NextBestAction } from './gamification/NextBestAction'
 import { EarningsVelocity } from './gamification/EarningsVelocity'
 import { NearMissIndicator } from './gamification/NearMissIndicator'
 import { Leaderboard } from './gamification/Leaderboard'
 import { CelebrationModal } from './gamification/CelebrationModal'
 import { loadAccessibilityPreferences } from '../lib/accessibility'
+import { useMobilePreview } from './MobilePreview'
 
 interface DailyPulseDashboardProps {
   userData: any
@@ -40,6 +42,7 @@ const upcomingRevenue = [
 ]
 
 export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDashboardProps) {
+  const { isMobileView } = useMobilePreview()
   const [gamificationState, setGamificationState] = useState(loadGamificationState())
   const [accessibilityPrefs] = useState(loadAccessibilityPreferences())
   const [showCelebration, setShowCelebration] = useState(false)
@@ -226,11 +229,19 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
         {/* Daily Login Calendar */}
         <div className="col-span-12 lg:col-span-4">
           <Card>
-            <DailyLoginCalendar 
-              dailyLogin={gamificationState.dailyLogin}
-              onClaimReward={handleClaimDailyReward}
-              canClaim={canClaimDailyReward()}
-            />
+            {isMobileView ? (
+              <DailyLoginCalendarMobile 
+                dailyLogin={gamificationState.dailyLogin}
+                onClaimReward={handleClaimDailyReward}
+                canClaim={canClaimDailyReward()}
+              />
+            ) : (
+              <DailyLoginCalendar 
+                dailyLogin={gamificationState.dailyLogin}
+                onClaimReward={handleClaimDailyReward}
+                canClaim={canClaimDailyReward()}
+              />
+            )}
           </Card>
         </div>
 
