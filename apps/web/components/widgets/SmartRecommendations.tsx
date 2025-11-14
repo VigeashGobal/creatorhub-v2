@@ -84,7 +84,11 @@ export function SmartRecommendations({ className = '' }: SmartRecommendationsPro
   const [appliedIds, setAppliedIds] = useState<Set<string>>(new Set())
 
   const handleApply = (id: string) => {
-    setAppliedIds(prev => new Set([...prev, id]))
+    setAppliedIds(prev => {
+      const next = new Set(prev)
+      next.add(id)
+      return next
+    })
     // In a real app, this would trigger an action
   }
 
