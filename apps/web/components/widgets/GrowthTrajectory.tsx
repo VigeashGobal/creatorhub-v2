@@ -8,13 +8,13 @@ interface GrowthTrajectoryProps {
 }
 
 const historicalData = [
-  { month: 'Jan', followers: 85000 },
-  { month: 'Feb', followers: 92000 },
-  { month: 'Mar', followers: 98000 },
-  { month: 'Apr', followers: 105000 },
-  { month: 'May', followers: 112000 },
-  { month: 'Jun', followers: 118000 },
-  { month: 'Jul', followers: 120000 }
+  { month: 'Jan', followers: 85000, isProjected: false },
+  { month: 'Feb', followers: 92000, isProjected: false },
+  { month: 'Mar', followers: 98000, isProjected: false },
+  { month: 'Apr', followers: 105000, isProjected: false },
+  { month: 'May', followers: 112000, isProjected: false },
+  { month: 'Jun', followers: 118000, isProjected: false },
+  { month: 'Jul', followers: 120000, isProjected: false }
 ]
 
 const projectedData = [
