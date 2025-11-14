@@ -47,7 +47,7 @@ export function DailyLoginCalendar({
           className="w-full px-4 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
         >
           <DollarSign className="w-5 h-5" />
-          Claim Today's Reward: ${displayDays[currentDay]?.dollarAmount || 50}
+          Claim Today&apos;s Reward: ${displayDays[currentDay]?.dollarAmount || 50}
         </button>
       )}
 

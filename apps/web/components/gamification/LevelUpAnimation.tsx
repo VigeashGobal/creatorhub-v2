@@ -61,7 +61,7 @@ export function LevelUpAnimation({
           </div>
           
           <p className="text-xl text-white/90">
-            You're now a <span className="font-semibold text-accent-blue">{title}</span>
+            You&apos;re now a <span className="font-semibold text-accent-blue">{title}</span>
           </p>
           
           <div className="flex items-center justify-center gap-2 mt-4">

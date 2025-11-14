@@ -69,31 +69,33 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
 
   // Check for achievement unlocks
   useEffect(() => {
-    let newState = { ...gamificationState }
+    setGamificationState(prevState => {
+      let newState = { ...prevState }
 
-    // First Steps achievement
-    if (formData.name && formData.email && !unlockedAchievements.includes('first-steps')) {
-      newState = unlockAchievement(newState, 'first-steps')
-      setUnlockedAchievements([...unlockedAchievements, 'first-steps'])
-      setCoinsEarned(coinsEarned + 50)
-    }
+      // First Steps achievement
+      if (formData.name && formData.email && !unlockedAchievements.includes('first-steps')) {
+        newState = unlockAchievement(newState, 'first-steps')
+        setUnlockedAchievements([...unlockedAchievements, 'first-steps'])
+        setCoinsEarned(c => c + 50)
+      }
 
-    // Platform Pioneer achievement
-    const platformCount = [formData.youtube, formData.instagram, formData.tiktok].filter(Boolean).length
-    if (platformCount >= 1 && !unlockedAchievements.includes('platform-pioneer')) {
-      newState = unlockAchievement(newState, 'platform-pioneer')
-      setUnlockedAchievements([...unlockedAchievements, 'platform-pioneer'])
-      setCoinsEarned(coinsEarned + 100)
-    }
+      // Platform Pioneer achievement
+      const platformCount = [formData.youtube, formData.instagram, formData.tiktok].filter(Boolean).length
+      if (platformCount >= 1 && !unlockedAchievements.includes('platform-pioneer')) {
+        newState = unlockAchievement(newState, 'platform-pioneer')
+        setUnlockedAchievements([...unlockedAchievements, 'platform-pioneer'])
+        setCoinsEarned(c => c + 100)
+      }
 
-    // Multi-Platform Master achievement
-    if (platformCount >= 3 && !unlockedAchievements.includes('multi-platform-master')) {
-      newState = unlockAchievement(newState, 'multi-platform-master')
-      setUnlockedAchievements([...unlockedAchievements, 'multi-platform-master'])
-      setCoinsEarned(coinsEarned + 200)
-    }
+      // Multi-Platform Master achievement
+      if (platformCount >= 3 && !unlockedAchievements.includes('multi-platform-master')) {
+        newState = unlockAchievement(newState, 'multi-platform-master')
+        setUnlockedAchievements([...unlockedAchievements, 'multi-platform-master'])
+        setCoinsEarned(c => c + 200)
+      }
 
-    setGamificationState(newState)
+      return newState
+    })
   }, [formData, unlockedAchievements])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

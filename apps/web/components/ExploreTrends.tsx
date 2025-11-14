@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Card, KpiCard } from '@creatorhub/ui'
-import { Search, TrendingUp, Users, Star, DollarSign, Target, Zap, ArrowRight, Clock, Award } from 'lucide-react'
+import { Search, TrendingUp, Users, Star, DollarSign, Target, Zap, ArrowRight, Clock, Award, Trophy } from 'lucide-react'
 import { loadGamificationState, generateNextBestActions } from '../lib/gamification'
 import { MoneyIndicator } from './gamification/MoneyIndicator'
 import { NextBestAction } from './gamification/NextBestAction'
