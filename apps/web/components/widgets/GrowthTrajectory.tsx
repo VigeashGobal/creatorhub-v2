@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Card } from '@creatorhub/ui'
 import { TrendingUp, Target, Calendar, Zap } from 'lucide-react'
 import { AnimatedCounter } from './AnimatedCounter'
