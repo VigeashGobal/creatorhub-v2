@@ -7,6 +7,7 @@ import FinanceDashboard from '@/components/FinanceDashboard'
 import ExploreTrends from '@/components/ExploreTrends'
 import WorkflowTools from '@/components/WorkflowTools'
 import Navigation from '@/components/Navigation'
+import MobilePreview from '@/components/MobilePreview'
 
 interface UserData {
   name: string
@@ -52,20 +53,26 @@ export default function Home() {
   }
 
   if (!userData) {
-    return <OnboardingForm onComplete={handleSaveUserData} />
+    return (
+      <MobilePreview>
+        <OnboardingForm onComplete={handleSaveUserData} />
+      </MobilePreview>
+    )
   }
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#1A1A2E' }}>
-      <Navigation 
-        currentPage={currentPage} 
-        onPageChange={setCurrentPage} 
-        onReset={handleReset} 
-      />
-      <div className="flex-1 pb-16 lg:pb-0">
-      {renderCurrentPage()}
+    <MobilePreview>
+      <div className="min-h-screen flex" style={{ backgroundColor: '#1A1A2E' }}>
+        <Navigation 
+          currentPage={currentPage} 
+          onPageChange={setCurrentPage} 
+          onReset={handleReset} 
+        />
+        <div className="flex-1 pb-16 lg:pb-0">
+        {renderCurrentPage()}
+        </div>
       </div>
-    </div>
+    </MobilePreview>
   )
 }
 
