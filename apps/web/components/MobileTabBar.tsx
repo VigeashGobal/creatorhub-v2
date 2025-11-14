@@ -9,7 +9,7 @@ interface MobileTabBarProps {
 
 export default function MobileTabBar({ currentPage, onPageChange }: MobileTabBarProps) {
   const tabs = [
-    { id: 'analytics', name: 'Pulse', icon: Activity },
+    { id: 'analytics', name: 'Social Pulse', icon: Activity },
     { id: 'trends', name: 'Trends', icon: Search },
     { id: 'workflow', name: 'Tasks', icon: Grid3X3 },
     { id: 'financial', name: 'Finance', icon: DollarSign }

@@ -974,10 +974,19 @@ body {
 }
 
 /* Reduce large number displays */
-.mobile-preview-content .text-4xl,
-.mobile-preview-content .text-5xl {
+.mobile-preview-content .text-4xl {
   font-size: 1.5rem !important;
   line-height: 1.75rem !important;
+}
+
+.mobile-preview-content .text-5xl {
+  font-size: 1.75rem !important;
+  line-height: 2rem !important;
+}
+
+.mobile-preview-content .text-6xl {
+  font-size: 1.875rem !important;
+  line-height: 2.25rem !important;
 }
 
 /* Better card headers */
@@ -1036,6 +1045,283 @@ body {
 .mobile-preview-content .shadow-lg,
 .mobile-preview-content .shadow-xl {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Mobile Typography Refinements */
+.mobile-preview-content h1 {
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+  font-weight: 700 !important;
+}
+
+.mobile-preview-content h2 {
+  font-size: 1.125rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+.mobile-preview-content h3 {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+/* Specific fixes for large numbers in cards */
+.mobile-preview-content div[class*="text-"] > span {
+  font-size: inherit !important;
+}
+
+/* Reduce stat card numbers */
+.mobile-preview-content .text-3xl.font-bold,
+.mobile-preview-content .text-4xl.font-bold {
+  font-size: 1.5rem !important;
+  line-height: 1.75rem !important;
+}
+
+/* Tab bar text size */
+.mobile-preview-content [class*="TabBar"] .text-xs {
+  font-size: 0.7rem !important;
+}
+
+/* Mobile Animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Apply animations to mobile content */
+.mobile-preview-content [class*="Card"] {
+  animation: slideInUp 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.mobile-preview-content [class*="Card"]:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.mobile-preview-content [class*="Card"]:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.mobile-preview-content [class*="Card"]:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.mobile-preview-content [class*="Card"]:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.mobile-preview-content button {
+  transition: all 0.2s ease;
+}
+
+.mobile-preview-content button:active {
+  transform: scale(0.95);
+}
+
+.mobile-preview-content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Animate money indicators */
+.mobile-preview-content [class*="currency"],
+.mobile-preview-content [class*="money"],
+.mobile-preview-content [class*="dollar"] {
+  transition: all 0.3s ease;
+}
+
+.mobile-preview-content [class*="currency"]:hover,
+.mobile-preview-content [class*="money"]:hover {
+  transform: scale(1.1);
+}
+
+/* Smooth transitions for all interactive elements */
+.mobile-preview-content a,
+.mobile-preview-content [role="button"] {
+  transition: all 0.2s ease;
+}
+
+/* Progress bar animations */
+.mobile-preview-content [class*="progress"] {
+  transition: width 0.6s ease;
+}
+
+/* Badge animations */
+.mobile-preview-content [class*="badge"],
+.mobile-preview-content [class*="tag"] {
+  transition: all 0.2s ease;
+}
+
+.mobile-preview-content [class*="badge"]:hover {
+  transform: translateY(-2px);
+}
+
+/* Stat number animations */
+.mobile-preview-content .font-bold {
+  transition: all 0.3s ease;
+}
+
+/* Card hover effects on mobile (light touch response) */
+.mobile-preview-content [class*="Card"]:active {
+  transform: scale(0.98);
+}
+
+/* Icon animations */
+.mobile-preview-content svg {
+  transition: all 0.2s ease;
+}
+
+.mobile-preview-content button svg {
+  transition: transform 0.2s ease;
+}
+
+.mobile-preview-content button:hover svg {
+  transform: scale(1.1);
+}
+
+/* Streak counter fire animation */
+.mobile-preview-content [class*="streak"] svg,
+.mobile-preview-content [class*="Flame"] {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Achievement badge shine */
+.mobile-preview-content [class*="achievement"][class*="unlocked"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 3s infinite;
+}
+
+/* Tab bar icon bounce on active */
+.mobile-preview-content [class*="TabBar"] button[class*="active"] svg {
+  animation: bounce 0.6s ease;
+}
+
+/* Smooth scroll for mobile content */
+.mobile-preview-content {
+  scroll-behavior: smooth;
+}
+
+/* Loading skeleton shimmer */
+.mobile-preview-content [class*="skeleton"] {
+  background: linear-gradient(90deg, #2a2a3e 25%, #3a3a4e 50%, #2a2a3e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Celebration effects */
+.mobile-preview-content [class*="celebration"] {
+  animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Notification slide in */
+.mobile-preview-content [class*="notification"] {
+  animation: slideInRight 0.4s ease-out;
+}
+
+/* Currency counter animation */
+.mobile-preview-content [class*="VirtualCurrency"],
+.mobile-preview-content [class*="PointsDisplay"] {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Leaderboard entry stagger */
+.mobile-preview-content [class*="leaderboard"] > div:nth-child(1) {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.mobile-preview-content [class*="leaderboard"] > div:nth-child(2) {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.mobile-preview-content [class*="leaderboard"] > div:nth-child(3) {
+  animation: slideInUp 0.5s ease-out;
+}
+
+/* Next best action emphasis */
+.mobile-preview-content [class*="NextBestAction"] {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-preview-content *,
+  .mobile-preview-content *::before,
+  .mobile-preview-content *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Responsive Design */

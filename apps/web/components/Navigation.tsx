@@ -70,7 +70,7 @@ export default function Navigation({ currentPage, onPageChange, onReset }: Navig
   }, [])
 
   const pages = [
-    { id: 'analytics', name: 'Pulse', icon: Activity },
+    { id: 'analytics', name: 'Social Pulse', icon: Activity },
     { id: 'trends', name: 'Trends', icon: Search },
     { id: 'workflow', name: 'Workflow', icon: Grid3X3 },
     { id: 'financial', name: 'Finance', icon: DollarSign }
@@ -136,7 +136,7 @@ export default function Navigation({ currentPage, onPageChange, onReset }: Navig
             <Activity className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-fg-high">Daily Pulse</h1>
+            <h1 className="text-xl font-semibold text-fg-high">Social Pulse</h1>
             <p className="text-sm text-fg-dim">Creator Analytics</p>
           </div>
         </div>
