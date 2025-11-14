@@ -1,7 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, createContext, useContext } from 'react'
 import { Smartphone, Monitor, X } from 'lucide-react'
+
+interface MobilePreviewContextType {
+  isMobileView: boolean
+}
+
+const MobilePreviewContext = createContext<MobilePreviewContextType>({ isMobileView: false })
+
+export const useMobilePreview = () => useContext(MobilePreviewContext)
 
 interface MobilePreviewProps {
   children: React.ReactNode
@@ -12,7 +20,7 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
 
   if (!isMobileView) {
     return (
-      <>
+      <MobilePreviewContext.Provider value={{ isMobileView: false }}>
         {/* Toggle Button - Fixed Position */}
         <button
           onClick={() => setIsMobileView(true)}
@@ -23,12 +31,13 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
           <span className="font-semibold">Mobile Preview</span>
         </button>
         {children}
-      </>
+      </MobilePreviewContext.Provider>
     )
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-bg-sunken flex items-center justify-center p-4">
+    <MobilePreviewContext.Provider value={{ isMobileView: true }}>
+      <div className="fixed inset-0 z-50 bg-bg-sunken flex items-center justify-center p-4">
       {/* Controls */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-bg-soft px-4 py-2 rounded-full border border-edge-subtle shadow-lg">
         <button
@@ -102,6 +111,7 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
         </p>
       </div>
     </div>
+    </MobilePreviewContext.Provider>
   )
 }
 

@@ -7,7 +7,8 @@ import FinanceDashboard from '@/components/FinanceDashboard'
 import ExploreTrends from '@/components/ExploreTrends'
 import WorkflowTools from '@/components/WorkflowTools'
 import Navigation from '@/components/Navigation'
-import MobilePreview from '@/components/MobilePreview'
+import MobileTabBar from '@/components/MobileTabBar'
+import MobilePreview, { useMobilePreview } from '@/components/MobilePreview'
 
 interface UserData {
   name: string
@@ -16,7 +17,8 @@ interface UserData {
   tiktok?: string
 }
 
-export default function Home() {
+function AppContent() {
+  const { isMobileView } = useMobilePreview()
   const [userData, setUserData] = useState<UserData | null>(null)
   const [currentPage, setCurrentPage] = useState('analytics')
 
@@ -53,25 +55,35 @@ export default function Home() {
   }
 
   if (!userData) {
-    return (
-      <MobilePreview>
-        <OnboardingForm onComplete={handleSaveUserData} />
-      </MobilePreview>
-    )
+    return <OnboardingForm onComplete={handleSaveUserData} />
   }
 
   return (
-    <MobilePreview>
-      <div className="min-h-screen flex" style={{ backgroundColor: '#1A1A2E' }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#1A1A2E' }}>
+      {!isMobileView && (
         <Navigation 
           currentPage={currentPage} 
           onPageChange={setCurrentPage} 
           onReset={handleReset} 
         />
-        <div className="flex-1 pb-16 lg:pb-0">
+      )}
+      <div className="flex-1 pb-16 lg:pb-0">
         {renderCurrentPage()}
-        </div>
       </div>
+      {isMobileView && (
+        <MobileTabBar 
+          currentPage={currentPage} 
+          onPageChange={setCurrentPage} 
+        />
+      )}
+    </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <MobilePreview>
+      <AppContent />
     </MobilePreview>
   )
 }
