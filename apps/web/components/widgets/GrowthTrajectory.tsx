@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Card } from '@creatorhub/ui'
-import { TrendingUp, Target, Calendar, Zap } from 'lucide-react'
+import { TrendingUp, Target, Zap } from 'lucide-react'
 import { AnimatedCounter } from './AnimatedCounter'
 
 interface GrowthTrajectoryProps {
@@ -55,7 +55,6 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
         </div>
       </div>
 
-      {/* Current Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="p-3 bg-bg-soft rounded-lg">
           <div className="text-xs text-fg-dim mb-1">Current</div>
@@ -77,10 +76,8 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
         </div>
       </div>
 
-      {/* Growth Chart */}
       <div className="mb-6">
         <div className="h-64 flex items-end justify-between gap-1 relative">
-          {/* Milestone markers */}
           {milestones.map((milestone) => {
             const yPosition = ((maxFollowers - milestone.followers) / (maxFollowers - minFollowers)) * 100
             return (
@@ -99,14 +96,11 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
             )
           })}
 
-          {/* Data points */}
           {allData.map((data, index) => {
             const height = ((data.followers - minFollowers) / (maxFollowers - minFollowers)) * 100
-            const isLastHistorical = index === historicalData.length - 1
             
             return (
               <div key={data.month} className="flex-1 flex flex-col items-center group relative">
-                {/* Line connection */}
                 {index > 0 && (
                   <div
                     className="absolute bottom-0 left-0 w-full h-0.5 bg-accent-blue/30"
@@ -121,7 +115,6 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
                   />
                 )}
                 
-                {/* Bar */}
                 <div
                   className={`w-full rounded-t transition-all hover:opacity-80 ${
                     data.isProjected
@@ -132,10 +125,8 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
                   title={`${data.month}: ${data.followers}K followers`}
                 />
                 
-                {/* Month label */}
                 <div className="text-xs text-fg-dim mt-1">{data.month}</div>
                 
-                {/* Value on hover */}
                 <div className="absolute bottom-full mb-2 px-2 py-1 bg-bg-dark border border-edge-subtle rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10">
                   {data.followers}K followers
                   {data.isProjected && <span className="text-accent-green ml-1">(projected)</span>}
@@ -146,7 +137,6 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
         </div>
       </div>
 
-      {/* Milestones */}
       <div className="mb-6">
         <h3 className="text-sm font-semibold text-fg-high mb-3 flex items-center gap-2">
           <Target className="w-4 h-4" />
@@ -191,14 +181,13 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
         </div>
       </div>
 
-      {/* Projection Info */}
       <div className="p-4 bg-gradient-to-br from-accent-blue/10 to-accent-purple/10 rounded-lg border border-accent-blue/20">
         <div className="flex items-start gap-3">
           <Zap className="w-5 h-5 text-accent-blue flex-shrink-0 mt-0.5" />
           <div>
             <h4 className="text-sm font-semibold text-fg-high mb-1">Growth Forecast</h4>
             <p className="text-xs text-fg-dim">
-              At your current growth rate, you'll reach <strong className="text-accent-green">150K followers</strong> in{' '}
+              At your current growth rate, you&apos;ll reach <strong className="text-accent-green">150K followers</strong> in{' '}
               <strong>{monthsTo150K} months</strong> (around {new Date(Date.now() + monthsTo150K * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}).
               Keep up the momentum! 🚀
             </p>
