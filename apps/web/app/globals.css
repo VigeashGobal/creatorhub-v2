@@ -777,6 +777,25 @@ body {
   --mobile-spacing: 16px;
   --mobile-padding: 16px;
   --mobile-gap: 12px;
+  
+  /* Force all grids to single column */
+  display: block !important;
+}
+
+.mobile-preview-content .grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.mobile-preview-content .grid-cols-1,
+.mobile-preview-content .grid-cols-2,
+.mobile-preview-content .grid-cols-3,
+.mobile-preview-content .grid-cols-4,
+.mobile-preview-content [class*="grid-cols-"] {
+  grid-template-columns: 1fr !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 /* Reduce container padding */
@@ -878,13 +897,23 @@ body {
 .mobile-preview-content svg.w-8,
 .mobile-preview-content svg.w-10,
 .mobile-preview-content svg.w-12 {
-  width: 1.5rem !important;
-  height: 1.5rem !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
 }
 
 .mobile-preview-content svg.w-6 {
-  width: 1.25rem !important;
-  height: 1.25rem !important;
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+.mobile-preview-content svg.w-5 {
+  width: 0.875rem !important;
+  height: 0.875rem !important;
+}
+
+.mobile-preview-content svg.w-4 {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
 }
 
 /* Better button sizing */
@@ -1088,9 +1117,35 @@ body {
 /* Make sure large revenue numbers fit in containers */
 .mobile-preview-content div[class*="text-4xl"],
 .mobile-preview-content div[class*="text-5xl"] {
-  font-size: 1.5rem !important;
-  line-height: 1.75rem !important;
-  letter-spacing: -0.02em !important;
+  font-size: 1.25rem !important;
+  line-height: 1.5rem !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Force all large text to be smaller */
+.mobile-preview-content span[class*="text-4xl"],
+.mobile-preview-content span[class*="text-5xl"],
+.mobile-preview-content span[class*="text-3xl"] {
+  font-size: 1.25rem !important;
+  line-height: 1.5rem !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Prevent text overflow */
+.mobile-preview-content * {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+}
+
+/* Force flex items to wrap and fit */
+.mobile-preview-content .flex {
+  flex-wrap: wrap !important;
+  overflow: hidden !important;
+}
+
+.mobile-preview-content .flex.items-baseline {
+  align-items: center !important;
+  gap: 4px !important;
 }
 
 /* Tab bar text size */
@@ -1326,6 +1381,69 @@ body {
 /* Next best action emphasis */
 .mobile-preview-content [class*="NextBestAction"] {
   animation: pulse 3s ease-in-out infinite;
+}
+
+/* Specific fixes for revenue displays */
+.mobile-preview-content [class*="MoneyIndicator"] {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.mobile-preview-content [class*="MoneyIndicator"] span {
+  font-size: 1.125rem !important;
+  line-height: 1.5rem !important;
+}
+
+/* Fix daily login calendar overflow */
+.mobile-preview-content [class*="DailyLogin"] {
+  font-size: 0.75rem !important;
+  overflow: hidden !important;
+}
+
+.mobile-preview-content [class*="DailyLogin"] * {
+  font-size: 0.75rem !important;
+}
+
+/* Fix hashtag overflow in trends */
+.mobile-preview-content [class*="hashtag"],
+.mobile-preview-content [class*="Hashtag"] {
+  font-size: 0.75rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Force flex containers with numbers to scale down */
+.mobile-preview-content .flex:has(svg + span[class*="text-"]) {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.mobile-preview-content .flex:has(svg + span[class*="text-"]) span {
+  font-size: 1rem !important;
+  line-height: 1.25rem !important;
+  flex-shrink: 1 !important;
+  min-width: 0 !important;
+}
+
+/* Fix text + icon combinations */
+.mobile-preview-content .text-sm.font-semibold {
+  font-size: 0.75rem !important;
+}
+
+/* Compact all text sizes more aggressively */
+.mobile-preview-content .text-base {
+  font-size: 0.875rem !important;
+}
+
+.mobile-preview-content .text-lg {
+  font-size: 0.9375rem !important;
+}
+
+/* Fix overflow in stat cards */
+.mobile-preview-content > div > div > div {
+  max-width: 100% !important;
+  overflow: hidden !important;
 }
 
 /* Reduce motion for accessibility */

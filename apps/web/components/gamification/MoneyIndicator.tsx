@@ -39,10 +39,10 @@ export function MoneyIndicator({
   }, [amount, animated])
 
   const sizeClasses = {
-    sm: 'text-xl',
-    md: 'text-3xl',
-    lg: 'text-4xl md:text-5xl',
-    xl: 'text-5xl md:text-6xl'
+    sm: 'text-lg',
+    md: 'text-2xl',
+    lg: isMobileView ? 'text-2xl' : 'text-4xl md:text-5xl',
+    xl: isMobileView ? 'text-3xl' : 'text-5xl md:text-6xl'
   }
 
   const getTrendIcon = () => {
@@ -60,18 +60,25 @@ export function MoneyIndicator({
   // Format number based on view mode
   const formattedAmount = isMobileView ? formatCompactNumber(amount, 1) : amount.toLocaleString()
 
+  const getIconSize = () => {
+    if (isMobileView) {
+      return 'w-4 h-4'
+    }
+    return size === 'xl' ? 'w-8 h-8' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5'
+  }
+
   return (
     <div className={`flex flex-col ${className}`}>
       <div className="flex items-baseline gap-2">
-        <DollarSign className={`${size === 'xl' ? 'w-8 h-8' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5'} text-accent-green`} />
+        <DollarSign className={`${getIconSize()} text-accent-green flex-shrink-0`} />
         <span 
           ref={valueRef}
-          className={`${sizeClasses[size]} font-bold text-fg-high`}
+          className={`${sizeClasses[size]} font-bold text-fg-high truncate`}
         >
           {formattedAmount}
         </span>
         {trendPercent && (
-          <span className={`text-sm font-semibold ${getTrendColor()} flex items-center gap-1`}>
+          <span className={`${isMobileView ? 'text-xs' : 'text-sm'} font-semibold ${getTrendColor()} flex items-center gap-1 flex-shrink-0`}>
             {getTrendIcon()}
             {trend === 'up' ? '+' : ''}{trendPercent}%
           </span>
@@ -79,7 +86,7 @@ export function MoneyIndicator({
       </div>
       
       {label && (
-        <span className="text-sm text-fg-dim mt-1">{label}</span>
+        <span className={`${isMobileView ? 'text-xs' : 'text-sm'} text-fg-dim mt-1`}>{label}</span>
       )}
     </div>
   )
