@@ -231,7 +231,7 @@ export default function GuidedOnboarding({ onComplete }: GuidedOnboardingProps) 
           <OnboardingStep {...stepProps} onSkip={undefined}>
             <CompletionStep
               formData={formData}
-              totalCoins={gamificationState.creatorCoins}
+              totalCoins={gamificationState.creatorCoins.balance}
               onComplete={handleComplete}
             />
           </OnboardingStep>
