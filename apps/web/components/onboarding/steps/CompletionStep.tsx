@@ -1,8 +1,8 @@
 'use client'
 
+import React, { useState, useEffect } from 'react'
 import { Sparkles, DollarSign, Trophy, Youtube, Instagram, Music, ArrowRight, TrendingUp } from 'lucide-react'
 import { StoryNarrative } from '../StoryNarrative'
-import { useState, useEffect } from 'react'
 import { calculateTotalProjection } from '../../../lib/revenueProjections'
 
 interface CompletionStepProps {

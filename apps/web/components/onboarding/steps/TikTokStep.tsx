@@ -1,8 +1,8 @@
 'use client'
 
+import React, { useEffect, useRef } from 'react'
 import { Music, Coins, ArrowRight, TrendingUp, Zap } from 'lucide-react'
 import { StoryNarrative } from '../StoryNarrative'
-import { useEffect, useRef } from 'react'
 
 interface TikTokStepProps {
   value: string

@@ -1,8 +1,8 @@
 'use client'
 
+import React, { useEffect, useRef } from 'react'
 import { Youtube, Coins, ArrowRight, TrendingUp } from 'lucide-react'
 import { StoryNarrative } from '../StoryNarrative'
-import { useEffect, useRef } from 'react'
 
 interface YouTubeStepProps {
   value: string

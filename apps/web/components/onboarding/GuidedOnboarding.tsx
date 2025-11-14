@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, TouchEvent as ReactTouchEvent, KeyboardEvent } from 'react'
+import React, { useState, useEffect, useCallback, TouchEvent as ReactTouchEvent } from 'react'
 import { OnboardingStep } from './OnboardingStep'
 import { WelcomeStep } from './steps/WelcomeStep'
 import { NameStep } from './steps/NameStep'

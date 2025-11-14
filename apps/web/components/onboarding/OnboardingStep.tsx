@@ -1,7 +1,7 @@
 'use client'
 
+import React, { ReactNode } from 'react'
 import { ArrowLeft } from 'lucide-react'
-import { ReactNode } from 'react'
 
 interface OnboardingStepProps {
   children: ReactNode

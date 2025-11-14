@@ -1,8 +1,8 @@
 'use client'
 
+import React, { useEffect, useRef } from 'react'
 import { Mail, Coins, ArrowRight, Lock } from 'lucide-react'
 import { StoryNarrative } from '../StoryNarrative'
-import { useEffect, useRef } from 'react'
 
 interface EmailStepProps {
   value: string
