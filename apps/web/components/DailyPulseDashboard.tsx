@@ -21,6 +21,16 @@ import { useMobilePreview } from './MobilePreview'
 import { PlatformStatsCard } from './widgets/PlatformStatsCard'
 import { MultiPlatformOverview } from './widgets/MultiPlatformOverview'
 import { PlatformContentPerformance } from './widgets/PlatformContentPerformance'
+import { LiveActivityFeed } from './widgets/LiveActivityFeed'
+import { SmartRecommendations } from './widgets/SmartRecommendations'
+import { ContentPerformancePredictor } from './widgets/ContentPerformancePredictor'
+import { AudienceInsights } from './widgets/AudienceInsights'
+import { RevenueBreakdown } from './widgets/RevenueBreakdown'
+import { EngagementHeatmap } from './widgets/EngagementHeatmap'
+import { GrowthTrajectory } from './widgets/GrowthTrajectory'
+import { PlatformConnectionStatus } from './widgets/PlatformConnectionStatus'
+import { FilterSortPanel } from './widgets/FilterSortPanel'
+import { SearchDiscovery } from './widgets/SearchDiscovery'
 
 interface DailyPulseDashboardProps {
   userData: any
@@ -293,6 +303,46 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
         {/* Top Performing Content */}
         <div className="col-span-12 mb-8">
           <PlatformContentPerformance posts={topContent} />
+        </div>
+
+        {/* Live Activity Feed & Smart Recommendations */}
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <LiveActivityFeed />
+        </div>
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <SmartRecommendations />
+        </div>
+
+        {/* Content Performance Predictor & Audience Insights */}
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <ContentPerformancePredictor />
+        </div>
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <AudienceInsights />
+        </div>
+
+        {/* Revenue Breakdown & Engagement Heatmap */}
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <RevenueBreakdown />
+        </div>
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <EngagementHeatmap />
+        </div>
+
+        {/* Growth Trajectory & Platform Connection Status */}
+        <div className="col-span-12 lg:col-span-8 mb-8">
+          <GrowthTrajectory />
+        </div>
+        <div className="col-span-12 lg:col-span-4 mb-8">
+          <PlatformConnectionStatus />
+        </div>
+
+        {/* Filter & Sort & Search Discovery */}
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <FilterSortPanel />
+        </div>
+        <div className="col-span-12 lg:col-span-6 mb-8">
+          <SearchDiscovery />
         </div>
 
         {/* Revenue Overview & Daily Login Calendar */}
