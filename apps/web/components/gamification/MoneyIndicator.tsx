@@ -2,6 +2,8 @@
 
 import { DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { formatCompactNumber } from '../../lib/formatNumber'
+import { useMobilePreview } from '../MobilePreview'
 
 interface MoneyIndicatorProps {
   amount: number
@@ -22,6 +24,7 @@ export function MoneyIndicator({
   animated = true,
   className = '' 
 }: MoneyIndicatorProps) {
+  const { isMobileView } = useMobilePreview()
   const valueRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
@@ -54,6 +57,9 @@ export function MoneyIndicator({
     return 'text-fg-dim'
   }
 
+  // Format number based on view mode
+  const formattedAmount = isMobileView ? formatCompactNumber(amount, 1) : amount.toLocaleString()
+
   return (
     <div className={`flex flex-col ${className}`}>
       <div className="flex items-baseline gap-2">
@@ -62,7 +68,7 @@ export function MoneyIndicator({
           ref={valueRef}
           className={`${sizeClasses[size]} font-bold text-fg-high`}
         >
-          {amount.toLocaleString()}
+          {formattedAmount}
         </span>
         {trendPercent && (
           <span className={`text-sm font-semibold ${getTrendColor()} flex items-center gap-1`}>

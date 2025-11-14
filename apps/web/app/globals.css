@@ -1078,6 +1078,21 @@ body {
   line-height: 1.75rem !important;
 }
 
+/* Specific fixes for MoneyIndicator component */
+.mobile-preview-content [class*="MoneyIndicator"] .text-4xl,
+.mobile-preview-content [class*="MoneyIndicator"] .text-5xl {
+  font-size: 1.5rem !important;
+  line-height: 1.75rem !important;
+}
+
+/* Make sure large revenue numbers fit in containers */
+.mobile-preview-content div[class*="text-4xl"],
+.mobile-preview-content div[class*="text-5xl"] {
+  font-size: 1.5rem !important;
+  line-height: 1.75rem !important;
+  letter-spacing: -0.02em !important;
+}
+
 /* Tab bar text size */
 .mobile-preview-content [class*="TabBar"] .text-xs {
   font-size: 0.7rem !important;
