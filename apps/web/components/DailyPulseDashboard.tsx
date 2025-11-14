@@ -27,7 +27,7 @@ import { ContentPerformancePredictor } from './widgets/ContentPerformancePredict
 import { AudienceInsights } from './widgets/AudienceInsights'
 import { RevenueBreakdown } from './widgets/RevenueBreakdown'
 import { EngagementHeatmap } from './widgets/EngagementHeatmap'
-import { GrowthTrajectory } from './widgets/GrowthTrajectory'
+// import { GrowthTrajectory } from './widgets/GrowthTrajectory'
 import { PlatformConnectionStatus } from './widgets/PlatformConnectionStatus'
 import { FilterSortPanel } from './widgets/FilterSortPanel'
 import { SearchDiscovery } from './widgets/SearchDiscovery'
@@ -330,10 +330,10 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
         </div>
 
         {/* Growth Trajectory & Platform Connection Status */}
-        <div className="col-span-12 lg:col-span-8 mb-8">
+        {/* <div className="col-span-12 lg:col-span-8 mb-8">
           <GrowthTrajectory />
-        </div>
-        <div className="col-span-12 lg:col-span-4 mb-8">
+        </div> */}
+        <div className="col-span-12 mb-8">
           <PlatformConnectionStatus />
         </div>
 
