@@ -90,7 +90,7 @@ export function EmailStep({ value, name, onChange, onNext }: EmailStepProps) {
       {/* Security Badge */}
       <div className="flex items-center justify-center gap-2 text-sm text-fg-dim">
         <Lock className="w-4 h-4" />
-        <span>We'll never spam you</span>
+        <span>We&apos;ll never spam you</span>
       </div>
     </div>
   )

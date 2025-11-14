@@ -80,7 +80,7 @@ export default function GuidedOnboarding({ onComplete }: GuidedOnboardingProps) 
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentStep, formData])
+  }, [currentStep, formData, goToNextStep, goToPreviousStep])
 
   const canGoNext = (): boolean => {
     switch (currentStep) {

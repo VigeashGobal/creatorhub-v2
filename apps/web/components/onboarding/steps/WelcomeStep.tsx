@@ -72,7 +72,7 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
         onClick={onNext}
         className="w-full max-w-sm mx-auto px-8 py-4 bg-gradient-to-r from-accent-blue to-accent-purple text-white font-semibold rounded-full hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-lg"
       >
-        Let's Begin
+        Let&apos;s Begin
         <ArrowRight className="w-5 h-5" />
       </button>
 
