@@ -1,9 +1,7 @@
 'use client'
 
-import React from 'react'
 import { Card } from '@creatorhub/ui'
 import { TrendingUp, Target, Zap } from 'lucide-react'
-import { AnimatedCounter } from './AnimatedCounter'
 
 interface GrowthTrajectoryProps {
   className?: string
@@ -44,7 +42,7 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
   const monthsTo150K = Math.ceil((150000 - currentFollowers) / ((projectedFollowers - currentFollowers) / projectedData.length))
 
   return (
-    <Card className={className}>
+    <Card className={className || ''}>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-accent-green" />
@@ -59,13 +57,13 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
         <div className="p-3 bg-bg-soft rounded-lg">
           <div className="text-xs text-fg-dim mb-1">Current</div>
           <div className="text-lg font-bold text-fg-high">
-            <AnimatedCounter value={currentFollowers} suffix="K" />
+            {currentFollowers >= 1000 ? `${(currentFollowers / 1000).toFixed(0)}K` : currentFollowers}
           </div>
         </div>
         <div className="p-3 bg-bg-soft rounded-lg">
           <div className="text-xs text-fg-dim mb-1">Projected</div>
           <div className="text-lg font-bold text-accent-green">
-            <AnimatedCounter value={projectedFollowers} suffix="K" />
+            {projectedFollowers >= 1000 ? `${(projectedFollowers / 1000).toFixed(0)}K` : projectedFollowers}
           </div>
         </div>
         <div className="p-3 bg-bg-soft rounded-lg">
