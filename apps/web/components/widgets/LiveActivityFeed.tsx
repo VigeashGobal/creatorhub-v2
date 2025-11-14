@@ -115,7 +115,11 @@ export function LiveActivityFeed({ className = '' }: LiveActivityFeedProps) {
   const visibleActivities = activities.filter(a => !dismissedIds.has(a.id))
 
   const handleDismiss = (id: string) => {
-    setDismissedIds(prev => new Set([...prev, id]))
+    setDismissedIds(prev => {
+      const next = new Set(prev)
+      next.add(id)
+      return next
+    })
   }
 
   return (
