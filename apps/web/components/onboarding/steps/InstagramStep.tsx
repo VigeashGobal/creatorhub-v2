@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { Instagram, Coins, ArrowRight, TrendingUp } from 'lucide-react'
 import { StoryNarrative } from '../StoryNarrative'
 
@@ -11,9 +11,9 @@ interface InstagramStepProps {
 }
 
 export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
+  React.useEffect(() => {
     inputRef.current?.focus()
   }, [])
 
@@ -30,7 +30,6 @@ export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
 
   return (
     <div className="w-full max-w-lg mx-auto space-y-8">
-      {/* Instagram Icon */}
       <div className="relative inline-block mx-auto">
         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center shadow-lg">
           <Instagram className="w-10 h-10 text-white" />
@@ -43,7 +42,6 @@ export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
         )}
       </div>
 
-      {/* Story */}
       <div className="text-center space-y-4">
         <h2 className="text-3xl md:text-4xl font-bold text-fg-high">
           How about Instagram?
@@ -55,7 +53,6 @@ export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
         />
       </div>
 
-      {/* Input Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <input
@@ -69,7 +66,6 @@ export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
           />
         </div>
 
-        {/* Continue Button */}
         <button
           type="submit"
           className="w-full px-8 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white font-semibold rounded-full hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-lg"
@@ -79,7 +75,6 @@ export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
         </button>
       </form>
 
-      {/* Follower Estimation */}
       {value && (
         <div className="p-4 bg-gradient-to-br from-pink-500/10 to-purple-500/10 border border-pink-500/30 rounded-xl animate-fadeIn">
           <div className="flex items-center gap-2 mb-2">
@@ -95,9 +90,8 @@ export function InstagramStep({ value, onChange, onNext }: InstagramStepProps) {
         </div>
       )}
 
-      {/* Helper Text */}
       <p className="text-center text-sm text-fg-dim">
-        {value ? 'We'll check your engagement and reach' : 'Optional - swipe to skip'}
+        {value ? 'We will check your engagement and reach' : 'Optional - swipe to skip'}
       </p>
     </div>
   )
