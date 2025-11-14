@@ -97,17 +97,21 @@ export function GrowthTrajectory({ className = '' }: GrowthTrajectoryProps) {
           {allData.map((data, index) => {
             const height = ((data.followers - minFollowers) / (maxFollowers - minFollowers)) * 100
             
+            let rotation = 0
+            if (index > 0) {
+              const currentHeight = ((allData[index].followers - minFollowers) / (maxFollowers - minFollowers)) * 100
+              const prevHeight = ((allData[index - 1].followers - minFollowers) / (maxFollowers - minFollowers)) * 100
+              const angle = Math.atan2(currentHeight - prevHeight, 100 / allData.length)
+              rotation = angle * 180 / Math.PI
+            }
+            
             return (
               <div key={data.month} className="flex-1 flex flex-col items-center group relative">
                 {index > 0 && (
                   <div
                     className="absolute bottom-0 left-0 w-full h-0.5 bg-accent-blue/30"
                     style={{
-                      transform: `rotate(${Math.atan2(
-                        ((allData[index].followers - minFollowers) / (maxFollowers - minFollowers)) * 100 - 
-                        ((allData[index - 1].followers - minFollowers) / (maxFollowers - minFollowers)) * 100,
-                        100 / allData.length
-                      ) * 180 / Math.PI)}deg)`,
+                      transform: `rotate(${rotation}deg)`,
                       transformOrigin: 'left center'
                     }}
                   />
