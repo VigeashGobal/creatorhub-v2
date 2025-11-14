@@ -1387,11 +1387,18 @@ body {
 .mobile-preview-content [class*="MoneyIndicator"] {
   max-width: 100% !important;
   overflow: hidden !important;
+  align-items: flex-start !important;
+  text-align: left !important;
 }
 
 .mobile-preview-content [class*="MoneyIndicator"] span {
   font-size: 1.125rem !important;
   line-height: 1.5rem !important;
+}
+
+.mobile-preview-content [class*="MoneyIndicator"] > div {
+  justify-content: flex-start !important;
+  text-align: left !important;
 }
 
 /* Fix daily login calendar overflow */
@@ -1444,6 +1451,19 @@ body {
 .mobile-preview-content > div > div > div {
   max-width: 100% !important;
   overflow: hidden !important;
+}
+
+/* Achievements grid - 3 columns on mobile */
+.mobile-preview-content [class*="Achievement"] + [class*="Achievement"] {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px !important;
+}
+
+/* Target the achievements container specifically */
+.mobile-preview-content .grid.grid-cols-4 {
+  grid-template-columns: repeat(3, 1fr) !important;
+  display: grid !important;
 }
 
 /* Reduce motion for accessibility */

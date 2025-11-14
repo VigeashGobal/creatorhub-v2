@@ -110,7 +110,7 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
         <div className="col-span-12 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="h1">Daily Pulse</h1>
+              <h1 className="h1">SocialPulse</h1>
               <p className="muted">Creator Performance Analytics</p>
             </div>
             
