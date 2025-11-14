@@ -40,6 +40,35 @@ export default function GuidedOnboarding({ onComplete }: GuidedOnboardingProps) 
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
 
+  // Helper function to check if we can proceed to next step
+  const canGoNext = useCallback((): boolean => {
+    switch (currentStep) {
+      case 0: return true // Welcome
+      case 1: return formData.name.length > 0
+      case 2: return formData.email.length > 0 && formData.email.includes('@')
+      case 3: return true // YouTube (optional)
+      case 4: return true // Instagram (optional)
+      case 5: return true // TikTok (optional)
+      case 6: return false // Completion (can't go forward)
+      default: return false
+    }
+  }, [currentStep, formData.name, formData.email])
+
+  // Navigation functions
+  const goToNextStep = useCallback(() => {
+    if (currentStep < TOTAL_STEPS - 1) {
+      setDirection('forward')
+      setCurrentStep(currentStep + 1)
+    }
+  }, [currentStep])
+
+  const goToPreviousStep = useCallback(() => {
+    if (currentStep > 0) {
+      setDirection('backward')
+      setCurrentStep(currentStep - 1)
+    }
+  }, [currentStep])
+
   // Swipe gesture handlers
   const handleTouchStart = (e: ReactTouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX)
@@ -80,34 +109,7 @@ export default function GuidedOnboarding({ onComplete }: GuidedOnboardingProps) 
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentStep, formData, goToNextStep, goToPreviousStep])
-
-  const canGoNext = (): boolean => {
-    switch (currentStep) {
-      case 0: return true // Welcome
-      case 1: return formData.name.length > 0
-      case 2: return formData.email.length > 0 && formData.email.includes('@')
-      case 3: return true // YouTube (optional)
-      case 4: return true // Instagram (optional)
-      case 5: return true // TikTok (optional)
-      case 6: return false // Completion (can't go forward)
-      default: return false
-    }
-  }
-
-  const goToNextStep = useCallback(() => {
-    if (currentStep < TOTAL_STEPS - 1) {
-      setDirection('forward')
-      setCurrentStep(currentStep + 1)
-    }
-  }, [currentStep])
-
-  const goToPreviousStep = useCallback(() => {
-    if (currentStep > 0) {
-      setDirection('backward')
-      setCurrentStep(currentStep - 1)
-    }
-  }, [currentStep])
+  }, [currentStep, canGoNext, goToNextStep, goToPreviousStep])
 
   const handleFieldUpdate = (field: keyof FormData, value: string, coins: number) => {
     setFormData(prev => ({ ...prev, [field]: value }))
