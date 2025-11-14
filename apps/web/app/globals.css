@@ -771,6 +771,203 @@ body {
   grid-column: span 1 / span 1 !important;
 }
 
+/* Mobile Optimization - Apple-level Polish */
+.mobile-preview-content {
+  /* Optimized spacing */
+  --mobile-spacing: 16px;
+  --mobile-padding: 16px;
+  --mobile-gap: 12px;
+}
+
+/* Reduce container padding */
+.mobile-preview-content .px-4,
+.mobile-preview-content .px-6,
+.mobile-preview-content .px-8 {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.mobile-preview-content .py-6,
+.mobile-preview-content .py-8 {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+
+/* Smaller gaps between grid items */
+.mobile-preview-content .gap-4,
+.mobile-preview-content .gap-6 {
+  gap: 12px !important;
+}
+
+/* Compact headings */
+.mobile-preview-content .h1,
+.mobile-preview-content h1 {
+  font-size: 1.75rem !important;
+  line-height: 2rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.mobile-preview-content .h2,
+.mobile-preview-content h2 {
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.mobile-preview-content h3 {
+  font-size: 1.125rem !important;
+  line-height: 1.5rem !important;
+}
+
+/* Smaller text */
+.mobile-preview-content .text-4xl {
+  font-size: 1.875rem !important;
+  line-height: 2.25rem !important;
+}
+
+.mobile-preview-content .text-3xl {
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+}
+
+.mobile-preview-content .text-2xl {
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+}
+
+.mobile-preview-content .text-xl {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+}
+
+/* Compact cards */
+.mobile-preview-content > div > div {
+  padding: 16px !important;
+}
+
+.mobile-preview-content .p-6,
+.mobile-preview-content .p-7,
+.mobile-preview-content .p-8 {
+  padding: 16px !important;
+}
+
+.mobile-preview-content .p-5 {
+  padding: 12px !important;
+}
+
+.mobile-preview-content .p-4 {
+  padding: 12px !important;
+}
+
+/* Smaller margins */
+.mobile-preview-content .mb-6,
+.mobile-preview-content .mb-8 {
+  margin-bottom: 16px !important;
+}
+
+.mobile-preview-content .mb-4 {
+  margin-bottom: 12px !important;
+}
+
+.mobile-preview-content .mt-6,
+.mobile-preview-content .mt-8 {
+  margin-top: 16px !important;
+}
+
+/* Compact icons */
+.mobile-preview-content svg.w-8,
+.mobile-preview-content svg.w-10,
+.mobile-preview-content svg.w-12 {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.mobile-preview-content svg.w-6 {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+/* Better button sizing */
+.mobile-preview-content button {
+  font-size: 0.875rem !important;
+  padding: 0.625rem 1rem !important;
+}
+
+.mobile-preview-content button.px-4 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.mobile-preview-content button.py-3 {
+  padding-top: 0.625rem !important;
+  padding-bottom: 0.625rem !important;
+}
+
+/* Compact stat displays */
+.mobile-preview-content .text-5xl {
+  font-size: 2rem !important;
+  line-height: 1 !important;
+}
+
+.mobile-preview-content .text-6xl {
+  font-size: 2.5rem !important;
+  line-height: 1 !important;
+}
+
+/* Even spacing for flex items */
+.mobile-preview-content .flex {
+  align-items: center;
+}
+
+.mobile-preview-content .space-y-6 > * + * {
+  margin-top: 12px !important;
+}
+
+.mobile-preview-content .space-y-4 > * + * {
+  margin-top: 10px !important;
+}
+
+/* Smaller rounded corners on mobile */
+.mobile-preview-content .rounded-xl,
+.mobile-preview-content .rounded-2xl {
+  border-radius: 12px !important;
+}
+
+.mobile-preview-content .rounded-lg {
+  border-radius: 8px !important;
+}
+
+/* Optimize KPI cards and stats */
+.mobile-preview-content [class*="KpiCard"],
+.mobile-preview-content [class*="Card"] {
+  padding: 12px !important;
+}
+
+/* Compact progress bars */
+.mobile-preview-content .h-2,
+.mobile-preview-content .h-3 {
+  height: 6px !important;
+}
+
+/* Better line height for readability */
+.mobile-preview-content p,
+.mobile-preview-content span {
+  line-height: 1.5 !important;
+}
+
+/* Compact form inputs */
+.mobile-preview-content input,
+.mobile-preview-content select {
+  padding: 0.625rem 0.75rem !important;
+  font-size: 0.875rem !important;
+}
+
+/* Optimize gamification components */
+.mobile-preview-content .text-display {
+  font-size: 2rem !important;
+  line-height: 1.2 !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .card-dark:hover {

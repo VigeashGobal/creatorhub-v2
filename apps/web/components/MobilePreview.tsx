@@ -66,16 +66,16 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
       </div>
 
       {/* Phone Frame */}
-      <div className="relative">
+      <div className="relative scale-90">
         {/* Phone Outer Shell */}
-        <div className="relative bg-[#1a1a1a] rounded-[3rem] p-3 shadow-2xl" style={{ width: '414px', height: '896px' }}>
+        <div className="relative bg-[#1a1a1a] rounded-[3rem] p-3 shadow-2xl" style={{ width: '390px', height: '844px' }}>
           {/* Phone Notch */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-[#1a1a1a] rounded-b-3xl z-10"></div>
           
           {/* Screen */}
           <div className="relative w-full h-full bg-bg rounded-[2.5rem] overflow-hidden" style={{ width: '390px', margin: '0 auto' }}>
             {/* Status Bar */}
-            <div className="absolute top-0 left-0 right-0 h-12 bg-bg-soft/50 backdrop-blur-sm z-20 flex items-center justify-between px-6 text-xs text-fg-dim">
+            <div className="absolute top-0 left-0 right-0 h-10 bg-bg-soft/30 backdrop-blur-md z-20 flex items-center justify-between px-6 text-xs text-fg-dim">
               <span className="font-medium">9:41</span>
               <div className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -92,8 +92,8 @@ export default function MobilePreview({ children }: MobilePreviewProps) {
             </div>
 
             {/* App Content - Scrollable */}
-            <div className="w-full h-full overflow-y-auto overflow-x-hidden pt-12" style={{ scrollbarWidth: 'thin' }}>
-              <div className="min-h-full w-full mobile-preview-content pb-24">
+            <div className="w-full h-full overflow-y-auto overflow-x-hidden pt-10" style={{ scrollbarWidth: 'thin' }}>
+              <div className="min-h-full w-full mobile-preview-content pb-24 pt-2">
                 {children}
               </div>
             </div>
