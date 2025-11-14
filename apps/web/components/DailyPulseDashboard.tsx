@@ -18,6 +18,9 @@ import { Leaderboard } from './gamification/Leaderboard'
 import { CelebrationModal } from './gamification/CelebrationModal'
 import { loadAccessibilityPreferences } from '../lib/accessibility'
 import { useMobilePreview } from './MobilePreview'
+import { PlatformStatsCard } from './widgets/PlatformStatsCard'
+import { MultiPlatformOverview } from './widgets/MultiPlatformOverview'
+import { PlatformContentPerformance } from './widgets/PlatformContentPerformance'
 
 interface DailyPulseDashboardProps {
   userData: any
@@ -39,6 +42,109 @@ const upcomingRevenue = [
   { source: 'Fashion Brand Deal', amount: 3200, dueDate: 'Aug 22', status: 'pending', type: 'sponsored' },
   { source: 'Product Launch Video', amount: 12000, dueDate: 'Sep 1', status: 'negotiating', type: 'partnership' },
   { source: 'Affiliate Commissions', amount: 1800, dueDate: 'Aug 30', status: 'confirmed', type: 'affiliate' },
+]
+
+// Platform-specific data (demo data showing integration with social platforms)
+const platformData = [
+  {
+    platform: 'youtube' as const,
+    handle: '@vigeash',
+    followers: 75000,
+    engagement: 8.2,
+    views: 125000,
+    likes: 12500,
+    comments: 3200,
+    growthRate: 12.5,
+    earnings: 250
+  },
+  {
+    platform: 'instagram' as const,
+    handle: '@vigeash',
+    followers: 52000,
+    engagement: 6.8,
+    views: 85000,
+    likes: 18000,
+    comments: 2100,
+    growthRate: 8.3,
+    earnings: 225
+  },
+  {
+    platform: 'tiktok' as const,
+    handle: '@vigeash',
+    followers: 120000,
+    engagement: 12.5,
+    views: 450000,
+    likes: 56000,
+    comments: 8900,
+    growthRate: 18.7,
+    earnings: 300
+  }
+]
+
+// Multi-platform summary data
+const platformSummary = [
+  { platform: 'youtube' as const, followers: 75000, engagement: 8.2, revenue: 250, connected: true },
+  { platform: 'instagram' as const, followers: 52000, engagement: 6.8, revenue: 225, connected: true },
+  { platform: 'tiktok' as const, followers: 120000, engagement: 12.5, revenue: 300, connected: true }
+]
+
+// Top performing content across platforms
+const topContent = [
+  {
+    id: '1',
+    platform: 'tiktok' as const,
+    title: '10 Secrets to Growing Your Creator Business 🚀',
+    views: 450000,
+    likes: 56000,
+    shares: 8900,
+    engagement: 14.2,
+    earnings: 125,
+    postedAt: '2 days ago'
+  },
+  {
+    id: '2',
+    platform: 'youtube' as const,
+    title: 'How I Made $10K in One Month as a Creator',
+    views: 125000,
+    likes: 12500,
+    shares: 3200,
+    engagement: 12.6,
+    earnings: 95,
+    postedAt: '5 days ago'
+  },
+  {
+    id: '3',
+    platform: 'instagram' as const,
+    title: 'Behind the Scenes: My Content Creation Setup',
+    views: 85000,
+    likes: 18000,
+    shares: 2100,
+    engagement: 23.6,
+    earnings: 80,
+    postedAt: '3 days ago'
+  },
+  {
+    id: '4',
+    platform: 'youtube' as const,
+    title: 'Creator Economy Trends You NEED to Know',
+    views: 98000,
+    likes: 9500,
+    shares: 2500,
+    engagement: 12.2,
+    earnings: 75,
+    postedAt: '1 week ago'
+  },
+  {
+    id: '5',
+    platform: 'tiktok' as const,
+    title: 'Day in the Life of a Full-Time Creator',
+    views: 380000,
+    likes: 42000,
+    shares: 6700,
+    engagement: 12.8,
+    earnings: 110,
+    postedAt: '4 days ago'
+  }
 ]
 
 export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDashboardProps) {
@@ -170,6 +276,23 @@ export default function DailyPulseDashboard({ userData, onReset }: DailyPulseDas
             </div>
             <div className="mt-2 text-xs text-fg-dim">Target exceeded!</div>
           </Card>
+        </div>
+
+        {/* Multi-Platform Overview */}
+        <div className="col-span-12 mb-8">
+          <MultiPlatformOverview platforms={platformSummary} />
+        </div>
+
+        {/* Platform Stats Grid */}
+        <div className="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+          {platformData.map((platform) => (
+            <PlatformStatsCard key={platform.platform} data={platform} />
+          ))}
+        </div>
+
+        {/* Top Performing Content */}
+        <div className="col-span-12 mb-8">
+          <PlatformContentPerformance posts={topContent} />
         </div>
 
         {/* Revenue Overview & Daily Login Calendar */}
