@@ -17,12 +17,12 @@ export function YouTubeStep({ value, onChange, onNext }: YouTubeStepProps) {
     inputRef.current?.focus()
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     onNext()
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onNext()
     }

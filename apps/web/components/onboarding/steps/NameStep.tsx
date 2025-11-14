@@ -18,14 +18,14 @@ export function NameStep({ value, onChange, onNext }: NameStepProps) {
     inputRef.current?.focus()
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (value.length > 0) {
       onNext()
     }
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && value.length > 0) {
       onNext()
     }

@@ -20,14 +20,14 @@ export function EmailStep({ value, name, onChange, onNext }: EmailStepProps) {
 
   const isValidEmail = value.includes('@') && value.includes('.')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isValidEmail) {
       onNext()
     }
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && isValidEmail) {
       onNext()
     }
