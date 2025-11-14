@@ -1477,6 +1477,102 @@ body {
   }
 }
 
+/* Onboarding Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.onboarding-step-enter {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.onboarding-step-exit {
+  animation: slideOutLeft 0.4s ease-out;
+}
+
+.onboarding-step-enter-back {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.onboarding-step-exit-back {
+  animation: slideOutRight 0.4s ease-out;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Touch optimization for onboarding */
+.touch-pan-y {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection during swipe */
+.touch-pan-y * {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Allow text selection in inputs */
+.touch-pan-y input,
+.touch-pan-y textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .card-dark:hover {

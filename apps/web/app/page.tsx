@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import OnboardingForm from '@/components/OnboardingForm'
+import GuidedOnboarding from '@/components/onboarding/GuidedOnboarding'
 import DailyPulseDashboard from '@/components/DailyPulseDashboard'
 import FinanceDashboard from '@/components/FinanceDashboard'
 import ExploreTrends from '@/components/ExploreTrends'
@@ -72,7 +72,7 @@ function AppContent() {
   }
 
   if (!userData) {
-    return <OnboardingForm onComplete={handleSaveUserData} />
+    return <GuidedOnboarding onComplete={handleSaveUserData} />
   }
 
   return (
