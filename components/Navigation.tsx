@@ -8,6 +8,7 @@ import {
   Settings,
   LogOut
 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface NavigationProps {
   currentPage: string
@@ -32,6 +33,17 @@ function SidebarItem({ icon: Icon, label, active = false, onClick }: { icon: any
 }
 
 export default function Navigation({ currentPage, onPageChange, onReset }: NavigationProps) {
+  const [isOffline, setIsOffline] = useState(false)
+  useEffect(() => {
+    const update = () => setIsOffline(!navigator.onLine)
+    update()
+    window.addEventListener('online', update)
+    window.addEventListener('offline', update)
+    return () => {
+      window.removeEventListener('online', update)
+      window.removeEventListener('offline', update)
+    }
+  }, [])
   const pages = [
     { id: 'analytics', name: 'Pulse', icon: Activity },
     { id: 'trends', name: 'Trends', icon: Search },
@@ -41,6 +53,12 @@ export default function Navigation({ currentPage, onPageChange, onReset }: Navig
 
   return (
     <>
+      {/* Offline banner */}
+      {isOffline && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-black text-sm py-2 text-center">
+          You are offline. Changes may not be saved.
+        </div>
+      )}
       {/* Mobile Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-bg-soft border-t border-edge-subtle">
         <div className="flex justify-around py-2">

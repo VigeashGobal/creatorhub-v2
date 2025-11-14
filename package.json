@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "start": "turbo run start",
+    "lint": "turbo lint",
+    "dev:root": "next dev",
+    "build:root": "next build",
+    "start:root": "next start",
+    "lint:root": "next lint"
   },
   "dependencies": {
     "@types/node": "^20",
@@ -25,6 +29,15 @@
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "14.0.0"
-  }
+    "eslint-config-next": "14.0.0",
+    "turbo": "^2.0.6"
+  },
+  "packageManager": "pnpm@8.15.4",
+  "pnpm": {
+    "packageExtensions": {}
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }

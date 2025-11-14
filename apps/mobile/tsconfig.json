@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["nativewind/types"]
+  },
+  "include": [
+    "expo-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
+
+
