@@ -59,7 +59,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#1A1A2E' }}>
+    <div className={`min-h-screen flex ${isMobileView ? 'max-w-[390px]' : ''}`} style={{ backgroundColor: '#1A1A2E' }}>
       {!isMobileView && (
         <Navigation 
           currentPage={currentPage} 
@@ -67,7 +67,7 @@ function AppContent() {
           onReset={handleReset} 
         />
       )}
-      <div className="flex-1 pb-16 lg:pb-0">
+      <div className={`flex-1 ${isMobileView ? 'pb-20' : 'pb-16 lg:pb-0'} w-full`}>
         {renderCurrentPage()}
       </div>
       {isMobileView && (

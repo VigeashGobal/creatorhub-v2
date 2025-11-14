@@ -732,6 +732,45 @@ body {
   }
 }
 
+/* Mobile Preview Styles - Force mobile layout */
+.mobile-preview-content {
+  /* Force single column layouts */
+  container-type: inline-size;
+  container-name: mobile;
+  max-width: 390px;
+}
+
+/* Override responsive breakpoints inside mobile preview */
+.mobile-preview-content .grid-cols-12 {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+
+.mobile-preview-content .md\:grid-cols-2,
+.mobile-preview-content .lg\:grid-cols-3,
+.mobile-preview-content .lg\:grid-cols-4 {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+
+.mobile-preview-content .hidden.lg\:block,
+.mobile-preview-content .hidden.md\:block {
+  display: none !important;
+}
+
+.mobile-preview-content .lg\:flex,
+.mobile-preview-content .md\:flex {
+  display: block !important;
+}
+
+.mobile-preview-content .col-span-12 {
+  grid-column: span 1 / span 1 !important;
+}
+
+.mobile-preview-content .col-span-8,
+.mobile-preview-content .col-span-6,
+.mobile-preview-content .col-span-4 {
+  grid-column: span 1 / span 1 !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .card-dark:hover {
