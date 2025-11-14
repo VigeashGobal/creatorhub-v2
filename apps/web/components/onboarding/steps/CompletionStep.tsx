@@ -21,11 +21,21 @@ export function CompletionStep({ formData, totalCoins, onComplete }: CompletionS
   const [isCalculating, setIsCalculating] = useState(true)
   const [showResults, setShowResults] = useState(false)
 
-  const projection = calculateTotalProjection(
-    !!formData.youtube,
-    !!formData.instagram,
-    !!formData.tiktok
-  )
+  // Build platforms array with demo follower counts for projection
+  const connectedPlatforms = []
+  if (formData.youtube) {
+    connectedPlatforms.push({ platform: 'youtube' as const, followers: 50000 })
+  }
+  if (formData.instagram) {
+    connectedPlatforms.push({ platform: 'instagram' as const, followers: 75000 })
+  }
+  if (formData.tiktok) {
+    connectedPlatforms.push({ platform: 'tiktok' as const, followers: 150000 })
+  }
+
+  const projection = connectedPlatforms.length > 0 
+    ? calculateTotalProjection(connectedPlatforms)
+    : { totalMonthly: 0, totalYearly: 0, breakdown: [], averageConfidence: 'low' as const }
 
   useEffect(() => {
     // Simulate calculation time
@@ -36,27 +46,28 @@ export function CompletionStep({ formData, totalCoins, onComplete }: CompletionS
     return () => clearTimeout(timer)
   }, [])
 
-  const platforms = [
+  // Map platforms for display
+  const platformDisplay = [
     { 
       name: 'YouTube', 
       icon: Youtube, 
       color: 'text-red-500', 
       active: !!formData.youtube,
-      earnings: '1.2K-5K'
+      earnings: projection.breakdown.find(p => p.platform === 'youtube')?.estimatedMonthly || 0
     },
     { 
       name: 'Instagram', 
       icon: Instagram, 
       color: 'text-pink-500', 
       active: !!formData.instagram,
-      earnings: '800-3.5K'
+      earnings: projection.breakdown.find(p => p.platform === 'instagram')?.estimatedMonthly || 0
     },
     { 
       name: 'TikTok', 
       icon: Music, 
       color: 'text-cyan-400', 
       active: !!formData.tiktok,
-      earnings: '600-4K'
+      earnings: projection.breakdown.find(p => p.platform === 'tiktok')?.estimatedMonthly || 0
     },
   ]
 
@@ -118,10 +129,10 @@ export function CompletionStep({ formData, totalCoins, onComplete }: CompletionS
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold text-accent-green mb-1">
-                ${projection.min.toLocaleString()} - ${projection.max.toLocaleString()}
+                ${projection.totalMonthly.toLocaleString()}
               </div>
               <div className="text-sm text-fg-dim">
-                Based on {platforms.filter(p => p.active).length} platform{platforms.filter(p => p.active).length !== 1 ? 's' : ''}
+                Based on {connectedPlatforms.length} platform{connectedPlatforms.length !== 1 ? 's' : ''}
               </div>
             </div>
           </div>
@@ -130,7 +141,7 @@ export function CompletionStep({ formData, totalCoins, onComplete }: CompletionS
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-fg-high text-center">Platform Breakdown</h3>
             <div className="grid gap-3">
-              {platforms.map((platform) => {
+              {platformDisplay.map((platform) => {
                 const Icon = platform.icon
                 return (
                   <div
@@ -147,7 +158,7 @@ export function CompletionStep({ formData, totalCoins, onComplete }: CompletionS
                     </div>
                     {platform.active ? (
                       <div className="text-accent-green font-semibold">
-                        ${platform.earnings}
+                        ${platform.earnings.toLocaleString()}
                       </div>
                     ) : (
                       <div className="text-xs text-fg-dim">Not added</div>
